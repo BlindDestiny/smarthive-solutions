@@ -11,10 +11,11 @@ st.set_page_config(page_title="Lead Machine", layout="wide", page_icon="🚀")
 # CONFIG
 # =============================================================
 
-MASTER_FILE   = "leads_master.csv"
-CRM_FILE      = "crm_data.csv"
-ACTIVITY_FILE = "crm_activity.csv"
-SCORED_FILE   = "leads_scored.csv"
+_DIR = os.path.dirname(os.path.abspath(__file__))
+MASTER_FILE   = os.path.join(_DIR, "leads_master.csv")
+CRM_FILE      = os.path.join(_DIR, "crm_data.csv")
+ACTIVITY_FILE = os.path.join(_DIR, "crm_activity.csv")
+SCORED_FILE   = os.path.join(_DIR, "leads_scored.csv")
 
 CRM_STATUSES = ["new","contacted","replied","interested","meeting","proposal","closed_won","closed_lost"]
 
