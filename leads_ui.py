@@ -269,37 +269,42 @@ else:
 # SIDEBAR FILTERS
 # =============================================================
 
-st.sidebar.title("🎯 Filters")
-status_filter  = st.sidebar.multiselect("Status", CRM_STATUSES,
-    default=["new","contacted","replied","interested","meeting","proposal"],
-    format_func=lambda s: f"{STATUS_EMOJI.get(s,'')} {s.replace('_',' ').title()}")
-website_filter = st.sidebar.selectbox("Website", ["All","No Website","Has Website"])
-email_filter   = st.sidebar.selectbox("Email",   ["All","Has Email","No Email"])
-phone_filter   = st.sidebar.selectbox("Phone",   ["All","Has Phone","Mobile only","Landline only","No Phone"])
-city_filter    = st.sidebar.text_input("City contains")
-keyword_filter = st.sidebar.text_input("Keyword contains")
-min_priority   = st.sidebar.slider("Min Priority", 0, 200, 30)
-min_reviews    = st.sidebar.slider("Min Reviews",  0, 500,  0)
+if _LEADS_AVAILABLE:
+    st.sidebar.title("🎯 Filters")
+    status_filter  = st.sidebar.multiselect("Status", CRM_STATUSES,
+        default=["new","contacted","replied","interested","meeting","proposal"],
+        format_func=lambda s: f"{STATUS_EMOJI.get(s,'')} {s.replace('_',' ').title()}")
+    website_filter = st.sidebar.selectbox("Website", ["All","No Website","Has Website"])
+    email_filter   = st.sidebar.selectbox("Email",   ["All","Has Email","No Email"])
+    phone_filter   = st.sidebar.selectbox("Phone",   ["All","Has Phone","Mobile only","Landline only","No Phone"])
+    city_filter    = st.sidebar.text_input("City contains")
+    keyword_filter = st.sidebar.text_input("Keyword contains")
+    min_priority   = st.sidebar.slider("Min Priority", 0, 200, 30)
+    min_reviews    = st.sidebar.slider("Min Reviews",  0, 500,  0)
 
-# =============================================================
-# FILTER
-# =============================================================
+    # =============================================================
+    # FILTER
+    # =============================================================
 
-filtered = df.copy()
-if status_filter:                  filtered = filtered[filtered["status"].isin(status_filter)]
-if website_filter == "No Website": filtered = filtered[filtered["website"].isna()]
-elif website_filter == "Has Website": filtered = filtered[filtered["website"].notna()]
-if email_filter == "Has Email":    filtered = filtered[filtered["email"].notna()]
-elif email_filter == "No Email":   filtered = filtered[filtered["email"].isna()]
-if phone_filter == "Has Phone":     filtered = filtered[filtered["phone"].notna()]
-elif phone_filter == "Mobile only":  filtered = filtered[filtered["phone_type"]=="mobile"]
-elif phone_filter == "Landline only": filtered = filtered[filtered["phone_type"]=="landline"]
-elif phone_filter == "No Phone":     filtered = filtered[filtered["phone"].isna()]
-if city_filter:    filtered = filtered[filtered["city"].astype(str).str.contains(city_filter, case=False, na=False)]
-if keyword_filter: filtered = filtered[filtered["keyword"].astype(str).str.contains(keyword_filter, case=False, na=False)]
-filtered = filtered[filtered["priority"] >= min_priority]
-filtered = filtered[filtered["reviews"]  >= min_reviews]
-filtered = filtered.sort_values("priority", ascending=False).reset_index(drop=True)
+    filtered = df.copy()
+    if status_filter:                  filtered = filtered[filtered["status"].isin(status_filter)]
+    if website_filter == "No Website": filtered = filtered[filtered["website"].isna()]
+    elif website_filter == "Has Website": filtered = filtered[filtered["website"].notna()]
+    if email_filter == "Has Email":    filtered = filtered[filtered["email"].notna()]
+    elif email_filter == "No Email":   filtered = filtered[filtered["email"].isna()]
+    if phone_filter == "Has Phone":     filtered = filtered[filtered["phone"].notna()]
+    elif phone_filter == "Mobile only":  filtered = filtered[filtered["phone_type"]=="mobile"]
+    elif phone_filter == "Landline only": filtered = filtered[filtered["phone_type"]=="landline"]
+    elif phone_filter == "No Phone":     filtered = filtered[filtered["phone"].isna()]
+    if city_filter:    filtered = filtered[filtered["city"].astype(str).str.contains(city_filter, case=False, na=False)]
+    if keyword_filter: filtered = filtered[filtered["keyword"].astype(str).str.contains(keyword_filter, case=False, na=False)]
+    filtered = filtered[filtered["priority"] >= min_priority]
+    filtered = filtered[filtered["reviews"]  >= min_reviews]
+    filtered = filtered.sort_values("priority", ascending=False).reset_index(drop=True)
+else:
+    filtered = pd.DataFrame()
+    status_filter = website_filter = email_filter = phone_filter = city_filter = keyword_filter = None
+    min_priority = min_reviews = 0
 
 # =============================================================
 # TABS
