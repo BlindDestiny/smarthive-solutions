@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taberna Atlântica · Bar & Petiscos em Lisboa</title>
+  <meta name="description" content="Bar e petiscos no coração de Lisboa. Cocktails artesanais, cervejas craft, petiscos e ambiente único. Happy hour das 17h às 20h. Reservas disponíveis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #120c06; --bg2: #1e1409; --bg3: #2a1d0e;
+      --amber: #c97c2e; --amber-l: #e8a050; --amber-ll: #fdf0dc;
+      --cream: #f5e8cc; --cream-d: #e8d4aa;
+      --dark-text: #1a0f04; --muted: rgba(245,232,204,.45);
+      --border: rgba(201,124,46,.15); --border-l: rgba(201,124,46,.08);
+      --wa: #25d366; --green-d: #1a5c2e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--cream); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── COOKIE ── */
+    .cookie { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: rgba(26,20,9,.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; transform: translateY(100%); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .cookie.show { transform: translateY(0); }
+    .cookie p { font-size: 13px; color: var(--muted); flex: 1; min-width: 200px; }
+    .cookie p a { color: var(--amber-l); }
+    .cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+    .cookie-accept { background: var(--amber); color: var(--dark-text); font-weight: 700; font-size: 13px; padding: 10px 22px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; }
+    .cookie-decline { background: transparent; color: var(--muted); font-size: 13px; padding: 10px 18px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-family: inherit; }
+    @media (max-width: 600px) { .cookie { padding: 16px 20px; } }
+
+    /* ── NAV ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 28px 64px; display: flex; align-items: center; justify-content: space-between; transition: all .5s; }
+    nav.scrolled { background: rgba(18,12,6,.95); backdrop-filter: blur(24px); padding: 16px 64px; border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-style: italic; font-weight: 700; color: var(--cream); }
+    .nav-logo em { color: var(--amber); font-style: normal; }
+    .nav-reserve { border: 1px solid var(--amber); color: var(--amber); font-size: 13px; font-weight: 600; padding: 10px 22px; border-radius: 100px; letter-spacing: .04em; transition: background .15s, color .15s; }
+    .nav-reserve:hover { background: var(--amber); color: var(--dark-text); }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } .nav-logo { font-size: 18px; } }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; text-align: center; padding: 120px 40px 80px; }
+    .hero-ambient { position: absolute; inset: 0; z-index: 0; }
+    .amb-1 { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 80%, rgba(201,124,46,.12), transparent); }
+    .amb-2 { position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(201,124,46,.08), transparent); top: 10%; left: 10%; animation: amb-float 8s ease-in-out infinite; }
+    .amb-3 { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(201,124,46,.06), transparent); bottom: 20%; right: 5%; animation: amb-float 10s ease-in-out infinite reverse; }
+    @keyframes amb-float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.05); } }
+    .hero-inner { position: relative; z-index: 1; max-width: 800px; }
+    .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--amber); margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; height: 1px; width: 40px; background: var(--amber); opacity: .5; }
+    .hero-h1 { font-family: 'Playfair Display', serif; font-size: clamp(52px, 9vw, 110px); font-weight: 900; font-style: italic; line-height: .95; letter-spacing: -.01em; margin-bottom: 20px; }
+    .hero-h1 em { color: var(--amber); font-style: normal; }
+    .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 520px; margin: 0 auto 48px; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+    .btn-amber { background: var(--amber); color: var(--dark-text); font-weight: 700; font-size: 15px; padding: 16px 34px; border-radius: 100px; display: inline-flex; align-items: center; gap: 10px; transition: background .15s, transform .15s; box-shadow: 0 4px 24px rgba(201,124,46,.3); }
+    .btn-amber:hover { background: var(--amber-l); transform: translateY(-2px); }
+    .btn-outline { border: 1px solid rgba(245,232,204,.2); color: var(--cream); font-weight: 500; font-size: 15px; padding: 15px 28px; border-radius: 100px; display: inline-flex; align-items: center; gap: 10px; transition: border-color .2s, background .2s; }
+    .btn-outline:hover { border-color: rgba(245,232,204,.4); background: rgba(245,232,204,.05); }
+    .hero-trust { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+    .trust-it { text-align: center; }
+    .trust-n { font-family: 'Playfair Display', serif; font-size: 32px; font-style: italic; font-weight: 700; color: var(--amber); display: block; line-height: 1; }
+    .trust-l { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: .08em; text-transform: uppercase; }
+
+    /* ── HAPPY HOUR BAND ── */
+    .hh-band { background: var(--amber); padding: 20px 48px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    @media (max-width: 600px) { .hh-band { padding: 16px 20px; text-align: center; } }
+    .hh-badge { background: rgba(0,0,0,.15); color: var(--dark-text); font-size: 10px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; }
+    .hh-text { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; font-weight: 700; color: var(--dark-text); }
+    .hh-text strong { color: #000; }
+
+    /* ── SHARED ── */
+    section.pad { padding: 100px 64px; }
+    @media (max-width: 600px) { section.pad { padding: 72px 20px; } }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .s-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--amber); margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+    .s-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--amber); opacity: .6; }
+    h2.serif { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,60px); font-style: italic; font-weight: 700; line-height: 1.05; }
+    h2.serif em { color: var(--amber); font-style: normal; }
+
+    /* ── MENU ── */
+    .menu-section { background: var(--bg2); border-top: 1px solid var(--border); }
+    .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    @media (max-width: 800px) { .menu-cols { grid-template-columns: 1fr; gap: 48px; } }
+    .menu-col h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-style: italic; font-weight: 700; color: var(--amber-l); margin-bottom: 8px; }
+    .menu-col .menu-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; letter-spacing: .04em; }
+    .menu-list { display: flex; flex-direction: column; gap: 0; }
+    .menu-item { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border-l); gap: 16px; }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-left { flex: 1; }
+    .menu-name { font-size: 16px; font-weight: 600; color: var(--cream); margin-bottom: 3px; }
+    .menu-name.special { color: var(--amber-l); }
+    .menu-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .menu-price { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--amber); flex-shrink: 0; }
+    .menu-badge { display: inline-block; background: var(--amber); color: #000; font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; margin-left: 8px; vertical-align: middle; }
+
+    /* ── EVENTS ── */
+    .events { background: var(--bg); border-top: 1px solid var(--border); }
+    .events-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 900px) { .events-grid { grid-template-columns: 1fr; } }
+    .event-card { border: 1px solid var(--border); background: var(--bg2); border-radius: 4px; overflow: hidden; transition: border-color .2s, transform .2s; }
+    .event-card:hover { border-color: rgba(201,124,46,.4); transform: translateY(-4px); }
+    .event-header { background: var(--bg3); padding: 24px 28px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
+    .event-date { font-family: 'Playfair Display', serif; text-align: center; flex-shrink: 0; }
+    .event-day { font-size: 32px; font-weight: 900; color: var(--amber); line-height: 1; }
+    .event-month { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .event-title { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; font-weight: 700; color: var(--cream); }
+    .event-body { padding: 20px 28px; }
+    .event-desc { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+    .event-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .event-tag { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--amber); border: 1px solid rgba(201,124,46,.3); padding: 4px 10px; border-radius: 100px; }
+
+    /* ── ABOUT ── */
+    .about { background: var(--bg2); border-top: 1px solid var(--border); }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 16px; }
+    .about-text blockquote { font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; color: rgba(245,232,204,.65); border-left: 2px solid var(--amber); padding-left: 20px; margin-top: 28px; line-height: 1.5; }
+    .about-details { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+    .about-detail { background: var(--bg3); border: 1px solid var(--border); padding: 20px; border-radius: 4px; }
+    .about-detail h4 { font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic; color: var(--amber-l); margin-bottom: 6px; }
+    .about-detail p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .about-visual { background: var(--bg3); border: 1px solid var(--border); height: 440px; display: flex; align-items: center; justify-content: center; font-size: 80px; border-radius: 4px; position: relative; overflow: hidden; }
+    .about-visual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 80%, rgba(201,124,46,.1), transparent); }
+
+    /* ── STATS ── */
+    .stats { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 72px 64px; }
+    @media (max-width: 600px) { .stats { padding: 56px 20px; } }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-n { font-family: 'Playfair Display', serif; font-size: clamp(40px,5vw,64px); font-style: italic; font-weight: 700; color: var(--amber); display: block; line-height: 1; margin-bottom: 8px; }
+    .stat-l { font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ── REVIEWS ── */
+    .reviews { background: var(--bg2); border-top: 1px solid var(--border); }
+    .r-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 900px; margin-top: 56px; }
+    .r-item { background: var(--bg2); padding: 40px 48px; position: relative; }
+    @media (max-width: 600px) { .r-item { padding: 28px 20px; } }
+    .r-item::before { content: '\201C'; position: absolute; top: 16px; right: 32px; font-family: 'Playfair Display', serif; font-size: 80px; color: var(--amber); opacity: .1; line-height: 1; }
+    .r-stars { color: var(--amber); font-size: 14px; letter-spacing: 3px; margin-bottom: 16px; }
+    .r-text { font-family: 'Playfair Display', serif; font-size: 19px; font-style: italic; color: rgba(245,232,204,.75); line-height: 1.55; margin-bottom: 24px; }
+    .r-auth { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--amber); color: var(--dark-text); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-weight: 600; font-size: 14px; }
+    .r-src { font-size: 12px; color: var(--muted); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--bg); border-top: 1px solid var(--border); }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-list { margin-top: 52px; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; font-weight: 600; background: none; border: none; color: var(--cream); text-align: left; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; font-style: normal; font-family: 'Inter', sans-serif; transition: transform .3s, border-color .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--amber); color: var(--amber); }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 20px; font-size: 15px; color: var(--muted); line-height: 1.85; }
+
+    /* ── RESERVATION ── */
+    .reservation { background: var(--bg2); border-top: 1px solid var(--border); }
+    .res-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+    @media (max-width: 800px) { .res-inner { grid-template-columns: 1fr; gap: 48px; } }
+    .res-info h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,48px); font-style: italic; font-weight: 700; line-height: 1.1; margin-bottom: 32px; }
+    .res-info h2 em { color: var(--amber); font-style: normal; }
+    .c-item { display: flex; gap: 14px; margin-bottom: 20px; }
+    .c-icon { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .c-val { font-size: 15px; font-weight: 600; margin-top: 3px; color: var(--cream); }
+    .res-form { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 40px; }
+    .res-form h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; font-weight: 700; margin-bottom: 28px; color: var(--cream); }
+    .fg { margin-bottom: 14px; }
+    .fg label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 13px 16px; background: var(--bg2); border: 1px solid var(--border); color: var(--cream); font-family: inherit; font-size: 14px; outline: none; transition: border-color .2s; border-radius: 4px; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--amber); }
+    .fg textarea { resize: vertical; height: 90px; }
+    .fg select option { background: var(--bg); }
+    .btn-submit { width: 100%; background: var(--amber); color: var(--dark-text); font-weight: 700; font-size: 15px; padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; margin-top: 6px; transition: background .15s; }
+    .btn-submit:hover { background: var(--amber-l); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 64px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    @media (max-width: 600px) { footer { padding: 32px 20px; } }
+    .f-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; font-weight: 700; color: var(--cream); }
+    .f-logo em { color: var(--amber); font-style: normal; }
+    footer p { font-size: 12px; color: var(--muted); }
+    footer a { color: var(--amber); }
+
+    /* ── WA FLOAT ── */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── REVEALS ── */
+    [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- COOKIE -->
+<div class="cookie" id="cookie">
+  <p>Usamos cookies para melhorar a sua experiência no nosso site. <a href="#">Política de privacidade</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar cookies</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Taberna <em>Atlântica</em></div>
+  <a href="#reservar" class="nav-reserve">Reservar Mesa</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ambient">
+    <div class="amb-1"></div>
+    <div class="amb-2"></div>
+    <div class="amb-3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Bar & Petiscos · Lisboa · Desde 2011</div>
+    <h1 class="hero-h1">Onde cada<br>noite é<br><em>especial.</em></h1>
+    <p class="hero-sub">Cocktails artesanais, petiscos de autor e uma atmosfera que não se encontra em mais lado nenhum em Lisboa. Venha descobrir o sítio que vai querer mostrar a toda a gente.</p>
+    <div class="hero-btns">
+      <a href="#reservar" class="btn-amber">🍸 Reservar Mesa</a>
+      <a href="tel:+351912000222" class="btn-outline">📞 912 000 222</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-it"><span class="trust-n" data-count="4" data-suffix=".8 ⭐">0</span><span class="trust-l">Google</span></div>
+      <div class="trust-it"><span class="trust-n" data-count="13" data-suffix=" anos">0</span><span class="trust-l">Em Lisboa</span></div>
+      <div class="trust-it"><span class="trust-n">17h–20h</span><span class="trust-l">Happy Hour</span></div>
+      <div class="trust-it"><span class="trust-n">+80</span><span class="trust-l">Cocktails</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HAPPY HOUR -->
+<div class="hh-band">
+  <span class="hh-badge">Hoje</span>
+  <p class="hh-text">Happy Hour <strong>das 17h às 20h</strong> — cocktails a €6 e cervejas craft a €3</p>
+</div>
+
+<!-- MENU -->
+<section class="menu-section pad">
+  <div class="wrap">
+    <div class="s-eyebrow" data-reveal>Ementa</div>
+    <h2 class="serif" data-reveal style="margin-bottom:64px">O melhor de <em>Lisboa</em><br>num só lugar</h2>
+    <div class="menu-cols">
+      <div class="menu-col" data-reveal>
+        <h3>🍸 Cocktails</h3>
+        <p class="menu-sub">Todos feitos com destilados premium e ingredientes frescos</p>
+        <div class="menu-list">
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name special">Atlântico Sour <span class="menu-badge">Assinatura</span></div><div class="menu-desc">Gin de Lisboa, aperol, limão, clara de ovo, sal marinho</div></div><div class="menu-price">9€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Negroni Clássico</div><div class="menu-desc">Gin, vermute rosso, campari, casca de laranja</div></div><div class="menu-price">8€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Lisboa Mule</div><div class="menu-desc">Vodka premium, ginger beer artesanal, lima, hortelã</div></div><div class="menu-price">8€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name special">Fado Sour <span class="menu-badge">Novo</span></div><div class="menu-desc">Gin Sharish, puré de morango, lima, espumante rosé</div></div><div class="menu-price">9€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Mojito da Casa</div><div class="menu-desc">Rum branco, hortelã fresca, lima, açúcar de cana, soda</div></div><div class="menu-price">7€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Whisky Sour</div><div class="menu-desc">Bourbon, limão fresco, xarope de mel, bitters</div></div><div class="menu-price">8€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Cerveja Craft (Imperial)</div><div class="menu-desc">Rotação mensal de cervejeiras nacionais</div></div><div class="menu-price">4€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Vinho da Casa (copo)</div><div class="menu-desc">Branco ou tinto, seleção sazonal</div></div><div class="menu-price">4€</div></div>
+        </div>
+      </div>
+      <div class="menu-col" data-reveal data-delay=".1">
+        <h3>🫒 Petiscos</h3>
+        <p class="menu-sub">Ingredientes locais, receitas de autor, para partilhar</p>
+        <div class="menu-list">
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name special">Tábua Atlântica <span class="menu-badge">Popular</span></div><div class="menu-desc">Queijos nacionais, enchidos, pão de míscaros, mel e pickles</div></div><div class="menu-price">18€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Croquetes de Alheira</div><div class="menu-desc">Alheira de Mirandela, maionese de limão (6 unidades)</div></div><div class="menu-price">8€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Ovos Rotos da Casa</div><div class="menu-desc">Batata frita, ovos estrelados, chouriço e piri-piri</div></div><div class="menu-price">9€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name special">Polvo à Lagareiro <span class="menu-badge">Destaque</span></div><div class="menu-desc">Polvo grelhado, batata a murro, azeite virgem extra</div></div><div class="menu-price">14€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Tostas de Bacalhau</div><div class="menu-desc">Bacalhau desfiado com grão, azeite e coentros (4 unidades)</div></div><div class="menu-price">7€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Pataniscas Caseiras</div><div class="menu-desc">Com arroz de tomate e salada de feijão frade (3 unidades)</div></div><div class="menu-price">8€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Azeitonas e Amendoins</div><div class="menu-desc">Azeitonas marinadas e amendoins torrados da casa</div></div><div class="menu-price">3€</div></div>
+          <div class="menu-item"><div class="menu-item-left"><div class="menu-name">Pastel de Nata</div><div class="menu-desc">Fresquinho, com canela e açúcar em pó</div></div><div class="menu-price">1.5€</div></div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:40px">Ementa completa disponível no balcão e via <a href="https://wa.me/351912000222" style="color:var(--amber)">WhatsApp</a>. Preços com IVA incluído.</p>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events pad">
+  <div class="wrap">
+    <div class="s-eyebrow" data-reveal>Agenda</div>
+    <h2 class="serif" data-reveal>Próximos <em>eventos</em></h2>
+    <div class="events-grid">
+      <div class="event-card" data-reveal>
+        <div class="event-header">
+          <div class="event-date"><div class="event-day">14</div><div class="event-month">Jun</div></div>
+          <div class="event-title">Noite de Jazz & Gin</div>
+        </div>
+        <div class="event-body">
+          <p class="event-desc">Quarteto de jazz ao vivo com selecção especial de gins artesanais portugueses. Entrada livre, consumo obrigatório. Das 21h às 00h.</p>
+          <div class="event-tags"><span class="event-tag">Jazz ao vivo</span><span class="event-tag">Gin especial</span><span class="event-tag">Entrada livre</span></div>
+        </div>
+      </div>
+      <div class="event-card" data-reveal data-delay=".1">
+        <div class="event-header">
+          <div class="event-date"><div class="event-day">21</div><div class="event-month">Jun</div></div>
+          <div class="event-title">Noite de Fado</div>
+        </div>
+        <div class="event-body">
+          <p class="event-desc">Uma noite com fadistas de Lisboa num ambiente intimista. Petiscos especiais e carta de vinhos dedicada. Reserva obrigatória. Das 20h30 às 23h.</p>
+          <div class="event-tags"><span class="event-tag">Fado ao vivo</span><span class="event-tag">Reserva obrigatória</span><span class="event-tag">Jantar incluído</span></div>
+        </div>
+      </div>
+      <div class="event-card" data-reveal data-delay=".2">
+        <div class="event-header">
+          <div class="event-date"><div class="event-day">28</div><div class="event-month">Jun</div></div>
+          <div class="event-title">Cocktail Masterclass</div>
+        </div>
+        <div class="event-body">
+          <p class="event-desc">Aprenda a fazer 3 cocktails de autor com o nosso bartender chefe. Inclui todos os ingredientes, snacks e diploma de participação. 20 pessoas máximo.</p>
+          <div class="event-tags"><span class="event-tag">Workshop</span><span class="event-tag">20 pessoas máx.</span><span class="event-tag">35€/pessoa</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:36px;font-size:13px;color:var(--muted)">Eventos privados e festas de empresa disponíveis. <a href="https://wa.me/351912000222" style="color:var(--amber)">Contacte-nos para orçamento →</a></p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about pad">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-text" data-reveal>
+        <div class="s-eyebrow" style="margin-bottom:16px">A nossa história</div>
+        <h2 class="serif" style="margin-bottom:24px">Mais de uma década<br>a criar <em>memórias</em></h2>
+        <p>A Taberna Atlântica abriu em 2011 com uma missão simples: criar um sítio onde os lisboetas quisessem ficar. Não só para beber, mas para estar, conversar e descobrir pessoas novas.</p>
+        <p>A nossa carta de cocktails é renovada sazonalmente, sempre com foco em destilados portugueses e ingredientes locais. Trabalhamos com produtores nacionais de gin, aguardente e vinho para garantir que cada copo conta uma história portuguesa.</p>
+        <blockquote>"O melhor bar não é aquele com a carta mais extensa — é aquele que sentes que é teu."</blockquote>
+        <div class="about-details">
+          <div class="about-detail"><h4>Capacidade</h4><p>80 pessoas interior + 30 esplanada</p></div>
+          <div class="about-detail"><h4>Reservas privadas</h4><p>Espaço exclusivo para grupos até 30</p></div>
+          <div class="about-detail"><h4>Cozinha aberta</h4><p>Das 18h às 01h todos os dias</p></div>
+          <div class="about-detail"><h4>Estacionamento</h4><p>Parque a 200m — Garagem Mayer</p></div>
+        </div>
+      </div>
+      <div class="about-visual" data-reveal>🍸</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="13" data-suffix=" anos">0</span><span class="stat-l">Em Lisboa</span></div>
+    <div><span class="stat-n" data-count="80" data-suffix="+">0+</span><span class="stat-l">Cocktails na carta</span></div>
+    <div><span class="stat-n" data-count="7">0</span><span class="stat-l">Noites por semana</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".8 ⭐">0</span><span class="stat-l">Google Maps</span></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section class="reviews pad">
+  <div class="wrap">
+    <div class="s-eyebrow" data-reveal>Testemunhos</div>
+    <h2 class="serif" data-reveal>O que dizem os <em>clientes</em></h2>
+    <div class="r-list">
+      <div class="r-item" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"O Atlântico Sour é provavelmente o melhor cocktail que já bebi em Lisboa. Ambiente incrível, música perfeita e o pessoal é simplesmente excepcional. Voltamos sempre."</p><div class="r-auth"><div class="r-av">SP</div><div><div class="r-name">Sara Pinto</div><div class="r-src">Google · há 1 semana</div></div></div></div>
+      <div class="r-item" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"Fizemos a festa de aniversário da empresa aqui. Equipa impecável, cocktails fora do comum e a tábua atlântica foi um sucesso total. Já estamos a pensar repetir no próximo ano."</p><div class="r-auth"><div class="r-av">MR</div><div><div class="r-name">Miguel Rodrigues</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+      <div class="r-item" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"A noite de fado foi uma experiência inesquecível. Cantora maravilhosa, petiscos deliciosos e uma atmosfera que nos transportou directamente para o coração de Lisboa."</p><div class="r-auth"><div class="r-av">AC</div><div><div class="r-name">Ana Carvalho</div><div class="r-src">Google · há 1 mês</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq pad">
+  <div class="faq-inner">
+    <div class="s-eyebrow" data-reveal>Dúvidas</div>
+    <h2 class="serif" data-reveal>Perguntas <em>frequentes</em></h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Precisam de reserva para vir? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Para grupos de até 4 pessoas não é necessário reservar durante a semana. Ao fim de semana e para grupos de 5 ou mais pessoas, recomendamos reservar com antecedência via WhatsApp ou pelo formulário abaixo. Para eventos privados, reserve sempre.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Qual é o horário de funcionamento? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Segunda a Quinta: 17h às 02h · Sexta e Sábado: 17h às 03h · Domingo: 17h às 01h. A cozinha funciona das 18h à 01h (ou 02h ao fim de semana). Happy Hour todos os dias das 17h às 20h.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Fazem eventos privados? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Temos uma sala privada com capacidade para 30 pessoas, ideal para festas de aniversário, despedidas, reuniões de empresa e eventos corporativos. Inclui carta de cocktails exclusiva e ementa personalizada. Contacte-nos para orçamento.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Têm opções sem álcool? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Temos uma carta de mocktails (cocktails sem álcool) com as mesmas receitas de autor, substituindo os destilados por sumos naturais e xaropes artesanais. Também servimos sumos frescos, águas aromatizadas e refrigerantes premium.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Aceitam animais de estimação? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, bem-vindos com os vossos companheiros! Animais de estimação são permitidos na esplanada e na zona de bar. Temos água sempre disponível para os nossos visitantes de 4 patas.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Como posso saber os eventos da agenda? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Seguindo-nos no Instagram @taberna.atlantica e no Facebook. Também pode enviar-nos mensagem no WhatsApp para entrar na nossa lista de newsletter e receber notificações dos eventos com antecedência.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="reservation pad" id="reservar">
+  <div class="wrap">
+    <div class="res-inner">
+      <div class="res-info" data-reveal>
+        <div class="s-eyebrow" style="margin-bottom:16px">Reservas</div>
+        <h2>Reserve a sua<br><em>mesa</em> agora</h2>
+        <div style="margin-top:32px">
+          <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone / WhatsApp</div><div class="c-val">912 000 222</div></div></div>
+          <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@taberna-atlantica.pt</div></div></div>
+          <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Morada</div><div class="c-val">Rua Example 456, Lisboa</div></div></div>
+          <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">Seg–Qui 17h–02h · Sex–Sáb 17h–03h · Dom 17h–01h</div></div></div>
+          <div class="c-item"><div class="c-icon">🍸</div><div><div class="c-label">Happy Hour</div><div class="c-val">Todos os dias das 17h às 20h</div></div></div>
+        </div>
+      </div>
+      <div class="res-form" data-reveal>
+        <h3>Fazer reserva</h3>
+        <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+        <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+        <div class="fg"><label>Data</label><input type="text" placeholder="Ex: Sexta, 21 de Junho"></div>
+        <div class="fg"><label>Hora</label><select><option>17h00</option><option>18h00</option><option>19h00</option><option>20h00</option><option>21h00</option><option>22h00</option><option>23h00</option></select></div>
+        <div class="fg"><label>Número de pessoas</label><select><option>2 pessoas</option><option>3 pessoas</option><option>4 pessoas</option><option>5–8 pessoas</option><option>9–15 pessoas</option><option>Mais de 15 — evento privado</option></select></div>
+        <div class="fg"><label>Observações</label><textarea placeholder="Alergias, ocasião especial, pedidos..."></textarea></div>
+        <button class="btn-submit" id="form-submit">🍸 Confirmar Reserva</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Taberna <em>Atlântica</em></div>
+  <p>© 2026 Taberna Atlântica · Bar & Petiscos em Lisboa · 7 noites por semana</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351912000222?text=Olá!%20Queria%20fazer%20uma%20reserva." title="Reservar via WhatsApp">🍸</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cookie
+  if (!localStorage.getItem('ta_cookie')) setTimeout(() => document.getElementById('cookie').classList.add('show'), 1000);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('ta_cookie','1'); document.getElementById('cookie').classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('ta_cookie','0'); document.getElementById('cookie').classList.remove('show'); };
+
+  // Nav
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  // Hero entrance
+  const tl = gsap.timeline({ delay: .2 });
+  tl.from('.hero-eyebrow', { opacity: 0, y: 16, duration: .7 })
+    .from('.hero-h1', { opacity: 0, y: 60, duration: 1.2, ease: 'power4.out' }, '-=.4')
+    .from('.hero-sub', { opacity: 0, y: 24, duration: .8 }, '-=.6')
+    .from('.hero-btns', { opacity: 0, y: 20, duration: .7 }, '-=.5')
+    .from('.hero-trust .trust-it', { opacity: 0, y: 16, stagger: .1, duration: .6 }, '-=.4')
+    .from('.amb-2, .amb-3', { opacity: 0, scale: .8, duration: 1.5, stagger: .2 }, 0);
+
+  // Ambient parallax
+  gsap.to('.amb-2', { y: -40, scrollTrigger: { scrub: 2, start: 'top top', end: 'bottom top' } });
+  gsap.to('.amb-3', { y: -30, scrollTrigger: { scrub: 1.5, start: 'top top', end: 'bottom top' } });
+
+  // Scroll reveals
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  // Counters
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, { scrollTrigger: { trigger: el, start: 'top 80%' }, n: end, duration: 2, ease: 'power2.out', onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; } });
+  });
+
+  // FAQ
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement, body = item.querySelector('.faq-body'), inner = item.querySelector('.faq-body-inner'), isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => { el.classList.remove('open'); el.querySelector('.faq-body').style.height = '0'; });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+
+  // Form
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = '✓ Reserva enviada!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = '🍸 Confirmar Reserva'; b.style.background = ''; }, 3000);
+  });
+</script>
+</body>
+</html>

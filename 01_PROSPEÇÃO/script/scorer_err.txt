@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Home\websites\01_PROSPEÇÃO\script\modules\score_website_leads.py", line 220, in <module>
+    log("\u2705 SCORING COMPLETE")
+  File "C:\Home\websites\01_PROSPEÇÃO\script\modules\score_website_leads.py", line 27, in log
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}")
+  File "C:\Program Files\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 11: character maps to <undefined>

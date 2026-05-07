@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LimpaJá · Empresa de Limpeza em Lisboa</title>
+  <meta name="description" content="Empresa de limpeza profissional em Lisboa. Doméstica, escritórios, pós-obra, tapetes. Produtos ecológicos. Orçamento gratuito.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #0d9488; --teal-d: #0f766e; --teal-l: #ccfbf1;
+      --sage: #84cc16; --white: #fff; --off: #f8fffe;
+      --dark: #0d1f1e; --text: #1a2e2c; --muted: #5f7a77;
+      --border: #d1faf5; --wa: #25d366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* COOKIE */
+    .cookie { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: var(--dark); color: #fff; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; transform: translateY(100%); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .cookie.show { transform: translateY(0); }
+    .cookie p { font-size: 13px; color: rgba(255,255,255,.7); }
+    .cookie p a { color: var(--teal-l); }
+    .cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+    .cookie-accept { background: var(--teal); color: #fff; font-weight: 700; font-size: 13px; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+    .cookie-decline { background: transparent; color: rgba(255,255,255,.5); font-size: 13px; padding: 10px 16px; border: 1px solid rgba(255,255,255,.15); border-radius: 6px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 60px; display: flex; align-items: center; justify-content: space-between; transition: all .4s; }
+    nav.scrolled { background: rgba(255,255,255,.95); backdrop-filter: blur(20px); box-shadow: 0 1px 0 var(--border); padding: 14px 60px; }
+    .nav-logo { font-size: 22px; font-weight: 800; color: var(--teal); letter-spacing: -.5px; }
+    .nav-logo span { color: var(--text); }
+    .nav-cta { background: var(--teal); color: #fff; font-weight: 700; font-size: 14px; padding: 12px 24px; border-radius: 100px; transition: transform .15s, box-shadow .15s; box-shadow: 0 4px 16px rgba(13,148,136,.25); }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(13,148,136,.35); }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } }
+
+    /* HERO — split screen */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .hero-visual { display: none; } }
+    .hero-text { padding: 140px 60px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
+    .hero-visual { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 50%, #5eead4 100%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .hero-visual-inner { position: relative; z-index: 1; text-align: center; }
+    .hero-orb { width: clamp(200px, 25vw, 340px); height: clamp(200px, 25vw, 340px); border-radius: 50%; background: rgba(255,255,255,.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; font-size: clamp(80px, 10vw, 120px); box-shadow: 0 20px 60px rgba(13,148,136,.2), inset 0 0 0 1px rgba(255,255,255,.6); }
+    .hero-float { position: absolute; border-radius: 50%; background: rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center; font-size: 20px; backdrop-filter: blur(4px); animation: float 4s ease-in-out infinite; }
+    .hero-float:nth-child(2) { width: 64px; height: 64px; top: 15%; left: 10%; animation-delay: -.5s; }
+    .hero-float:nth-child(3) { width: 48px; height: 48px; bottom: 20%; left: 15%; animation-delay: -1.5s; font-size: 16px; }
+    .hero-float:nth-child(4) { width: 56px; height: 56px; top: 20%; right: 12%; animation-delay: -1s; font-size: 18px; }
+    .hero-float:nth-child(5) { width: 40px; height: 40px; bottom: 15%; right: 18%; animation-delay: -2s; font-size: 14px; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-l); color: var(--teal-d); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 8px 16px; border-radius: 100px; margin-bottom: 28px; width: fit-content; }
+    .hero-h1 { font-size: clamp(38px, 5vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; color: var(--text); margin-bottom: 20px; }
+    .hero-h1 em { color: var(--teal); font-style: normal; }
+    .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 420px; margin-bottom: 44px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+    .btn-teal { background: var(--teal); color: #fff; font-weight: 700; font-size: 15px; padding: 15px 30px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s, box-shadow .15s; }
+    .btn-teal:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(13,148,136,.3); }
+    .btn-outline { border: 2px solid var(--border); color: var(--teal-d); font-weight: 600; font-size: 15px; padding: 13px 24px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, background .2s; }
+    .btn-outline:hover { border-color: var(--teal); background: var(--teal-l); }
+    .hero-trust { display: flex; flex-direction: column; gap: 10px; }
+    .trust-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+    .trust-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+    /* WAVE DIVIDER */
+    .wave { display: block; width: 100%; line-height: 0; }
+    .wave-up { background: var(--off); }
+    .wave-down { background: var(--white); }
+
+    /* SERVICES — alternating */
+    .services { background: var(--off); padding: 80px 0; }
+    .section-head { text-align: center; padding: 0 40px; margin-bottom: 80px; }
+    .tag { display: inline-block; background: var(--teal-l); color: var(--teal-d); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 16px; }
+    .section-head h2 { font-size: clamp(30px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; color: var(--text); }
+    .service-row { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; max-width: 1200px; margin: 0 auto; }
+    @media (max-width: 800px) { .service-row { grid-template-columns: 1fr; } .service-row.rev .service-visual { order: -1; } }
+    .service-content { padding: 64px 72px; }
+    @media (max-width: 1000px) { .service-content { padding: 48px 36px; } }
+    .service-num { font-size: 80px; font-weight: 900; color: var(--teal-l); letter-spacing: -4px; line-height: 1; margin-bottom: 8px; }
+    .service-content h3 { font-size: 26px; font-weight: 800; letter-spacing: -.5px; color: var(--text); margin-bottom: 12px; }
+    .service-content p { font-size: 15px; color: var(--muted); line-height: 1.75; }
+    .service-visual { background: linear-gradient(135deg, #f0fdf4, #ccfbf1); min-height: 320px; display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; overflow: hidden; }
+    .service-visual.alt { background: linear-gradient(135deg, #ccfbf1, #99f6e4); }
+    .service-sep { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+
+    /* PROCESS */
+    .process { padding: 100px 40px; background: var(--white); }
+    .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1000px; margin: 48px auto 0; }
+    @media (max-width: 700px) { .process-grid { grid-template-columns: 1fr; } }
+    .p-step { text-align: center; }
+    .p-num { width: 56px; height: 56px; border-radius: 50%; background: var(--teal-l); color: var(--teal-d); font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .p-step h4 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .p-step p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* STATS */
+    .stats-band { background: var(--teal); padding: 72px 40px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-n { font-size: clamp(36px, 5vw, 56px); font-weight: 900; color: #fff; letter-spacing: -2px; display: block; margin-bottom: 6px; }
+    .stat-l { font-size: 13px; color: rgba(255,255,255,.75); }
+
+    /* REVIEWS */
+    .reviews { padding: 100px 40px; background: var(--off); }
+    .r-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 900px) { .r-grid { grid-template-columns: 1fr; } }
+    .r-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 16px rgba(13,148,136,.06); border: 1px solid var(--border); transition: transform .2s, box-shadow .2s; }
+    .r-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(13,148,136,.12); }
+    .r-stars { color: var(--teal); font-size: 16px; letter-spacing: 2px; margin-bottom: 16px; }
+    .r-text { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .r-auth { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-weight: 700; font-size: 14px; }
+    .r-src { font-size: 12px; color: var(--muted); }
+
+    /* CTA */
+    .cta { background: var(--dark); color: #fff; padding: 100px 40px; text-align: center; position: relative; overflow: hidden; }
+    .cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(13,148,136,.15), transparent); }
+    .cta h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; position: relative; }
+    .cta h2 em { color: var(--teal-l); font-style: normal; }
+    .cta p { font-size: 17px; color: rgba(255,255,255,.6); margin-bottom: 44px; position: relative; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-white { background: #fff; color: var(--teal-d); font-weight: 700; font-size: 15px; padding: 15px 28px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s; }
+    .btn-white:hover { transform: translateY(-2px); }
+    .btn-wa { background: var(--wa); color: #fff; font-weight: 700; font-size: 15px; padding: 15px 24px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s; }
+    .btn-wa:hover { transform: translateY(-2px); }
+
+    /* CONTACT */
+    .contact { padding: 100px 40px; background: var(--white); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; max-width: 1100px; margin: 0 auto; align-items: start; }
+    @media (max-width: 800px) { .contact-wrap { grid-template-columns: 1fr; gap: 48px; } }
+    .contact-info h3 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 32px; }
+    .c-item { display: flex; gap: 14px; margin-bottom: 20px; }
+    .c-icon { width: 44px; height: 44px; background: var(--teal-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .c-val { font-weight: 600; font-size: 15px; margin-top: 2px; }
+    .c-form { background: var(--off); border-radius: 20px; padding: 40px; border: 1px solid var(--border); }
+    .c-form h3 { font-size: 22px; font-weight: 800; margin-bottom: 28px; }
+    .fg { margin-bottom: 14px; }
+    .fg label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 13px 16px; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--text); outline: none; transition: border-color .2s; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--teal); }
+    .fg textarea { resize: vertical; height: 100px; }
+    .btn-submit { width: 100%; background: var(--teal); color: #fff; font-weight: 700; font-size: 15px; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-family: inherit; margin-top: 6px; transition: background .15s; }
+    .btn-submit:hover { background: var(--teal-d); }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 36px 60px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 16px; }
+    .f-logo { font-size: 16px; font-weight: 800; color: var(--teal-l); }
+    footer p { font-size: 12px; }
+    footer a { color: var(--teal-l); }
+
+    /* WA */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; animation: wa-pop 2.5s ease-in-out infinite; }
+    .wa-float:hover { transform: scale(1.1) !important; animation: none; }
+    @keyframes wa-pop { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+    /* ── ABOUT ── */
+    .about { padding: 100px 40px; background: var(--white); }
+    .about-wrap { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-wrap { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text h2 { font-size: clamp(28px,4vw,46px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; }
+    .about-text h2 em { color: var(--teal); font-style: normal; }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .about-pill { background: var(--teal-l); color: var(--teal-d); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px; }
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .team-card { background: var(--off); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+    .team-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .team-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .team-role { font-size: 12px; color: var(--muted); }
+    /* ── PRICING ── */
+    .pricing { padding: 100px 40px; background: var(--off); }
+    .pricing-inner { max-width: 1100px; margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 36px 28px; transition: border-color .2s, transform .2s, box-shadow .2s; }
+    .price-card:hover { border-color: var(--teal); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(13,148,136,.1); }
+    .price-card.featured { border-color: var(--teal); background: linear-gradient(180deg,#f0fdf9 0%,#fff 100%); }
+    .price-badge { display: inline-block; background: var(--teal); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 16px; }
+    .price-name { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .price-amount { font-size: 44px; font-weight: 900; color: var(--teal); letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+    .price-amount span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .price-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .price-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .price-list li { font-size: 14px; color: var(--text); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .price-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .price-list li.no::before { content: '✗'; color: var(--border); }
+    .price-list li.no { color: var(--muted); }
+    .price-btn { display: block; text-align: center; padding: 13px; border: 1.5px solid var(--teal); border-radius: 100px; font-size: 14px; font-weight: 700; color: var(--teal); transition: background .15s, color .15s; }
+    .price-btn:hover, .price-card.featured .price-btn { background: var(--teal); color: #fff; }
+    .price-note { font-size: 13px; color: var(--muted); text-align: center; margin-top: 24px; }
+    /* ── FAQ ── */
+    .faq { padding: 100px 40px; background: var(--white); }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-list { margin-top: 52px; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; cursor: pointer; font-size: 16px; font-weight: 600; background: none; border: none; color: var(--text); text-align: left; font-family: inherit; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s, background .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--teal); background: var(--teal); color: #fff; }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 20px; font-size: 15px; color: var(--muted); line-height: 1.8; }
+    [data-reveal] { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+    @media (max-width: 600px) { .hero-text { padding: 120px 20px 60px; } .service-content { padding: 40px 20px; } .contact, .about, .pricing, .faq, .process { padding: 72px 20px; } footer { padding: 28px 20px; } }
+  </style>
+</head>
+<body>
+
+<div class="cookie" id="cookie">
+  <p>Utilizamos cookies para melhorar a sua experiência no nosso site. <a href="#">Saber mais</a></p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<nav id="nav">
+  <div class="nav-logo">Limpa<span>Já</span> 🧹</div>
+  <a href="tel:+351913456789" class="nav-cta">📞 913 456 789</a>
+</nav>
+
+<!-- HERO SPLIT -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">🌿 Produtos ecológicos · Lisboa</div>
+    <h1 class="hero-h1">A sua casa<br><em>impecável.</em><br>Sem esforço.</h1>
+    <p class="hero-sub">Limpeza doméstica, escritórios e pós-obra. Equipa certificada, produtos seguros para crianças e animais.</p>
+    <div class="hero-btns">
+      <a href="tel:+351913456789" class="btn-teal">📞 Pedir Orçamento Grátis</a>
+      <a href="https://wa.me/351913456789" class="btn-outline">💬 WhatsApp</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-row"><div class="trust-dot"></div> 4.8 estrelas · 412 avaliações Google</div>
+      <div class="trust-row"><div class="trust-dot"></div> +8 anos de experiência em Lisboa</div>
+      <div class="trust-row"><div class="trust-dot"></div> Garantia de satisfação ou voltamos</div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-float">✨</div>
+    <div class="hero-float">🌿</div>
+    <div class="hero-float">💧</div>
+    <div class="hero-float">⭐</div>
+    <div class="hero-visual-inner">
+      <div class="hero-orb">🧹</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<svg class="wave wave-up" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f8fffe"/></svg>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-head" data-reveal>
+    <div class="tag">O que fazemos</div>
+    <h2>Limpeza para cada necessidade</h2>
+  </div>
+
+  <div class="service-row">
+    <div class="service-content" data-reveal>
+      <div class="service-num">01</div>
+      <h3>Limpeza Doméstica</h3>
+      <p>Limpeza completa da sua casa — cozinha, casas de banho, quartos e salas. Serviço pontual, equipa treinada, resultados visíveis.</p>
+    </div>
+    <div class="service-visual">🏠</div>
+  </div>
+  <div class="service-sep"></div>
+  <div class="service-row rev">
+    <div class="service-visual alt">🏢</div>
+    <div class="service-content" data-reveal>
+      <div class="service-num">02</div>
+      <h3>Limpeza de Escritórios</h3>
+      <p>Manutenção regular para empresas com horários flexíveis. Disponíveis fora de horas e fins de semana sem custo adicional.</p>
+    </div>
+  </div>
+  <div class="service-sep"></div>
+  <div class="service-row">
+    <div class="service-content" data-reveal>
+      <div class="service-num">03</div>
+      <h3>Limpeza Pós-Obra</h3>
+      <p>Remoção completa de pó de construção, cimento, tinta e resíduos. Entregamos o espaço pronto a habitar.</p>
+    </div>
+    <div class="service-visual">🏗️</div>
+  </div>
+  <div class="service-sep"></div>
+  <div class="service-row rev">
+    <div class="service-visual alt">🛋️</div>
+    <div class="service-content" data-reveal>
+      <div class="service-num">04</div>
+      <h3>Estofos e Tapetes</h3>
+      <p>Extracção profissional de sujidade, manchas e ácaros. Sofás, cadeiras e tapetes como novos em poucas horas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE DOWN -->
+<svg class="wave wave-down" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C360,0 1080,60 1440,30 L1440,0 L0,0 Z" fill="#f8fffe"/></svg>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="section-head" data-reveal>
+    <div class="tag">Como funciona</div>
+    <h2>Simples e sem complicações</h2>
+  </div>
+  <div class="process-grid">
+    <div class="p-step" data-reveal><div class="p-num">1</div><h4>Pedido de orçamento</h4><p>Contacta-nos por telefone ou WhatsApp. Respondemos em menos de 30 minutos.</p></div>
+    <div class="p-step" data-reveal data-delay=".1"><div class="p-num">2</div><h4>Marcação</h4><p>Escolhe o dia e a hora que mais lhe convém. Confirmamos a marcação de imediato.</p></div>
+    <div class="p-step" data-reveal data-delay=".2"><div class="p-num">3</div><h4>Casa impecável</h4><p>A nossa equipa trata de tudo. Garanta a qualidade — ou repetimos sem custo.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="1800" data-suffix="+">0</span><span class="stat-l">Limpezas realizadas</span></div>
+    <div><span class="stat-n" data-count="8" data-suffix=" anos">0</span><span class="stat-l">De experiência</span></div>
+    <div><span class="stat-n" data-count="100" data-suffix="%">0</span><span class="stat-l">Produtos ecológicos</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".8 ⭐">0</span><span class="stat-l">Avaliação Google</span></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="section-head" data-reveal>
+    <div class="tag">Testemunhos</div>
+    <h2>O que dizem sobre nós</h2>
+  </div>
+  <div class="r-grid">
+    <div class="r-card" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"A equipa da LimpaJá é simplesmente fantástica. A minha casa ficou impecável. Contratei serviço mensal e nunca mais me preocupei com limpezas."</p><div class="r-auth"><div class="r-av">MC</div><div><div class="r-name">Margarida Costa</div><div class="r-src">Google · há 1 semana</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".1"><div class="r-stars">★★★★★</div><p class="r-text">"Limpeza pós-obra perfeita. O apartamento estava cheio de pó de construção e entregaram-no brilhante. Resultado incrível."</p><div class="r-auth"><div class="r-av">RA</div><div><div class="r-name">Ricardo Alves</div><div class="r-src">Google · há 3 semanas</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".2"><div class="r-stars">★★★★★</div><p class="r-text">"Pontuais, simpáticas e muito profissionais. Usam produtos que não irritam e deixam tudo a cheirar muito bem. Recomendo!"</p><div class="r-auth"><div class="r-av">SH</div><div><div class="r-name">Sofia Henriques</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-wrap">
+    <div class="about-text" data-reveal>
+      <div class="tag" style="margin-bottom:20px">A nossa equipa</div>
+      <h2>8 anos a cuidar das<br>casas de <em>Lisboa</em></h2>
+      <p>A LimpaJá nasceu em 2016 de um desafio pessoal: encontrar um serviço de limpeza de confiança, que tratasse as casas dos clientes como se fossem as suas. Criámos a empresa que gostaríamos de ter encontrado.</p>
+      <p>A nossa equipa é composta por 12 profissionais com formação certificada em técnicas de limpeza, manuseamento de produtos e higiene. Todos os colaboradores passam por verificação de antecedentes e formação inicial antes de entrar numa casa de cliente.</p>
+      <p>Usamos exclusivamente produtos ecológicos certificados — eficazes, sem cheiros agressivos e seguros para crianças e animais de estimação.</p>
+      <div class="about-pills">
+        <span class="about-pill">✓ Equipa de 12 profissionais</span>
+        <span class="about-pill">✓ Background check em todos</span>
+        <span class="about-pill">✓ Produtos eco-certificados</span>
+        <span class="about-pill">✓ Seguro de responsabilidade civil</span>
+        <span class="about-pill">✓ Satisfação garantida</span>
+        <span class="about-pill">✓ Materiais e equipamento incluídos</span>
+      </div>
+    </div>
+    <div class="team-grid" data-reveal>
+      <div class="team-card"><div class="team-avatar">S</div><div class="team-name">Sofia Rodrigues</div><div class="team-role">Fundadora & Directora</div></div>
+      <div class="team-card"><div class="team-avatar">M</div><div class="team-name">Mariana Costa</div><div class="team-role">Coordenadora de equipa</div></div>
+      <div class="team-card"><div class="team-avatar">J</div><div class="team-name">Joana Ferreira</div><div class="team-role">Especialista pós-obra</div></div>
+      <div class="team-card"><div class="team-avatar">A</div><div class="team-name">Ana Lima</div><div class="team-role">Especialista estofos</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="pricing-inner">
+    <div class="section-head" style="margin-bottom:0" data-reveal>
+      <div class="tag">Preços</div>
+      <h2>Transparência total,<br>sem letras pequenas</h2>
+    </div>
+    <p style="text-align:center;font-size:15px;color:var(--muted);margin-top:12px;margin-bottom:0" data-reveal>Orçamento gratuito em 5 minutos por telefone ou WhatsApp.</p>
+    <div class="pricing-grid">
+      <div class="price-card" data-reveal>
+        <div class="price-name">Limpeza Básica</div>
+        <div class="price-from">Apartamento T1 · a partir de</div>
+        <div class="price-amount">55€ <span>/ vez</span></div>
+        <p class="price-desc">Ideal para manutenção regular quinzenal ou mensal</p>
+        <ul class="price-list">
+          <li>Aspiração e varredura de todos os pisos</li>
+          <li>Limpeza de casas de banho e cozinha</li>
+          <li>Despoeiramento de superfícies</li>
+          <li>Mudança de roupa de cama (se fornecida)</li>
+          <li class="no">Frigorífico e forno incluídos</li>
+          <li class="no">Armários interiores</li>
+        </ul>
+        <a href="tel:+351913456789" class="price-btn">📞 Pedir orçamento</a>
+      </div>
+      <div class="price-card featured" data-reveal data-delay=".1">
+        <div class="price-badge">Mais popular</div>
+        <div class="price-name">Limpeza Completa</div>
+        <div class="price-from">Apartamento T2 · a partir de</div>
+        <div class="price-amount">95€ <span>/ vez</span></div>
+        <p class="price-desc">A mais completa — ideal para limpeza mensal ou de mudança</p>
+        <ul class="price-list">
+          <li>Tudo da limpeza básica incluído</li>
+          <li>Interior de frigorífico e forno</li>
+          <li>Interior de armários e prateleiras</li>
+          <li>Janelas interiores incluídas</li>
+          <li>Varanda ou terraço incluídos</li>
+          <li>Produtos e equipamento incluídos</li>
+        </ul>
+        <a href="tel:+351913456789" class="price-btn">📞 Pedir orçamento</a>
+      </div>
+      <div class="price-card" data-reveal data-delay=".2">
+        <div class="price-name">Limpeza Pós-Obra</div>
+        <div class="price-from">Preço por m² · a partir de</div>
+        <div class="price-amount">5€ <span>/ m²</span></div>
+        <p class="price-desc">Especializada em remoção de pó de construção e resíduos</p>
+        <ul class="price-list">
+          <li>Remoção de pó de obra em todas as superfícies</li>
+          <li>Limpeza de vidros, caixilhos e rodapés</li>
+          <li>Limpeza de pavimentos e azulejos</li>
+          <li>Remoção de etiquetas e tintas</li>
+          <li>Entrega pronta a habitar</li>
+          <li>Equipamento industrial incluído</li>
+        </ul>
+        <a href="tel:+351913456789" class="price-btn">📞 Pedir orçamento</a>
+      </div>
+    </div>
+    <p class="price-note" data-reveal>Preços variam consoante área, estado e frequência. Descontos para contratos mensais. Orçamento gratuito sempre.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="tag" style="margin-bottom:16px" data-reveal>Perguntas frequentes</div>
+    <h2 style="font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-1.5px;color:var(--text);margin-bottom:0" data-reveal>Respostas às dúvidas<br>mais comuns</h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Com que frequência devo contratar limpeza? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Depende do seu estilo de vida e tamanho da casa. Para casais ou pessoas sozinhas, limpeza quinzenal é geralmente suficiente. Para famílias com crianças ou animais, recomendamos semanal. Pós-obra é sempre pontual.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Os produtos são seguros para crianças e animais? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Usamos exclusivamente produtos ecológicos e hipoalergénicos certificados pela Ecolabel Europeia. Não contêm cloro, amoníaco ou formaldeído. São seguros para bebés e animais de estimação — desde que a superfície seque antes do contacto.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Tenho de estar em casa durante a limpeza? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Não, a maioria dos nossos clientes deixa-nos a chave ou código. Depois de 2–3 visitas de adaptação, a maioria dos clientes não precisa de estar presente. A nossa equipa é verificada e segura.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">O que acontece se partir alguma coisa? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">A LimpaJá tem seguro de responsabilidade civil activo. Em caso de acidente, comunicamos imediatamente e resolvemos a situação. Nos 8 anos de actividade, os incidentes foram raros e sempre resolvidos prontamente.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Trazem os produtos e equipamento? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, trazemos tudo. Esfregões, aspirador, produtos de limpeza, panos — não precisa de ter nada em casa. Se preferir que usemos os seus produtos por alguma razão específica, também é possível.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Posso cancelar ou reagendar? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, com 24 horas de antecedência sem qualquer custo. Cancelamentos com menos de 24h têm uma pequena taxa de €15. Reagendamentos são sempre gratuitos, sujeitos a disponibilidade.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Trabalham ao fim de semana? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, trabalhamos de Segunda a Sábado entre as 8h e as 20h. Domingo apenas para casos especiais como pós-obra urgente. Disponibilidade ao fim de semana está sujeita a confirmação.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" data-reveal>
+  <h2>Pronta para uma casa <em>impecável?</em></h2>
+  <p>Orçamento gratuito em menos de 5 minutos. Sem compromisso.</p>
+  <div class="cta-btns">
+    <a href="tel:+351913456789" class="btn-white">📞 913 456 789</a>
+    <a href="https://wa.me/351913456789" class="btn-wa">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+  <div class="contact-wrap">
+    <div class="contact-info" data-reveal>
+      <div class="tag" style="margin-bottom:20px">Contacto</div>
+      <h3>Fale<br>connosco</h3>
+      <div style="margin-top:28px">
+        <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone</div><div class="c-val">913 456 789</div></div></div>
+        <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@limpaja.pt</div></div></div>
+        <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Área</div><div class="c-val">Lisboa, Oeiras, Cascais, Sintra e Amadora</div></div></div>
+        <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">Segunda a Sábado · 8h–20h</div></div></div>
+      </div>
+    </div>
+    <div class="c-form" data-reveal>
+      <h3>Pedir Orçamento</h3>
+      <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+      <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+      <div class="fg"><label>Serviço</label><select><option>Limpeza doméstica</option><option>Escritórios</option><option>Limpeza profunda</option><option>Pós-obra</option><option>Estofos e tapetes</option></select></div>
+      <div class="fg"><label>Mensagem</label><textarea placeholder="Área aproximada, frequência..."></textarea></div>
+      <button class="btn-submit" id="form-submit">Pedir Orçamento Gratuito</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">LimpaJá 🧹</div>
+  <p>© 2026 LimpaJá · Limpeza profissional em Lisboa</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351913456789" title="WhatsApp">💬</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cookie
+  const cookie = document.getElementById('cookie');
+  if (!localStorage.getItem('lj_cookie')) setTimeout(() => cookie.classList.add('show'), 900);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('lj_cookie','1'); cookie.classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('lj_cookie','0'); cookie.classList.remove('show'); };
+
+  // Nav
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  // Hero
+  const tl = gsap.timeline({ delay: .15 });
+  tl.from('.hero-badge', { opacity: 0, y: 20, duration: .6 })
+    .from('.hero-h1', { opacity: 0, y: 40, duration: .9, ease: 'power3.out' }, '-=.3')
+    .from('.hero-sub', { opacity: 0, y: 20, duration: .7 }, '-=.5')
+    .from('.hero-btns', { opacity: 0, y: 16, duration: .6 }, '-=.4')
+    .from('.hero-trust', { opacity: 0, duration: .5 }, '-=.3')
+    .from('.hero-orb', { opacity: 0, scale: .8, duration: 1, ease: 'back.out(1.5)' }, '-=.8')
+    .from('.hero-float', { opacity: 0, scale: 0, stagger: .1, duration: .5, ease: 'back.out(2)' }, '-=.6');
+
+  // Scroll reveals via IntersectionObserver
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  // Counters
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, {
+      scrollTrigger: { trigger: el, start: 'top 80%' },
+      n: end, duration: 2.2, ease: 'power2.out',
+      onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; }
+    });
+  });
+
+  // Form
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = 'Enviado!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = 'Pedir Orçamento Gratuito'; b.style.background = ''; }, 3000);
+  });
+
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const body = item.querySelector('.faq-body');
+      const inner = item.querySelector('.faq-body-inner');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-body').style.height = '0';
+      });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

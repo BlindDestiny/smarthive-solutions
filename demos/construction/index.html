@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReformaJá · Remodelações em Lisboa</title>
+  <meta name="description" content="Remodelações, pinturas e reparações em Lisboa. Orçamento gratuito. Garantia de 2 anos. Equipa certificada.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111110; --bg2: #1a1917; --bg3: #222220;
+      --orange: #f97316; --orange-d: #c2580a; --orange-l: #fff0e6;
+      --white: #fff; --cream: #f5f0e8;
+      --muted: rgba(255,255,255,.45); --border: rgba(255,255,255,.08);
+      --wa: #25d366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* COOKIE */
+    .cookie { position: fixed; bottom: 24px; right: 24px; z-index: 9999; max-width: 380px; background: var(--cream); color: var(--bg); padding: 24px; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.4); transform: translateX(120%); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .cookie.show { transform: translateX(0); }
+    .cookie p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+    .cookie p a { color: var(--orange-d); font-weight: 600; }
+    .cookie-btns { display: flex; gap: 8px; }
+    .cookie-accept { flex: 1; background: var(--orange); color: #fff; font-weight: 700; font-size: 13px; padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; }
+    .cookie-accept:hover { background: var(--orange-d); }
+    .cookie-decline { flex: 1; background: transparent; color: #888; font-size: 13px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-family: inherit; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 60px; display: flex; align-items: center; justify-content: space-between; transition: all .4s; }
+    nav.scrolled { background: rgba(17,17,16,.95); backdrop-filter: blur(20px); padding: 16px 60px; border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 24px; font-weight: 900; font-style: italic; letter-spacing: -1px; }
+    .nav-logo span { color: var(--orange); }
+    .nav-cta { background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 2px; transition: background .15s, transform .15s; }
+    .nav-cta:hover { background: var(--orange-d); transform: translateY(-1px); }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } }
+
+    /* HERO — asymmetric full-bleed */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 55% 45%; position: relative; overflow: hidden; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .hero-right { display: none; } }
+    .hero-left { padding: 140px 60px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+    .hero-right { background: var(--bg2); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .hero-right-inner { font-size: clamp(120px, 15vw, 200px); opacity: .06; user-select: none; line-height: 1; }
+    .hero-orange-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--orange); z-index: 3; }
+    .hero-tag { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; width: 32px; height: 2px; background: var(--orange); }
+    .hero-h1 { font-size: clamp(56px, 8vw, 112px); font-weight: 900; font-style: italic; line-height: .9; letter-spacing: -3px; margin-bottom: 8px; }
+    .hero-h1 span { color: var(--orange); display: block; }
+    .hero-h2 { font-size: clamp(20px, 3vw, 36px); font-weight: 400; color: var(--muted); margin-bottom: 40px; letter-spacing: -0.5px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
+    .btn-orange { background: var(--orange); color: #fff; font-weight: 700; font-size: 15px; padding: 16px 32px; border-radius: 2px; display: inline-flex; align-items: center; gap: 8px; transition: background .15s, transform .15s; }
+    .btn-orange:hover { background: var(--orange-d); transform: translateY(-2px); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--white); font-weight: 600; font-size: 15px; padding: 16px 24px; border-radius: 2px; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.3); }
+    .hero-trust { display: flex; gap: 40px; flex-wrap: wrap; }
+    .hero-trust-item { display: flex; flex-direction: column; }
+    .trust-big { font-size: 28px; font-weight: 900; color: var(--orange); }
+    .trust-small { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+    /* MARQUEE */
+    .marquee-wrap { background: var(--orange); padding: 12px 0; overflow: hidden; }
+    .marquee-inner { display: flex; white-space: nowrap; will-change: transform; }
+    .marquee-item { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(0,0,0,.6); padding: 0 32px; display: flex; align-items: center; gap: 16px; }
+    .m-sep { font-size: 18px; opacity: .3; }
+
+    /* SERVICES */
+    .services { padding: 120px 60px; background: var(--bg); }
+    .services-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 72px; gap: 40px; flex-wrap: wrap; }
+    .services-header h2 { font-size: clamp(36px, 5vw, 64px); font-weight: 900; font-style: italic; letter-spacing: -2px; line-height: 1; }
+    .services-header h2 span { color: var(--orange); }
+    .services-header p { font-size: 15px; color: var(--muted); max-width: 300px; line-height: 1.7; padding-top: 8px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
+    .s-card { background: var(--bg); padding: 40px 32px; position: relative; overflow: hidden; transition: background .25s; cursor: default; }
+    .s-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+    .s-card:hover { background: var(--bg2); }
+    .s-card:hover::before { transform: scaleX(1); }
+    .s-card:hover .s-icon { transform: scale(1.1) rotate(-5deg); }
+    .s-icon { font-size: 32px; margin-bottom: 20px; display: block; transition: transform .3s; }
+    .s-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .s-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* PROCESS */
+    .process { padding: 100px 60px; background: var(--bg2); border-top: 1px solid var(--border); }
+    .process-label { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 48px; display: flex; align-items: center; gap: 12px; }
+    .process-label::before { content: ''; width: 32px; height: 2px; background: var(--orange); }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+    @media (max-width: 800px) { .process-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .process-steps { grid-template-columns: 1fr; } }
+    .p-step { position: relative; }
+    .p-step:not(:last-child)::after { content: '→'; position: absolute; top: 12px; right: -24px; color: var(--orange); font-size: 20px; }
+    @media (max-width: 800px) { .p-step::after { display: none !important; } }
+    .p-n { font-size: 48px; font-weight: 900; font-style: italic; color: var(--border); line-height: 1; margin-bottom: 16px; }
+    .p-step h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .p-step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* STATS */
+    .stats { padding: 80px 60px; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-n { font-size: clamp(44px, 6vw, 72px); font-weight: 900; font-style: italic; color: var(--orange); letter-spacing: -3px; display: block; line-height: 1; margin-bottom: 8px; }
+    .stat-l { font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* REVIEWS */
+    .reviews { padding: 120px 60px; background: var(--bg2); }
+    .reviews-label { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+    .reviews h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; font-style: italic; letter-spacing: -2px; margin-bottom: 64px; }
+    .r-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 900px) { .r-grid { grid-template-columns: 1fr; } }
+    .r-card { border: 1px solid var(--border); border-radius: 4px; padding: 36px; background: var(--bg); transition: border-color .2s, transform .2s; position: relative; overflow: hidden; }
+    .r-card::before { content: '\201C'; position: absolute; top: -10px; right: 16px; font-size: 120px; font-weight: 900; color: var(--orange); opacity: .08; line-height: 1; font-family: Georgia, serif; }
+    .r-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+    .r-stars { color: var(--orange); font-size: 14px; letter-spacing: 2px; margin-bottom: 20px; }
+    .r-text { font-size: 15px; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 28px; font-style: italic; }
+    .r-auth { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 2px; background: var(--orange); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-weight: 700; font-size: 14px; }
+    .r-src { font-size: 12px; color: var(--muted); }
+
+    /* CTA */
+    .cta-band { background: var(--orange); padding: 100px 60px; text-align: center; }
+    .cta-band h2 { font-size: clamp(36px, 6vw, 72px); font-weight: 900; font-style: italic; letter-spacing: -3px; color: #fff; margin-bottom: 12px; }
+    .cta-band p { font-size: 18px; color: rgba(255,255,255,.8); margin-bottom: 48px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-dark { background: var(--bg); color: #fff; font-weight: 700; font-size: 15px; padding: 16px 32px; border-radius: 2px; display: inline-flex; align-items: center; gap: 8px; transition: background .15s, transform .15s; }
+    .btn-dark:hover { background: var(--bg3); transform: translateY(-2px); }
+    .btn-wa-dark { background: #1da851; color: #fff; font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 2px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s; }
+    .btn-wa-dark:hover { transform: translateY(-2px); }
+
+    /* CONTACT */
+    .contact { display: grid; grid-template-columns: 1fr 1.2fr; }
+    @media (max-width: 800px) { .contact { grid-template-columns: 1fr; } }
+    .contact-info { background: var(--bg); padding: 80px 60px; border-top: 1px solid var(--border); }
+    .contact-info h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 900; font-style: italic; letter-spacing: -2px; margin-bottom: 48px; }
+    .c-item { display: flex; gap: 16px; margin-bottom: 24px; }
+    .c-icon { width: 44px; height: 44px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .c-val { font-size: 16px; font-weight: 600; margin-top: 4px; }
+    .c-form-wrap { background: var(--bg2); padding: 80px 60px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+    @media (max-width: 800px) { .c-form-wrap { border-left: none; } }
+    .c-form-wrap h3 { font-size: 24px; font-weight: 900; font-style: italic; margin-bottom: 36px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); color: var(--white); font-family: inherit; font-size: 15px; outline: none; transition: border-color .2s; border-radius: 2px; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--orange); }
+    .fg textarea { resize: vertical; height: 110px; }
+    .fg select option { background: var(--bg); }
+    .btn-submit { width: 100%; background: var(--orange); color: #fff; font-weight: 700; font-size: 15px; padding: 16px; border: none; cursor: pointer; font-family: inherit; margin-top: 8px; border-radius: 2px; transition: background .15s; }
+    .btn-submit:hover { background: var(--orange-d); }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 60px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .f-logo { font-size: 20px; font-weight: 900; font-style: italic; color: var(--orange); }
+    footer p { font-size: 12px; color: var(--muted); }
+    footer a { color: var(--orange); }
+
+    /* WA */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 2px; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.35); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.08); }
+
+    /* ── ABOUT ── */
+    .about { padding: 100px 60px; background: var(--bg); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .about { padding: 72px 20px; } }
+    .about-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .about-label { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .about-label::before { content: ''; width: 24px; height: 2px; background: var(--orange); }
+    .about-text h2 { font-size: clamp(30px,4vw,52px); font-weight: 900; font-style: italic; letter-spacing: -2px; line-height: 1.05; margin-bottom: 24px; }
+    .about-text h2 span { color: var(--orange); }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .about-certs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .about-cert { background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.2); color: #fb923c; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 2px; }
+    .about-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .about-box { background: var(--bg2); border: 1px solid var(--border); padding: 28px 20px; text-align: center; }
+    .about-box-n { font-size: 36px; font-weight: 900; font-style: italic; color: var(--orange); letter-spacing: -2px; display: block; margin-bottom: 6px; }
+    .about-box-l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    /* ── BEFORE AFTER ── */
+    .before-after { padding: 100px 60px; background: var(--bg2); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .before-after { padding: 72px 20px; } }
+    .ba-inner { max-width: 1100px; margin: 0 auto; }
+    .ba-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 900px) { .ba-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .ba-grid { grid-template-columns: 1fr; } }
+    .ba-card { border: 1px solid var(--border); overflow: hidden; }
+    .ba-top { padding: 40px 24px; display: flex; align-items: center; justify-content: center; font-size: 48px; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .ba-info { padding: 20px 24px; }
+    .ba-type { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+    .ba-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .ba-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .ba-tag { display: inline-block; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; margin-top: 12px; }
+    /* ── FAQ ── */
+    .faq { padding: 100px 60px; background: var(--bg); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .faq { padding: 72px 20px; } }
+    .faq-inner { max-width: 800px; margin: 0 auto; }
+    .faq-list { margin-top: 56px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 22px 0; cursor: pointer; font-size: 16px; font-weight: 700; background: none; border: none; color: var(--white); text-align: left; font-family: 'Barlow', sans-serif; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s, background .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--orange); background: var(--orange); color: #fff; }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 22px; font-size: 15px; color: var(--muted); line-height: 1.8; }
+    [data-reveal] { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+    @media (max-width: 600px) { .hero-left { padding: 120px 20px 60px; } .services, .process, .stats, .reviews, .cta-band, .contact-info, .c-form-wrap { padding: 72px 20px; } footer { padding: 32px 20px; } }
+  </style>
+</head>
+<body>
+
+<div class="cookie" id="cookie">
+  <p>Este site usa cookies para melhorar a sua experiência. <a href="#">Política de cookies</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<nav id="nav">
+  <div class="nav-logo">Reforma<span>Já</span></div>
+  <a href="tel:+351916789012" class="nav-cta">📞 916 789 012</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orange-line"></div>
+  <div class="hero-left">
+    <div class="hero-tag">Remodelações · Lisboa · Certificado</div>
+    <h1 class="hero-h1">REMODELA<span>AGORA.</span></h1>
+    <p class="hero-h2">Pinturas, reparações e obras — rápido, garantido, sem surpresas.</p>
+    <div class="hero-btns">
+      <a href="tel:+351916789012" class="btn-orange">📞 Orçamento Grátis</a>
+      <a href="https://wa.me/351916789012" class="btn-ghost">💬 WhatsApp</a>
+    </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item"><span class="trust-big">0€</span><span class="trust-small">Visita e orçamento</span></div>
+      <div class="hero-trust-item"><span class="trust-big">2 anos</span><span class="trust-small">Garantia incluída</span></div>
+      <div class="hero-trust-item"><span class="trust-big">4.8⭐</span><span class="trust-small">356 avaliações</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">🏠</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="marquee">
+    <div class="marquee-item">REMODELAÇÕES <span class="m-sep">✦</span></div>
+    <div class="marquee-item">PINTURAS <span class="m-sep">✦</span></div>
+    <div class="marquee-item">PAVIMENTOS <span class="m-sep">✦</span></div>
+    <div class="marquee-item">CANALIZAÇÕES <span class="m-sep">✦</span></div>
+    <div class="marquee-item">ELECTRICIDADE <span class="m-sep">✦</span></div>
+    <div class="marquee-item">GARANTIA 2 ANOS <span class="m-sep">✦</span></div>
+    <div class="marquee-item">REMODELAÇÕES <span class="m-sep">✦</span></div>
+    <div class="marquee-item">PINTURAS <span class="m-sep">✦</span></div>
+    <div class="marquee-item">PAVIMENTOS <span class="m-sep">✦</span></div>
+    <div class="marquee-item">CANALIZAÇÕES <span class="m-sep">✦</span></div>
+    <div class="marquee-item">ELECTRICIDADE <span class="m-sep">✦</span></div>
+    <div class="marquee-item">GARANTIA 2 ANOS <span class="m-sep">✦</span></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="services-header" data-reveal>
+    <h2>O QUE<br><span>FAZEMOS</span></h2>
+    <p>Uma equipa para tudo — da pequena reparação à remodelação completa.</p>
+  </div>
+  <div class="services-grid">
+    <div class="s-card" data-reveal><span class="s-icon">🖌️</span><h3>Pinturas</h3><p>Interiores e exteriores. Preparação de superfícies, massa corrida, acabamento perfeito.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><span class="s-icon">🔨</span><h3>Reparações Gerais</h3><p>Handyman para montagens, reparações, portas e tudo o que precisar no dia-a-dia.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><span class="s-icon">🪵</span><h3>Pavimentos</h3><p>Instalação e reparação de madeira, vinílico, cerâmica e porcelânico.</p></div>
+    <div class="s-card" data-reveal><span class="s-icon">🚿</span><h3>Canalizações</h3><p>Fugas, entupimentos e substituição de equipamentos sanitários.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><span class="s-icon">⚡</span><h3>Electricidade</h3><p>Tomadas, iluminação, quadros eléctricos e certificação EDP.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><span class="s-icon">🛁</span><h3>Casa de Banho e Cozinha</h3><p>Renovação completa ou parcial. Azulejos, loiças, móveis e acabamentos.</p></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-label">Como trabalhamos</div>
+  <div class="process-steps">
+    <div class="p-step" data-reveal><div class="p-n">01</div><h4>Visita gratuita</h4><p>Deslocamo-nos ao local sem compromisso para avaliar o trabalho.</p></div>
+    <div class="p-step" data-reveal data-delay=".1"><div class="p-n">02</div><h4>Orçamento fixo</h4><p>Preço detalhado, sem surpresas. O valor acordado é o valor final.</p></div>
+    <div class="p-step" data-reveal data-delay=".2"><div class="p-n">03</div><h4>Execução</h4><p>Equipa certificada, materiais de qualidade, cumprimento de prazos.</p></div>
+    <div class="p-step" data-reveal data-delay=".3"><div class="p-n">04</div><h4>Garantia 2 anos</h4><p>Entrega com garantia. Se algo falhar, voltamos sem custo adicional.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="900" data-suffix="+">0</span><span class="stat-l">Obras realizadas</span></div>
+    <div><span class="stat-n" data-count="10" data-suffix=" anos">0</span><span class="stat-l">De experiência</span></div>
+    <div><span class="stat-n" data-count="2" data-suffix=" anos">0</span><span class="stat-l">Garantia</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".8⭐">0</span><span class="stat-l">Avaliação média</span></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="reviews-label">Testemunhos</div>
+  <h2 data-reveal>O QUE DIZEM<br>SOBRE NÓS</h2>
+  <div class="r-grid">
+    <div class="r-card" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"Pintaram toda a minha casa em 3 dias. Resultado perfeito, protegeram tudo e limparam no final. Não me preocupei com nada."</p><div class="r-auth"><div class="r-av">PM</div><div><div class="r-name">Paulo Martins</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".1"><div class="r-stars">★★★★★</div><p class="r-text">"Chamei para uma fuga de água. Vieram no próprio dia, resolveram em 2 horas. Preço muito razoável. Recomendo a toda a família."</p><div class="r-auth"><div class="r-av">TL</div><div><div class="r-name">Teresa Lopes</div><div class="r-src">Google · há 1 mês</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".2"><div class="r-stars">★★★★★</div><p class="r-text">"Remodelaram a casa de banho inteira. Ficou absolutamente linda. Cumpriram o prazo e o orçamento ao cêntimo."</p><div class="r-auth"><div class="r-av">NR</div><div><div class="r-name">Nuno Rodrigues</div><div class="r-src">Google · há 3 semanas</div></div></div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-text" data-reveal>
+      <div class="about-label">Sobre nós</div>
+      <h2>10 anos de obras<br>em <span>Lisboa</span></h2>
+      <p>A ReformaJá nasceu em 2014 da frustração com empresas de construção que não cumprem prazos, ultrapassam orçamentos e deixam os clientes sem resposta. Criámos a alternativa honesta.</p>
+      <p>A nossa equipa inclui electricistas certificados EDP, canalizadores com cédula profissional e pedreiros especializados em renovação. Cada profissional tem, em média, 8 anos de experiência na sua especialidade.</p>
+      <p>Todos os trabalhos são realizados ao abrigo de seguro de responsabilidade civil, com garantia contratual de 2 anos e emissão de fatura com IVA sempre incluída.</p>
+      <div class="about-certs">
+        <span class="about-cert">EDP Certificado</span>
+        <span class="about-cert">Seg. Resp. Civil €1M</span>
+        <span class="about-cert">Garantia 2 Anos</span>
+        <span class="about-cert">Alvará de Construção</span>
+        <span class="about-cert">IVA sempre incluído</span>
+      </div>
+    </div>
+    <div class="about-visual" data-reveal>
+      <div class="about-box"><span class="about-box-n">2014</span><span class="about-box-l">Fundação</span></div>
+      <div class="about-box"><span class="about-box-n">+900</span><span class="about-box-l">Obras concluídas</span></div>
+      <div class="about-box"><span class="about-box-n">2 anos</span><span class="about-box-l">Garantia em tudo</span></div>
+      <div class="about-box"><span class="about-box-n">0€</span><span class="about-box-l">Orçamento e visita</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE AFTER -->
+<section class="before-after">
+  <div class="ba-inner">
+    <div class="about-label" style="margin-bottom:16px" data-reveal>Exemplos de obras</div>
+    <h2 style="font-size:clamp(30px,4vw,52px);font-weight:900;font-style:italic;letter-spacing:-2px;margin-bottom:0" data-reveal>TRABALHOS<br><span style="color:var(--orange)">REALIZADOS</span></h2>
+    <div class="ba-grid">
+      <div class="ba-card" data-reveal>
+        <div class="ba-top">🛁</div>
+        <div class="ba-info">
+          <div class="ba-type">Casa de Banho</div>
+          <div class="ba-title">Renovação completa — Alvalade</div>
+          <div class="ba-desc">Demolição e reconstrução total. Novos azulejos, louças sanitárias, móveis e iluminação LED. Prazo: 8 dias úteis.</div>
+          <span class="ba-tag">Concluído em 8 dias</span>
+        </div>
+      </div>
+      <div class="ba-card" data-reveal data-delay=".05">
+        <div class="ba-top">🖌️</div>
+        <div class="ba-info">
+          <div class="ba-type">Pintura</div>
+          <div class="ba-title">Apartamento T3 — Areeiro</div>
+          <div class="ba-desc">Pintura completa de apartamento T3 com 95m². Preparação de paredes, massa corrida e acabamento premium. Prazo: 4 dias.</div>
+          <span class="ba-tag">Concluído em 4 dias</span>
+        </div>
+      </div>
+      <div class="ba-card" data-reveal data-delay=".1">
+        <div class="ba-top">🪵</div>
+        <div class="ba-info">
+          <div class="ba-type">Pavimento</div>
+          <div class="ba-title">Soalho de madeira — Cascais</div>
+          <div class="ba-desc">Substituição de pavimento vinílico por soalho de madeira maciça em 120m². Incluiu regularização da base e rodapés. Prazo: 6 dias.</div>
+          <span class="ba-tag">Concluído em 6 dias</span>
+        </div>
+      </div>
+      <div class="ba-card" data-reveal>
+        <div class="ba-top">⚡</div>
+        <div class="ba-info">
+          <div class="ba-type">Electricidade</div>
+          <div class="ba-title">Remodelação eléctrica — Benfica</div>
+          <div class="ba-desc">Substituição completa da instalação eléctrica de moradia com 180m². Novo quadro, fiação e certificação EDP. Prazo: 5 dias.</div>
+          <span class="ba-tag">Certificado EDP</span>
+        </div>
+      </div>
+      <div class="ba-card" data-reveal data-delay=".05">
+        <div class="ba-top">🍳</div>
+        <div class="ba-info">
+          <div class="ba-type">Cozinha</div>
+          <div class="ba-title">Remodelação de cozinha — Sintra</div>
+          <div class="ba-desc">Renovação completa incluindo novo mobiliário, electrodomésticos embutidos, azulejos e iluminação. Prazo: 10 dias úteis.</div>
+          <span class="ba-tag">Concluído em 10 dias</span>
+        </div>
+      </div>
+      <div class="ba-card" data-reveal data-delay=".1">
+        <div class="ba-top">🚿</div>
+        <div class="ba-info">
+          <div class="ba-type">Canalização</div>
+          <div class="ba-title">Substituição de tubagem — Loures</div>
+          <div class="ba-desc">Substituição completa de tubagem de água e esgoto em apartamento dos anos 80. Inclui teste de pressão e certificação. Prazo: 3 dias.</div>
+          <span class="ba-tag">Certificado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="about-label" style="margin-bottom:16px" data-reveal>Perguntas frequentes</div>
+    <h2 style="font-size:clamp(28px,4vw,50px);font-weight:900;font-style:italic;letter-spacing:-2px;margin-bottom:0" data-reveal>DÚVIDAS<br><span style="color:var(--orange)">FREQUENTES</span></h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">A visita e o orçamento têm algum custo? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Não. A deslocação ao local e a elaboração do orçamento são completamente gratuitas e sem compromisso. O orçamento é detalhado, com os materiais e mão-de-obra discriminados. Só pagam se decidirem avançar com o trabalho.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Quanto tempo demora uma renovação de casa de banho? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Uma remodelação completa de casa de banho demora normalmente entre 7 e 12 dias úteis, dependendo da dimensão e do trabalho envolvido. Estabelecemos sempre um prazo contratual e comunicamos qualquer desvio com antecedência.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">O preço do orçamento pode mudar durante a obra? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Não, a não ser que surjam trabalhos extra que não estavam previstos no orçamento original (ex: problemas ocultos nas paredes ou tubagens). Qualquer alteração é comunicada e aprovada pelo cliente antes de avançar. O valor acordado é o valor final.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Precisam de licença camarária para as obras? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Para obras de remodelação interior simples (pintura, pavimentos, casas de banho e cozinhas) geralmente não é necessária licença. Para obras que envolvam alterações estruturais ou de fachada pode ser necessário. Orientamos sempre o cliente neste processo.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">A garantia de 2 anos cobre o quê? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">A garantia cobre todos os defeitos de execução — ou seja, problemas causados pelo nosso trabalho. Se uma azulejo soltar, uma pintura descascar prematuramente ou uma instalação falhar, voltamos e corrigimos sem qualquer custo. Não cobre danos por mau uso ou factores externos.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Trabalham ao fim de semana? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, trabalhamos de Segunda a Sábado entre as 8h e as 19h. Em casos especiais (como obras de comércio ou obras urgentes) podemos trabalhar ao Domingo com acordo prévio.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">A fatura inclui IVA? Que formas de pagamento aceitam? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, todos os preços são sempre com IVA incluído. Emitimos fatura com NIF em todos os trabalhos. Aceitamos transferência bancária, MB Way e cheque. Praticamos normalmente 50% na aprovação do orçamento e 50% na conclusão da obra.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" data-reveal>
+  <h2>PRONTO PARA REMODELAR?</h2>
+  <p>Orçamento gratuito em 24 horas. Sem compromisso.</p>
+  <div class="cta-btns">
+    <a href="tel:+351916789012" class="btn-dark">📞 916 789 012 — Ligar Agora</a>
+    <a href="https://wa.me/351916789012" class="btn-wa-dark">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact">
+  <div class="contact-info" data-reveal>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:24px;">Contacto</div>
+    <h2>FALE<br>CONNOSCO</h2>
+    <div style="margin-top:40px">
+      <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone</div><div class="c-val">916 789 012</div></div></div>
+      <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@reformaja.pt</div></div></div>
+      <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Área de serviço</div><div class="c-val">Lisboa, Sintra, Loures, Amadora e Setúbal</div></div></div>
+      <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">Segunda a Sábado · 8h–19h</div></div></div>
+    </div>
+  </div>
+  <div class="c-form-wrap" data-reveal>
+    <h3>PEDIR ORÇAMENTO</h3>
+    <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+    <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+    <div class="fg"><label>Serviço</label><select><option>Pintura</option><option>Reparações gerais</option><option>Pavimentos</option><option>Canalização</option><option>Electricidade</option><option>Remodelação casa de banho/cozinha</option><option>Outro</option></select></div>
+    <div class="fg"><label>Mensagem</label><textarea placeholder="Descreva o trabalho..."></textarea></div>
+    <button class="btn-submit" id="form-submit">Pedir Orçamento Gratuito</button>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">ReformaJá</div>
+  <p>© 2026 ReformaJá · Remodelações em Lisboa</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351916789012">💬</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!localStorage.getItem('rj_cookie')) setTimeout(() => document.getElementById('cookie').classList.add('show'), 1000);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('rj_cookie','1'); document.getElementById('cookie').classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('rj_cookie','0'); document.getElementById('cookie').classList.remove('show'); };
+
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  const tl = gsap.timeline({ delay: .1 });
+  tl.from('.hero-tag', { opacity: 0, x: -20, duration: .6 })
+    .from('.hero-h1', { opacity: 0, y: 60, duration: .9, ease: 'power4.out' }, '-=.3')
+    .from('.hero-h2', { opacity: 0, y: 20, duration: .6 }, '-=.5')
+    .from('.hero-btns', { opacity: 0, y: 16, duration: .5 }, '-=.4')
+    .from('.hero-trust', { opacity: 0, duration: .5 }, '-=.3')
+    .from('.hero-right-inner', { opacity: 0, scale: 1.1, duration: 1 }, '-=.8')
+    .from('.hero-orange-line', { scaleY: 0, duration: .8, ease: 'power3.inOut', transformOrigin: 'top' }, 0);
+
+  gsap.to(document.getElementById('marquee'), { x: '-50%', duration: 20, ease: 'none', repeat: -1 });
+
+  // Scroll reveals via IntersectionObserver
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, { scrollTrigger: { trigger: el, start: 'top 80%' }, n: end, duration: 2, ease: 'power2.out', onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; } });
+  });
+
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = 'Enviado!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = 'Pedir Orçamento Gratuito'; b.style.background = ''; }, 3000);
+  });
+
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const body = item.querySelector('.faq-body');
+      const inner = item.querySelector('.faq-body-inner');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-body').style.height = '0';
+      });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

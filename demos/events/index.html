@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MomentosMágicos · Fotografia e Eventos em Lisboa</title>
+  <meta name="description" content="Fotografia de casamentos, batizados e eventos em Lisboa. DJ e organização completa. Galeria online em 3 semanas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0812; --bg2: #110f1c; --bg3: #1a1728;
+      --purple: #7c3aed; --purple-l: #a78bfa; --purple-ll: #ede9fe;
+      --rose: #f43f5e; --rose-l: #fb7185;
+      --gold: #d4a853; --gold-l: #f0d080;
+      --cream: #f5f0e8; --cream-d: #e8dfc8;
+      --white: #fff; --muted: rgba(255,255,255,.45); --border: rgba(255,255,255,.07);
+      --wa: #25d366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* COOKIE */
+    .cookie { position: fixed; bottom: 28px; left: 28px; z-index: 9999; max-width: 400px; background: rgba(26,23,40,.98); backdrop-filter: blur(24px); border: 1px solid rgba(167,139,250,.2); border-radius: 16px; padding: 24px 28px; transform: translateY(120%); opacity: 0; transition: transform .6s cubic-bezier(.16,1,.3,1), opacity .6s; }
+    .cookie.show { transform: translateY(0); opacity: 1; }
+    .cookie-title { font-size: 14px; font-weight: 600; color: var(--purple-l); margin-bottom: 8px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; }
+    .cookie p { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
+    .cookie p a { color: var(--gold); }
+    .cookie-btns { display: flex; gap: 8px; }
+    .cookie-accept { flex: 1; background: linear-gradient(135deg, var(--purple), var(--rose)); color: #fff; font-weight: 600; font-size: 13px; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; }
+    .cookie-decline { flex: 1; background: transparent; color: var(--muted); font-size: 13px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: inherit; }
+    .cookie-decline:hover { border-color: rgba(255,255,255,.2); color: var(--white); }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 28px 72px; display: flex; align-items: center; justify-content: space-between; transition: all .5s; }
+    nav.scrolled { padding: 16px 72px; background: rgba(10,8,18,.9); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; font-weight: 600; letter-spacing: .02em; }
+    .nav-logo em { background: linear-gradient(90deg, var(--purple-l), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: normal; }
+    .nav-cta { background: transparent; border: 1px solid rgba(167,139,250,.4); color: var(--purple-l); font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; transition: all .2s; letter-spacing: .02em; }
+    .nav-cta:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } }
+
+    /* HERO — cinematic full screen */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; text-align: center; padding: 120px 40px 80px; }
+    .hero-aurora { position: absolute; inset: 0; z-index: 0; }
+    .aurora-1 { position: absolute; width: 70%; height: 70%; top: -20%; left: -10%; background: radial-gradient(ellipse, rgba(124,58,237,.15) 0%, transparent 70%); animation: aurora 8s ease-in-out infinite; }
+    .aurora-2 { position: absolute; width: 60%; height: 60%; bottom: -20%; right: -10%; background: radial-gradient(ellipse, rgba(244,63,94,.1) 0%, transparent 70%); animation: aurora 10s ease-in-out infinite reverse; }
+    .aurora-3 { position: absolute; width: 50%; height: 50%; top: 30%; left: 25%; background: radial-gradient(ellipse, rgba(212,168,83,.06) 0%, transparent 70%); animation: aurora 12s ease-in-out infinite; }
+    @keyframes aurora { 0%,100% { transform: scale(1) translate(0,0); } 33% { transform: scale(1.1) translate(2%, 3%); } 66% { transform: scale(.95) translate(-2%, -2%); } }
+    .hero-inner { position: relative; z-index: 1; max-width: 900px; }
+    .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; height: 1px; width: 40px; background: var(--gold); opacity: .5; }
+    .hero-h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 9vw, 120px); font-weight: 700; font-style: italic; line-height: .95; letter-spacing: -.02em; margin-bottom: 8px; }
+    .hero-h1 .line { overflow: hidden; display: block; }
+    .hero-h1 .line span { display: block; }
+    .hero-h1 em { background: linear-gradient(90deg, var(--purple-l), var(--gold-l)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: normal; }
+    .hero-sub { font-size: clamp(15px, 2vw, 18px); color: var(--muted); line-height: 1.75; max-width: 520px; margin: 28px auto 48px; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 72px; }
+    .btn-grad { background: linear-gradient(135deg, var(--purple), var(--rose)); color: #fff; font-weight: 600; font-size: 15px; padding: 16px 32px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 24px rgba(124,58,237,.3); }
+    .btn-grad:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(124,58,237,.45); }
+    .btn-ring { border: 1px solid rgba(255,255,255,.15); color: var(--white); font-weight: 500; font-size: 15px; padding: 15px 28px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, background .2s; }
+    .btn-ring:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.05); }
+    .hero-trust { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
+    .trust-item { text-align: center; }
+    .trust-n { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+    .trust-l { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: .06em; text-transform: uppercase; }
+
+    /* EDITORIAL INTRO */
+    .editorial { padding: 120px 72px; background: var(--bg2); }
+    @media (max-width: 600px) { .editorial { padding: 72px 20px; } }
+    .editorial-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .editorial-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .editorial-tag { font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .editorial h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 60px); font-style: italic; font-weight: 600; line-height: 1.1; letter-spacing: -.01em; }
+    .editorial h2 em { color: var(--purple-l); font-style: normal; }
+    .editorial-right p { font-size: 16px; color: var(--muted); line-height: 1.85; margin-bottom: 24px; }
+    .editorial-right blockquote { border-left: 2px solid var(--gold); padding-left: 20px; font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: rgba(255,255,255,.75); line-height: 1.5; }
+
+    /* SERVICES — elegant list */
+    .services { padding: 100px 72px; background: var(--bg); }
+    @media (max-width: 600px) { .services { padding: 72px 20px; } }
+    .services-top { text-align: center; margin-bottom: 72px; }
+    .section-tag { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .services-top h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-style: italic; font-weight: 600; letter-spacing: -.01em; }
+    .services-top h2 em { color: var(--purple-l); font-style: normal; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
+    .s-card { background: var(--bg); padding: 40px 36px; transition: background .3s; position: relative; overflow: hidden; }
+    .s-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(244,63,94,.04)); opacity: 0; transition: opacity .3s; }
+    .s-card:hover { background: var(--bg2); }
+    .s-card:hover::after { opacity: 1; }
+    .s-emoji { font-size: 28px; margin-bottom: 16px; display: block; }
+    .s-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+    .s-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* PORTFOLIO — masonry */
+    .portfolio { padding: 100px 72px; background: var(--bg2); }
+    @media (max-width: 600px) { .portfolio { padding: 72px 20px; } }
+    .portfolio-top { text-align: center; margin-bottom: 56px; }
+    .portfolio-top h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 60px); font-style: italic; font-weight: 600; }
+    .portfolio-grid { columns: 3; column-gap: 12px; max-width: 1100px; margin: 0 auto; }
+    @media (max-width: 900px) { .portfolio-grid { columns: 2; } }
+    @media (max-width: 600px) { .portfolio-grid { columns: 1; } }
+    .p-item { break-inside: avoid; margin-bottom: 12px; border-radius: 8px; overflow: hidden; background: var(--bg3); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); transition: transform .3s; cursor: default; }
+    .p-item:hover { transform: scale(1.02); }
+    .p-item:nth-child(1) { height: 200px; }
+    .p-item:nth-child(2) { height: 280px; }
+    .p-item:nth-child(3) { height: 180px; }
+    .p-item:nth-child(4) { height: 240px; }
+    .p-item:nth-child(5) { height: 160px; }
+    .p-item:nth-child(6) { height: 300px; }
+    .p-item:nth-child(7) { height: 200px; }
+    .p-item:nth-child(8) { height: 220px; }
+    .p-item:nth-child(9) { height: 180px; }
+    .p-emoji { font-size: 48px; opacity: .4; }
+    .portfolio-cta { text-align: center; margin-top: 40px; }
+
+    /* STATS */
+    .stats { padding: 80px 72px; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-n { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 6vw, 72px); font-style: italic; font-weight: 600; color: var(--gold); letter-spacing: -.02em; display: block; line-height: 1; margin-bottom: 6px; }
+    .stat-l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+    /* REVIEWS — large pull quotes */
+    .reviews { padding: 120px 72px; background: var(--bg2); }
+    @media (max-width: 600px) { .reviews { padding: 72px 20px; } }
+    .reviews-top { margin-bottom: 64px; }
+    .reviews-top h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 60px); font-style: italic; font-weight: 600; }
+    .r-list { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 900px; }
+    .r-item { background: var(--bg2); padding: 48px 56px; position: relative; }
+    @media (max-width: 600px) { .r-item { padding: 36px 24px; } }
+    .r-item::before { content: '\201C'; position: absolute; top: 24px; left: 40px; font-family: 'Cormorant Garamond', serif; font-size: 100px; color: var(--purple); opacity: .15; line-height: 1; }
+    .r-stars { color: var(--gold); font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
+    .r-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 2.5vw, 26px); font-style: italic; color: rgba(255,255,255,.8); line-height: 1.5; margin-bottom: 28px; position: relative; z-index: 1; }
+    .r-auth { display: flex; align-items: center; gap: 14px; }
+    .r-av { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--rose)); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-size: 15px; font-weight: 600; }
+    .r-src { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* CTA */
+    .cta { padding: 120px 72px; text-align: center; background: var(--bg); position: relative; overflow: hidden; }
+    @media (max-width: 600px) { .cta { padding: 80px 20px; } }
+    .cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(124,58,237,.12), transparent); }
+    .cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 7vw, 80px); font-style: italic; font-weight: 600; letter-spacing: -.02em; margin-bottom: 16px; position: relative; }
+    .cta h2 em { background: linear-gradient(90deg, var(--purple-l), var(--gold-l)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: normal; }
+    .cta p { font-size: 17px; color: var(--muted); margin-bottom: 48px; position: relative; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    /* CONTACT */
+    .contact { display: grid; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 800px) { .contact { grid-template-columns: 1fr; } }
+    .contact-left { background: var(--bg2); padding: 80px 72px; border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .contact-left { padding: 60px 20px; } }
+    .contact-left h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 52px); font-style: italic; font-weight: 600; margin-bottom: 48px; line-height: 1.15; }
+    .c-item { display: flex; gap: 16px; margin-bottom: 24px; }
+    .c-icon { width: 44px; height: 44px; border-radius: 8px; background: rgba(124,58,237,.1); border: 1px solid rgba(124,58,237,.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .c-val { font-size: 15px; font-weight: 500; margin-top: 3px; }
+    .contact-right { background: var(--bg3); padding: 80px 72px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+    @media (max-width: 800px) { .contact-right { border-left: none; } }
+    @media (max-width: 600px) { .contact-right { padding: 60px 20px; } }
+    .contact-right h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; font-weight: 600; margin-bottom: 32px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 13px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--white); font-family: inherit; font-size: 14px; outline: none; transition: border-color .2s; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--purple); }
+    .fg textarea { resize: vertical; height: 100px; }
+    .fg select option { background: var(--bg); }
+    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--purple), var(--rose)); color: #fff; font-weight: 600; font-size: 15px; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; margin-top: 8px; transition: opacity .15s, transform .15s; }
+    .btn-submit:hover { opacity: .9; transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 72px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .f-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; font-weight: 600; }
+    .f-logo em { color: var(--purple-l); font-style: normal; }
+    footer p { font-size: 12px; color: var(--muted); }
+    footer a { color: var(--gold); }
+
+    /* WA */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(37,211,102,.25); animation: ring 3s ease-out infinite; }
+    @keyframes ring { 0% { opacity: .8; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
+
+    /* ── ABOUT PHOTOGRAPHER ── */
+    .about { padding: 100px 72px; background: var(--bg2); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .about { padding: 72px 20px; } }
+    .about-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; gap: 48px; } }
+    .about-avatar-wrap { text-align: center; }
+    .about-avatar { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--rose)); display: flex; align-items: center; justify-content: center; font-size: 80px; margin: 0 auto 24px; border: 3px solid rgba(167,139,250,.2); }
+    .about-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; font-weight: 600; margin-bottom: 8px; }
+    .about-role { font-size: 13px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+    .about-equip { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .equip-tag { background: rgba(124,58,237,.1); border: 1px solid rgba(124,58,237,.2); color: var(--purple-l); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 100px; }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 16px; }
+    .about-text blockquote { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: rgba(255,255,255,.7); border-left: 2px solid var(--gold); padding-left: 20px; margin-top: 28px; line-height: 1.5; }
+    /* ── PACKAGES ── */
+    .packages { padding: 100px 72px; background: var(--bg); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .packages { padding: 72px 20px; } }
+    .packages-top { text-align: center; margin-bottom: 64px; }
+    .packages-top h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,5vw,60px); font-style: italic; font-weight: 600; }
+    .packages-top h2 em { color: var(--purple-l); font-style: normal; }
+    .packages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    @media (max-width: 900px) { .packages-grid { grid-template-columns: 1fr; max-width: 480px; } }
+    .pkg-card { border: 1px solid var(--border); border-radius: 12px; padding: 40px 32px; transition: border-color .2s, transform .2s; background: var(--bg2); }
+    .pkg-card:hover { border-color: rgba(124,58,237,.4); transform: translateY(-4px); }
+    .pkg-card.featured { border-color: var(--purple); background: linear-gradient(180deg, rgba(124,58,237,.08) 0%, var(--bg2) 100%); }
+    .pkg-badge { display: inline-block; background: linear-gradient(135deg,var(--purple),var(--rose)); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 14px; border-radius: 100px; margin-bottom: 20px; }
+    .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; font-weight: 600; margin-bottom: 8px; }
+    .pkg-hours { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .pkg-price { font-size: 48px; font-weight: 900; color: var(--gold); letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+    .pkg-price span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .pkg-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 24px 0 32px; border-top: 1px solid var(--border); padding-top: 24px; }
+    .pkg-list li { font-size: 14px; color: rgba(255,255,255,.7); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .pkg-list li::before { content: '✦'; color: var(--gold); font-size: 10px; flex-shrink: 0; margin-top: 3px; }
+    .pkg-btn { display: block; text-align: center; padding: 13px; border: 1px solid var(--border); border-radius: 100px; font-size: 14px; font-weight: 600; color: var(--white); transition: background .15s, border-color .15s; }
+    .pkg-btn:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); }
+    .pkg-card.featured .pkg-btn { background: linear-gradient(135deg,var(--purple),var(--rose)); border-color: transparent; }
+    .packages-note { text-align: center; margin-top: 32px; font-size: 13px; color: var(--muted); }
+    /* ── FAQ ── */
+    .faq { padding: 100px 72px; background: var(--bg2); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .faq { padding: 72px 20px; } }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-list { margin-top: 52px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 22px 0; cursor: pointer; font-size: 16px; font-weight: 500; background: none; border: none; color: var(--white); text-align: left; font-family: inherit; gap: 16px; letter-spacing: .01em; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--purple-l); color: var(--purple-l); }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 22px; font-size: 15px; color: var(--muted); line-height: 1.85; }
+    [data-reveal] { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+    @media (max-width: 600px) { footer { padding: 32px 20px; } }
+  </style>
+</head>
+<body>
+
+<div class="cookie" id="cookie">
+  <div class="cookie-title">Sobre os cookies</div>
+  <p>Usamos cookies para melhorar a sua experiência. Ao continuar, aceita a nossa <a href="#">política de privacidade</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar todos</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<nav id="nav">
+  <div class="nav-logo">Momentos<em>Mágicos</em></div>
+  <a href="tel:+351936543210" class="nav-cta">📞 936 543 210</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-aurora">
+    <div class="aurora-1"></div>
+    <div class="aurora-2"></div>
+    <div class="aurora-3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Fotografia & Eventos · Lisboa</div>
+    <h1 class="hero-h1">
+      <span class="line"><span>Os seus momentos</span></span>
+      <span class="line"><span><em>eternizados.</em></span></span>
+    </h1>
+    <p class="hero-sub">Fotografia de casamentos, batizados e eventos corporativos. DJ e organização completa. Cada detalhe tratado com amor e dedicação.</p>
+    <div class="hero-btns">
+      <a href="tel:+351936543210" class="btn-grad">📞 Verificar Disponibilidade</a>
+      <a href="https://wa.me/351936543210" class="btn-ring">💬 WhatsApp</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-n" data-count="300" data-suffix="+">0+</span><span class="trust-l">Eventos</span></div>
+      <div class="trust-item"><span class="trust-n" data-count="8" data-suffix=" anos">0 anos</span><span class="trust-l">Experiência</span></div>
+      <div class="trust-item"><span class="trust-n" data-count="4" data-suffix=".9 ⭐">0</span><span class="trust-l">Avaliação</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL -->
+<section class="editorial">
+  <div class="editorial-inner">
+    <div data-reveal>
+      <div class="editorial-tag">A nossa filosofia</div>
+      <h2>Capturamos<br><em>emoções</em>,<br>não apenas<br>fotografias.</h2>
+    </div>
+    <div class="editorial-right" data-reveal>
+      <p>Cada evento é único. Cada sorriso, cada lágrima de alegria, cada momento de cumplicidade conta uma história que merece ser preservada com arte e sensibilidade.</p>
+      <p>Não trabalhamos com modelos ou poses fabricadas. Documentamos os vossos momentos tal como acontecem, com uma abordagem discreta e um olhar atento ao detalhe.</p>
+      <blockquote>"A melhor fotografia é aquela que captura o que os olhos viram mas a memória já esqueceu."</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="services-top" data-reveal>
+    <div class="section-tag">Serviços</div>
+    <h2>O que <em>oferecemos</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="s-card" data-reveal><span class="s-emoji">💒</span><h3>Fotografia de Casamento</h3><p>Cobertura completa do dia. Cerimónia, cocktail e festa. Galeria online + álbum físico incluído.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><span class="s-emoji">🎂</span><h3>Batizados e Comunhões</h3><p>Reportagem completa do evento e das emoções de toda a família. Entrega em galeria privada.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><span class="s-emoji">📸</span><h3>Eventos Corporativos</h3><p>Conferências, jantares e teambuilding. Fotografia discreta e profissional para uso institucional.</p></div>
+    <div class="s-card" data-reveal><span class="s-emoji">🎵</span><h3>DJ para Eventos</h3><p>Equipamento profissional. Repertório personalizado. Hora extra flexível sem custo adicional.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><span class="s-emoji">🎉</span><h3>Organização de Eventos</h3><p>Planeamento completo e coordenação no dia. Você só tem de aparecer e desfrutar.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><span class="s-emoji">🎪</span><h3>Aluguer de Equipamento</h3><p>Som, iluminação, photobooth e estruturas decorativas para os vossos eventos.</p></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio">
+  <div class="portfolio-top" data-reveal>
+    <div class="section-tag">Portfólio</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600">Alguns dos nossos <em style="color:var(--purple-l)">momentos</em></h2>
+  </div>
+  <div class="portfolio-grid">
+    <div class="p-item"><div class="p-emoji">💒</div></div>
+    <div class="p-item"><div class="p-emoji">🥂</div></div>
+    <div class="p-item"><div class="p-emoji">🎂</div></div>
+    <div class="p-item"><div class="p-emoji">💃</div></div>
+    <div class="p-item"><div class="p-emoji">🎵</div></div>
+    <div class="p-item"><div class="p-emoji">👨‍👩‍👧</div></div>
+    <div class="p-item"><div class="p-emoji">🌸</div></div>
+    <div class="p-item"><div class="p-emoji">🎊</div></div>
+    <div class="p-item"><div class="p-emoji">✨</div></div>
+  </div>
+  <div class="portfolio-cta" style="margin-top:36px" data-reveal>
+    <a href="https://wa.me/351936543210" class="btn-ring" style="display:inline-flex;">💬 Ver portfólio completo no WhatsApp</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="300" data-suffix="+">0+</span><span class="stat-l">Eventos fotografados</span></div>
+    <div><span class="stat-n" data-count="8" data-suffix=" anos">0</span><span class="stat-l">De experiência</span></div>
+    <div><span class="stat-n" data-count="3" data-suffix=" sem.">0</span><span class="stat-l">Entrega da galeria</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".9 ⭐">0</span><span class="stat-l">Avaliação Google</span></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="reviews-top" data-reveal>
+    <div class="section-tag">Testemunhos</div>
+    <h2>O que dizem os <em style="color:var(--purple-l)">nossos clientes</em></h2>
+  </div>
+  <div class="r-list">
+    <div class="r-item" data-reveal>
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text">"As fotos do nosso casamento são simplesmente incríveis. Captou todos os momentos sem que nos apercebêssemos da câmara. A galeria ficou pronta em 2 semanas. Muito obrigada!"</p>
+      <div class="r-auth"><div class="r-av">IM</div><div><div class="r-name">Inês & Marco</div><div class="r-src">Google Maps · há 1 mês</div></div></div>
+    </div>
+    <div class="r-item" data-reveal>
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text">"Contratámos para o jantar anual de empresa. Profissional, discreto e com resultados impressionantes. As fotos foram utilizadas no relatório anual. Voltamos a contratar."</p>
+      <div class="r-auth"><div class="r-av">LP</div><div><div class="r-name">Luísa Pinto · Directora RH</div><div class="r-src">Google Maps · há 2 meses</div></div></div>
+    </div>
+    <div class="r-item" data-reveal>
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text">"O DJ foi absolutamente perfeito para o nosso casamento. Leu a sala na perfeição e a pista nunca esvaziou. A festa durou até às 4h da manhã!"</p>
+      <div class="r-auth"><div class="r-av">BS</div><div><div class="r-name">Beatriz & Sérgio</div><div class="r-src">Google Maps · há 3 semanas</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT PHOTOGRAPHER -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-avatar-wrap" data-reveal>
+      <div class="about-avatar">📸</div>
+      <div class="about-name">Ricardo Mendes</div>
+      <div class="about-role">Fotógrafo Principal · +8 anos</div>
+      <div class="about-equip">
+        <span class="equip-tag">Sony A7 IV</span>
+        <span class="equip-tag">Sony A7 III (backup)</span>
+        <span class="equip-tag">24-70mm f/2.8</span>
+        <span class="equip-tag">70-200mm f/2.8</span>
+        <span class="equip-tag">Godox V1 Flash</span>
+        <span class="equip-tag">Drone DJI Mini 4</span>
+      </div>
+    </div>
+    <div class="about-text" data-reveal>
+      <div class="section-tag" style="margin-bottom:16px">A nossa história</div>
+      <p>Comecei a fotografar casamentos em 2016 por acidente — um amigo pediu-me para substituir o fotógrafo que cancelou de última hora. Fiquei completamente apaixonado pela responsabilidade de preservar um dos dias mais importantes da vida de alguém.</p>
+      <p>Hoje, com mais de 300 eventos fotografados e uma equipa de 3 profissionais, a MomentosMágicos é uma das referências em fotografia de eventos em Lisboa. O nosso estilo é documental — capturamos o que acontece, não o que posamos.</p>
+      <p>Cada casamento, batizado ou evento corporativo merece a mesma dedicação total. Nunca fotografamos mais de um evento por dia. O vosso evento é sempre o único evento.</p>
+      <blockquote>"Fotografar é dar significado a um momento que, sem a fotografia, se perderia para sempre."</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages">
+  <div class="packages-top" data-reveal>
+    <div class="section-tag">Pacotes</div>
+    <h2>Escolha o pacote<br>para o seu <em>evento</em></h2>
+  </div>
+  <div class="packages-grid">
+    <div class="pkg-card" data-reveal>
+      <div class="pkg-badge">Silver</div>
+      <div class="pkg-name">Essencial</div>
+      <div class="pkg-hours">Até 6 horas de cobertura</div>
+      <div class="pkg-price">990€ <span>/ evento</span></div>
+      <ul class="pkg-list">
+        <li>6 horas de fotografia profissional</li>
+        <li>1 fotógrafo dedicado</li>
+        <li>+300 fotografias editadas</li>
+        <li>Galeria online privada por 1 ano</li>
+        <li>Entrega em 3 semanas</li>
+        <li>Impressões digitais incluídas</li>
+      </ul>
+      <a href="tel:+351936543210" class="pkg-btn">📞 Verificar disponibilidade</a>
+    </div>
+    <div class="pkg-card featured" data-reveal data-delay=".1">
+      <div class="pkg-badge">Gold · Mais popular</div>
+      <div class="pkg-name">Completo</div>
+      <div class="pkg-hours">Dia inteiro · até 10 horas</div>
+      <div class="pkg-price">1.690€ <span>/ evento</span></div>
+      <ul class="pkg-list">
+        <li>10 horas de cobertura total</li>
+        <li>2 fotógrafos em simultâneo</li>
+        <li>+600 fotografias editadas</li>
+        <li>Galeria online privada por 2 anos</li>
+        <li>Pendrive com todas as fotos</li>
+        <li>Álbum de 30 páginas incluído</li>
+        <li>Entrega em 3 semanas</li>
+        <li>Sessão de noivos antes do evento</li>
+      </ul>
+      <a href="tel:+351936543210" class="pkg-btn">📞 Verificar disponibilidade</a>
+    </div>
+    <div class="pkg-card" data-reveal data-delay=".2">
+      <div class="pkg-badge">Platinum</div>
+      <div class="pkg-name">Premium Total</div>
+      <div class="pkg-hours">Dia inteiro + extras</div>
+      <div class="pkg-price">2.490€ <span>/ evento</span></div>
+      <ul class="pkg-list">
+        <li>12 horas de cobertura premium</li>
+        <li>2 fotógrafos + videografo</li>
+        <li>+800 fotografias editadas</li>
+        <li>Vídeo highlight 3–5 minutos</li>
+        <li>Drone (sujeito a aprovação local)</li>
+        <li>Álbum de luxo 50 páginas</li>
+        <li>2 Pendrives e galeria permanente</li>
+        <li>Sessão noivos + pré-wedding</li>
+      </ul>
+      <a href="tel:+351936543210" class="pkg-btn">📞 Verificar disponibilidade</a>
+    </div>
+  </div>
+  <p class="packages-note" data-reveal>Todos os pacotes incluem edição profissional e licença de uso ilimitado. Pacotes personalizados disponíveis — contacte-nos para eventos corporativos, batizados e DJ.</p>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="section-tag" style="margin-bottom:16px" data-reveal>Perguntas frequentes</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,56px);font-style:italic;font-weight:600;margin-bottom:0" data-reveal>Tudo o que precisa de <em style="color:var(--purple-l)">saber</em></h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Como reservo a minha data? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">A data é reservada após assinatura do contrato e pagamento de um sinal de 30% do valor total. Enviamos proposta de contrato em 24 horas após o contacto inicial. As datas mais populares (especialmente verão e outono) esgotam-se rapidamente — recomendamos reservar com 6–12 meses de antecedência.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Recebo as fotos em bruto (RAW)? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Não fornecemos os ficheiros RAW — apenas as imagens finais editadas em JPEG de alta resolução. A edição é parte integrante do nosso trabalho e o estilo consistente dos nossos álbuns depende da edição. As imagens entregues têm qualidade suficiente para impressões de grande formato.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Em quanto tempo recebo as fotografias? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">A galeria online fica disponível em 3 semanas após o evento. Para eventos em época alta (Junho–Setembro), pode ser até 4 semanas. Enviamos sempre algumas fotos de destaque nas 48 horas seguintes ao evento para que possam partilhar nas redes sociais.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">O que acontece se ficarem doentes no dia do evento? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Nunca aconteceu em 8 anos, mas temos sempre um plano de contingência. Trabalhamos com uma rede de fotógrafos parceiros com o mesmo nível de qualidade. Em caso de impossibilidade total, devolvemos 100% do valor pago — mas é uma situação que consideramos extremamente improvável.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Posso usar as fotos nas redes sociais e para imprimir? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Todas as fotos entregues têm licença de uso ilimitado para uso pessoal — redes sociais, impressão, álbuns, decoração. Pedimos apenas que nos mencionem quando partilharem nas redes sociais. Uso comercial requer acordo específico.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Fotografam ao ar livre com chuva? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Temos equipamento de protecção para câmara e luz de apoio para dias nublados. A chuva pode até criar fotografias muito originais! Adaptamo-nos a qualquer condição. Em caso de tempestade extrema, trabalhamos com o cliente para ajustar o plano.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Posso adicionar horas extra no próprio dia? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, se a agenda o permitir. A hora extra tem o custo de €150 por fotógrafo. Basta informar-nos durante o evento e ajustamos a fatura final. Recomendamos planear as horas necessárias com antecedência para garantirmos disponibilidade.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" data-reveal>
+  <h2>O seu evento merece<br>o <em>melhor.</em></h2>
+  <p>Verifique disponibilidade agora — as datas esgotam-se rapidamente.</p>
+  <div class="cta-btns">
+    <a href="tel:+351936543210" class="btn-grad">📞 936 543 210 — Verificar Disponibilidade</a>
+    <a href="https://wa.me/351936543210" class="btn-ring">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact">
+  <div class="contact-left" data-reveal>
+    <div class="section-tag" style="margin-bottom:20px">Contacto</div>
+    <h2>Vamos falar<br>sobre o seu<br><em style="color:var(--purple-l)">evento?</em></h2>
+    <div style="margin-top:40px">
+      <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone</div><div class="c-val">936 543 210</div></div></div>
+      <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@momentosmagicos.pt</div></div></div>
+      <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Área de serviço</div><div class="c-val">Lisboa, Setúbal, Santarém e todo o país</div></div></div>
+      <div class="c-item"><div class="c-icon">📅</div><div><div class="c-label">Disponibilidade</div><div class="c-val">Resposta em menos de 24 horas</div></div></div>
+    </div>
+  </div>
+  <div class="contact-right" data-reveal>
+    <h3>Verificar disponibilidade</h3>
+    <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+    <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+    <div class="fg"><label>Data do evento</label><input type="text" placeholder="Ex: 15 de Setembro de 2026"></div>
+    <div class="fg"><label>Tipo de evento</label><select><option>Casamento</option><option>Batizado / Comunhão</option><option>Evento corporativo</option><option>DJ para festa</option><option>Organização de evento</option><option>Outro</option></select></div>
+    <div class="fg"><label>Mensagem</label><textarea placeholder="Conte-nos mais sobre o vosso evento..."></textarea></div>
+    <button class="btn-submit" id="form-submit">Verificar Disponibilidade</button>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">Momentos<em>Mágicos</em></div>
+  <p>© 2026 MomentosMágicos · Fotografia e eventos em Lisboa</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351936543210">💬</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!localStorage.getItem('mm_cookie')) setTimeout(() => document.getElementById('cookie').classList.add('show'), 1200);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('mm_cookie','1'); document.getElementById('cookie').classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('mm_cookie','0'); document.getElementById('cookie').classList.remove('show'); };
+
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  // Hero entrance
+  const tl = gsap.timeline({ delay: .2 });
+  tl.from('.hero-eyebrow', { opacity: 0, y: 16, duration: .7 })
+    .from('.hero-h1 .line span', { y: '105%', stagger: .15, duration: 1.2, ease: 'power4.out' }, '-=.4')
+    .from('.hero-sub', { opacity: 0, y: 24, duration: .8 }, '-=.6')
+    .from('.hero-btns', { opacity: 0, y: 20, duration: .7 }, '-=.5')
+    .from('.hero-trust .trust-item', { opacity: 0, y: 16, stagger: .1, duration: .6 }, '-=.4');
+
+  // Aurora parallax
+  gsap.to('.aurora-1', { y: -60, scrollTrigger: { scrub: 1.5, start: 'top top', end: 'bottom top' } });
+  gsap.to('.aurora-2', { y: -40, scrollTrigger: { scrub: 2, start: 'top top', end: 'bottom top' } });
+
+  // Scroll reveals via IntersectionObserver
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  // Counters
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, {
+      scrollTrigger: { trigger: el, start: 'top 80%' },
+      n: end, duration: 2.5, ease: 'power2.out',
+      onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; }
+    });
+  });
+
+  // Portfolio stagger
+  gsap.from('.p-item', {
+    scrollTrigger: { trigger: '.portfolio-grid', start: 'top 85%' },
+    opacity: 0, y: 30, scale: .95, stagger: 0.06, duration: .7, ease: 'power2.out'
+  });
+
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = 'Enviado!'; b.style.opacity = '.7';
+    setTimeout(() => { b.textContent = 'Verificar Disponibilidade'; b.style.opacity = ''; }, 3000);
+  });
+
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const body = item.querySelector('.faq-body');
+      const inner = item.querySelector('.faq-body-inner');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-body').style.height = '0';
+      });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

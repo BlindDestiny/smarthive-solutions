@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CorteReal · Barbearia Premium em Lisboa</title>
+  <meta name="description" content="Barbearia premium em Lisboa. Corte de cabelo, barba clássica, navalha e tratamentos. Marcação online disponível. Aberto 7 dias por semana.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0908; --bg2: #111009; --bg3: #1c1914;
+      --copper: #c17f3e; --copper-l: #e8a85c; --copper-ll: #fdf0e0;
+      --red: #b83020; --white: #fff; --cream: #f5ede0;
+      --muted: rgba(255,255,255,.45); --border: rgba(255,255,255,.07);
+      --wa: #25d366; --r: 4px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    h1,h2,h3,h4 { font-family: 'Oswald', sans-serif; }
+
+    /* ── COOKIE ── */
+    .cookie { position: fixed; bottom: 24px; right: 24px; z-index: 9999; max-width: 360px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,.6); transform: translateY(120%); opacity: 0; transition: transform .5s cubic-bezier(.16,1,.3,1), opacity .5s; }
+    .cookie.show { transform: translateY(0); opacity: 1; }
+    .cookie p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .cookie p a { color: var(--copper-l); }
+    .cookie-btns { display: flex; gap: 8px; }
+    .cookie-accept { flex: 1; background: var(--copper); color: #000; font-weight: 700; font-size: 13px; padding: 10px; border: none; border-radius: var(--r); cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: .05em; }
+    .cookie-decline { flex: 1; background: transparent; color: var(--muted); font-size: 13px; padding: 10px; border: 1px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: inherit; }
+
+    /* ── NAV ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 60px; display: flex; align-items: center; justify-content: space-between; transition: all .4s; }
+    nav.scrolled { background: rgba(10,9,8,.95); backdrop-filter: blur(20px); padding: 16px 60px; border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .nav-logo span { color: var(--copper); }
+    .nav-book { background: var(--copper); color: #000; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; padding: 11px 24px; border-radius: var(--r); transition: background .15s, transform .15s; }
+    .nav-book:hover { background: var(--copper-l); transform: translateY(-1px); }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } .nav-logo { font-size: 20px; } }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 120px 60px 80px; }
+    .hero-bg-word { position: absolute; right: -5%; bottom: -8%; font-family: 'Oswald', sans-serif; font-size: clamp(160px, 22vw, 320px); font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; color: rgba(255,255,255,.025); line-height: 1; user-select: none; pointer-events: none; }
+    .hero-line { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, transparent, var(--copper), transparent); }
+    .hero-inner { max-width: 700px; position: relative; z-index: 1; }
+    .hero-tag { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--copper); margin-bottom: 28px; }
+    .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--copper); }
+    .hero-h1 { font-size: clamp(52px, 9vw, 110px); font-weight: 700; line-height: .95; letter-spacing: .02em; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-h1 em { color: var(--copper); font-style: normal; }
+    .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 440px; margin-bottom: 48px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
+    .btn-copper { background: var(--copper); color: #000; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; padding: 16px 36px; border-radius: var(--r); display: inline-flex; align-items: center; gap: 10px; transition: background .15s, transform .15s; }
+    .btn-copper:hover { background: var(--copper-l); transform: translateY(-2px); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--white); font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; padding: 15px 28px; border-radius: var(--r); display: inline-flex; align-items: center; gap: 10px; transition: border-color .2s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.3); }
+    .hero-badges { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-badge-item { display: flex; flex-direction: column; }
+    .badge-n { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: var(--copper); letter-spacing: .02em; }
+    .badge-l { font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+
+    /* ── HOURS BAND ── */
+    .hours-band { background: var(--copper); padding: 16px 60px; display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    @media (max-width: 600px) { .hours-band { padding: 16px 20px; gap: 20px; } }
+    .hour-item { display: flex; align-items: center; gap: 10px; }
+    .hour-item .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.4); }
+    .hour-item span { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; color: #000; letter-spacing: .06em; }
+
+    /* ── SECTION SHARED ── */
+    section.pad { padding: 100px 60px; }
+    @media (max-width: 600px) { section.pad { padding: 72px 20px; } }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+    .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--copper); }
+    h2.section-h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 700; letter-spacing: .03em; text-transform: uppercase; line-height: 1; margin-bottom: 56px; }
+    h2.section-h2 em { color: var(--copper); font-style: normal; }
+
+    /* ── SERVICES / PRICE LIST ── */
+    .services { background: var(--bg2); border-top: 1px solid var(--border); }
+    .price-table { width: 100%; border-collapse: collapse; }
+    .price-table thead tr { border-bottom: 1px solid var(--border); }
+    .price-table th { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); padding: 0 0 16px; text-align: left; font-weight: 400; }
+    .price-table th:last-child { text-align: right; }
+    .price-row { border-bottom: 1px solid var(--border); transition: background .15s; }
+    .price-row:hover { background: rgba(193,127,62,.04); }
+    .price-row td { padding: 22px 0; vertical-align: middle; }
+    .price-name { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: .03em; }
+    .price-name.featured { color: var(--copper); }
+    .price-desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .price-badge { display: inline-block; background: var(--copper); color: #000; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; margin-left: 10px; border-radius: 2px; }
+    .price-val { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; color: var(--copper); text-align: right; }
+    .price-val span { font-size: 13px; font-weight: 400; color: var(--muted); }
+    @media (max-width: 600px) { .price-name { font-size: 16px; } .price-val { font-size: 20px; } }
+
+    /* ── TEAM ── */
+    .team { background: var(--bg); border-top: 1px solid var(--border); }
+    .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    @media (max-width: 700px) { .team-grid { grid-template-columns: 1fr; } }
+    .team-card { border: 1px solid var(--border); background: var(--bg2); padding: 40px 32px; text-align: center; transition: border-color .2s, transform .2s; }
+    .team-card:hover { border-color: rgba(193,127,62,.4); transform: translateY(-4px); }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bg3); border: 2px solid var(--copper); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 20px; }
+    .team-name { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 6px; }
+    .team-role { font-size: 12px; color: var(--copper); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+    .team-spec { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .team-exp { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 12px; color: var(--muted); }
+    .team-exp strong { color: var(--copper); font-family: 'Oswald', sans-serif; font-size: 16px; }
+
+    /* ── BOOKING CTA ── */
+    .booking-cta { background: var(--copper); padding: 80px 60px; text-align: center; }
+    @media (max-width: 600px) { .booking-cta { padding: 64px 20px; } }
+    .booking-cta h2 { font-size: clamp(36px,5vw,64px); font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #000; margin-bottom: 12px; }
+    .booking-cta p { font-size: 17px; color: rgba(0,0,0,.65); margin-bottom: 40px; }
+    .booking-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-dark { background: #000; color: #fff; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; padding: 16px 36px; border-radius: var(--r); display: inline-flex; align-items: center; gap: 10px; transition: background .15s, transform .15s; }
+    .btn-dark:hover { background: var(--bg3); transform: translateY(-2px); }
+    .btn-wa { background: var(--wa); color: #fff; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .05em; text-transform: uppercase; padding: 16px 28px; border-radius: var(--r); display: inline-flex; align-items: center; gap: 10px; transition: transform .15s; }
+    .btn-wa:hover { transform: translateY(-2px); }
+
+    /* ── GALLERY STRIP ── */
+    .gallery-strip { background: var(--bg2); border-top: 1px solid var(--border); padding: 80px 60px; }
+    @media (max-width: 600px) { .gallery-strip { padding: 64px 20px; } }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 48px; }
+    @media (max-width: 700px) { .gallery-grid { grid-template-columns: 1fr 1fr; } }
+    .gallery-item { aspect-ratio: 3/4; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 40px; transition: transform .2s; cursor: default; }
+    .gallery-item:hover { transform: scale(1.03); }
+
+    /* ── STATS ── */
+    .stats { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 72px 60px; }
+    @media (max-width: 600px) { .stats { padding: 56px 20px; } }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-n { font-family: 'Oswald', sans-serif; font-size: clamp(40px,6vw,64px); font-weight: 700; color: var(--copper); letter-spacing: .02em; display: block; line-height: 1; margin-bottom: 8px; }
+    .stat-l { font-size: 12px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ── ABOUT ── */
+    .about { background: var(--bg2); border-top: 1px solid var(--border); }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text h2 { font-size: clamp(32px,4vw,52px); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 1.05; margin-bottom: 24px; }
+    .about-text h2 em { color: var(--copper); font-style: normal; }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    .about-certs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .about-cert { background: rgba(193,127,62,.1); border: 1px solid rgba(193,127,62,.25); color: var(--copper-l); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 2px; letter-spacing: .04em; }
+    .about-img { background: var(--bg3); border: 1px solid var(--border); height: 400px; display: flex; align-items: center; justify-content: center; font-size: 80px; border-radius: 4px; }
+
+    /* ── REVIEWS ── */
+    .reviews { background: var(--bg); border-top: 1px solid var(--border); }
+    .r-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    @media (max-width: 900px) { .r-grid { grid-template-columns: 1fr; } }
+    .r-card { border: 1px solid var(--border); background: var(--bg2); padding: 32px; border-radius: var(--r); transition: border-color .2s; }
+    .r-card:hover { border-color: rgba(193,127,62,.3); }
+    .r-stars { color: var(--copper); font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
+    .r-text { font-size: 15px; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .r-auth { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--copper); color: #000; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: .04em; }
+    .r-src { font-size: 12px; color: var(--muted); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--bg2); border-top: 1px solid var(--border); }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-list { margin-top: 52px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; background: none; border: none; color: var(--white); text-align: left; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s; font-family: inherit; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--copper); color: var(--copper); }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 20px; font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+    /* ── CONTACT ── */
+    .contact { display: grid; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 800px) { .contact { grid-template-columns: 1fr; } }
+    .contact-info { background: var(--bg3); padding: 80px 60px; border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .contact-info, .contact-form { padding: 64px 20px; } }
+    .contact-info h2 { font-size: clamp(28px,4vw,48px); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 48px; }
+    .contact-info h2 em { color: var(--copper); font-style: normal; }
+    .c-item { display: flex; gap: 16px; margin-bottom: 24px; }
+    .c-icon { width: 44px; height: 44px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .c-val { font-size: 15px; font-weight: 600; margin-top: 4px; }
+    .contact-form { background: var(--bg2); padding: 80px 60px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+    @media (max-width: 800px) { .contact-form { border-left: none; } }
+    .contact-form h3 { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 32px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); color: var(--white); font-family: inherit; font-size: 15px; outline: none; transition: border-color .2s; border-radius: var(--r); }
+    .fg input:focus, .fg textarea:focus { border-color: var(--copper); }
+    .fg textarea { resize: vertical; height: 100px; }
+    .fg select option { background: var(--bg); }
+    .btn-submit { width: 100%; background: var(--copper); color: #000; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; padding: 16px; border: none; border-radius: var(--r); cursor: pointer; transition: background .15s; }
+    .btn-submit:hover { background: var(--copper-l); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 60px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    @media (max-width: 600px) { footer { padding: 32px 20px; } }
+    .f-logo { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .f-logo span { color: var(--copper); }
+    footer p { font-size: 12px; color: var(--muted); }
+    footer a { color: var(--copper); }
+
+    /* ── WA FLOAT ── */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── REVEALS ── */
+    [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- COOKIE -->
+<div class="cookie" id="cookie">
+  <p>Usamos cookies para melhorar a sua experiência. <a href="#">Política de privacidade</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Corte<span>Real</span></div>
+  <a href="https://wa.me/351912000111" class="nav-book">✂️ Marcar Corte</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-bg-word">BARBERSHOP</div>
+  <div class="hero-inner">
+    <div class="hero-tag">Barbearia Premium · Lisboa · Desde 2015</div>
+    <h1 class="hero-h1">O teu<br>melhor<br><em>corte.</em></h1>
+    <p class="hero-sub">Barbearia de autor em Lisboa. Cortes modernos e clássicos, barba tradicional à navalha e tratamentos capilares. Marcação em menos de 1 minuto.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/351912000111" class="btn-copper">✂️ Marcar Agora</a>
+      <a href="tel:+351912000111" class="btn-ghost">📞 912 000 111</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge-item"><span class="badge-n">4.9</span><span class="badge-l">Google rating</span></div>
+      <div class="hero-badge-item"><span class="badge-n">+2.800</span><span class="badge-l">Clientes</span></div>
+      <div class="hero-badge-item"><span class="badge-n">9 anos</span><span class="badge-l">Em Lisboa</span></div>
+      <div class="hero-badge-item"><span class="badge-n">7 dias</span><span class="badge-l">Por semana</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS -->
+<div class="hours-band">
+  <div class="hour-item"><div class="dot"></div><span>Seg–Sex: 9h–20h</span></div>
+  <div class="hour-item"><div class="dot"></div><span>Sábado: 9h–19h</span></div>
+  <div class="hour-item"><div class="dot"></div><span>Domingo: 10h–17h</span></div>
+  <div class="hour-item"><div class="dot"></div><span>Marcações: WhatsApp</span></div>
+</div>
+
+<!-- SERVICES / PRICE LIST -->
+<section class="services pad">
+  <div class="wrap">
+    <div class="section-tag" data-reveal>Serviços & Preços</div>
+    <h2 class="section-h2" data-reveal>Lista de<br><em>serviços</em></h2>
+    <table class="price-table">
+      <thead><tr><th>Serviço</th><th style="text-align:right">Preço</th></tr></thead>
+      <tbody>
+        <tr class="price-row" data-reveal><td><div class="price-name">Corte de Cabelo</div><div class="price-desc">Lavagem, corte, secagem e acabamento</div></td><td><div class="price-val">14€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name">Acabamento a Máquina</div><div class="price-desc">Manutenção de corte já existente, sem lavagem</div></td><td><div class="price-val">8€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name">Barba Clássica</div><div class="price-desc">Modelação, hidratação e acabamento com navalha</div></td><td><div class="price-val">12€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name featured">Combo Corte + Barba <span class="price-badge">Popular</span></div><div class="price-desc">O serviço completo — lavagem, corte, barba e acabamento</div></td><td><div class="price-val">22€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name">Navalha Clássica</div><div class="price-desc">Barba feita à navalha com toalha quente — experiência premium</div></td><td><div class="price-val">18€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name">Tratamento Capilar</div><div class="price-desc">Hidratação profunda, anti-queda ou controlo de oleosidade</div></td><td><div class="price-val">20€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name">Design de Sobrancelhas</div><div class="price-desc">Modelação e acabamento com cera ou navalha</div></td><td><div class="price-val">6€</div></td></tr>
+        <tr class="price-row" data-reveal><td><div class="price-name featured">Pacote Noivo <span class="price-badge">Especial</span></div><div class="price-desc">Corte + barba + hidratação + cuidado de mãos — dia do casamento</div></td><td><div class="price-val">45€</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team pad">
+  <div class="wrap">
+    <div class="section-tag" data-reveal>A nossa equipa</div>
+    <h2 class="section-h2" data-reveal>Os nossos<br><em>barbeiros</em></h2>
+    <div class="team-grid">
+      <div class="team-card" data-reveal>
+        <div class="team-avatar">✂️</div>
+        <div class="team-name">Rodrigo Sousa</div>
+        <div class="team-role">Master Barber · Fundador</div>
+        <div class="team-spec">Especialista em cortes clássicos e barbas tradicionais. Formação em Londres e Milão. Criador do estilo CorteReal.</div>
+        <div class="team-exp"><strong>9</strong> anos de experiência</div>
+      </div>
+      <div class="team-card" data-reveal data-delay=".1">
+        <div class="team-avatar">💈</div>
+        <div class="team-name">Tiago Ferreira</div>
+        <div class="team-role">Senior Barber</div>
+        <div class="team-spec">Especialista em fade, undercut e cortes modernos. Formação pelo Barber Institute Portugal. Cliente mais pedido da equipa.</div>
+        <div class="team-exp"><strong>6</strong> anos de experiência</div>
+      </div>
+      <div class="team-card" data-reveal data-delay=".2">
+        <div class="team-avatar">🪒</div>
+        <div class="team-name">André Lima</div>
+        <div class="team-role">Barber · Especialista Navalha</div>
+        <div class="team-spec">Mestre da navalha clássica e barbas elaboradas. Especialista em tratamentos capilares e cuidados de pele masculina.</div>
+        <div class="team-exp"><strong>4</strong> anos de experiência</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="booking-cta" data-reveal>
+  <h2>Pronto para o melhor corte?</h2>
+  <p>Marcação em 30 segundos via WhatsApp. Sem espera, sem complicações.</p>
+  <div class="booking-btns">
+    <a href="https://wa.me/351912000111?text=Olá!%20Queria%20marcar%20um%20corte." class="btn-dark">✂️ Marcar via WhatsApp</a>
+    <a href="tel:+351912000111" class="btn-dark">📞 Ligar agora</a>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-strip">
+  <div class="wrap">
+    <div class="section-tag" data-reveal>Galeria</div>
+    <h2 class="section-h2" data-reveal>O nosso<br><em>trabalho</em></h2>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-reveal>✂️</div>
+      <div class="gallery-item" data-reveal data-delay=".05">💈</div>
+      <div class="gallery-item" data-reveal data-delay=".1">🪒</div>
+      <div class="gallery-item" data-reveal data-delay=".15">👨‍🦱</div>
+      <div class="gallery-item" data-reveal>🧴</div>
+      <div class="gallery-item" data-reveal data-delay=".05">💇</div>
+      <div class="gallery-item" data-reveal data-delay=".1">🪞</div>
+      <div class="gallery-item" data-reveal data-delay=".15">⭐</div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:28px">Galeria completa no <a href="https://wa.me/351912000111" style="color:var(--copper)">Instagram @cortereal.lisboa</a></p>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="2800" data-suffix="+">0+</span><span class="stat-l">Clientes satisfeitos</span></div>
+    <div><span class="stat-n" data-count="9" data-suffix=" anos">0</span><span class="stat-l">Em Lisboa</span></div>
+    <div><span class="stat-n" data-count="3">0</span><span class="stat-l">Barbeiros especializados</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".9 ⭐">0</span><span class="stat-l">Avaliação Google</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about pad">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-text" data-reveal>
+        <div class="section-tag" style="margin-bottom:16px">A nossa história</div>
+        <h2>Mais do que um<br><em>corte de cabelo</em></h2>
+        <p>A CorteReal abriu portas em 2015 com uma visão simples: trazer a cultura da barbearia clássica para Lisboa, combinada com técnicas modernas e um serviço verdadeiramente personalizado.</p>
+        <p>Cada cliente que entra pela nossa porta merece atenção total. Não existe o "corte de 15 minutos". Aqui, cada visita é uma experiência — desde a lavagem com produtos de primeira qualidade até ao acabamento final com navalha.</p>
+        <p>Usamos exclusivamente produtos profissionais: American Crew, Layrite, Uppercut e Reuzel. Os nossos barbeiros frequentam formações internacionais anualmente.</p>
+        <div class="about-certs">
+          <span class="about-cert">✓ Produtos Premium</span>
+          <span class="about-cert">✓ Formação Internacional</span>
+          <span class="about-cert">✓ Espaço Climatizado</span>
+          <span class="about-cert">✓ WiFi Gratuito</span>
+          <span class="about-cert">✓ Estacionamento Próximo</span>
+        </div>
+      </div>
+      <div class="about-img" data-reveal>💈</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews pad">
+  <div class="wrap">
+    <div class="section-tag" data-reveal>Testemunhos</div>
+    <h2 class="section-h2" data-reveal>O que dizem<br><em>os clientes</em></h2>
+    <div class="r-grid">
+      <div class="r-card" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"Melhor barbearia de Lisboa, sem dúvida. O Rodrigo entende exactamente o que quero mesmo quando não sei explicar. Nunca saio desiludido."</p><div class="r-auth"><div class="r-av">DM</div><div><div class="r-name">David Mendes</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+      <div class="r-card" data-reveal data-delay=".1"><div class="r-stars">★★★★★</div><p class="r-text">"Fui antes do meu casamento. Combo completo com o André — barba à navalha, corte perfeito. Apareci nas fotos melhor do que alguma vez estive."</p><div class="r-auth"><div class="r-av">JF</div><div><div class="r-name">João Figueiredo</div><div class="r-src">Google · há 1 mês</div></div></div></div>
+      <div class="r-card" data-reveal data-delay=".2"><div class="r-stars">★★★★★</div><p class="r-text">"Cliente há 4 anos. O Tiago conhece o meu estilo melhor do que eu. Ambiente óptimo, música boa, produto de qualidade. Não mudo nunca."</p><div class="r-auth"><div class="r-av">RC</div><div><div class="r-name">Rui Cardoso</div><div class="r-src">Google · há 3 semanas</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq pad">
+  <div class="faq-inner">
+    <div class="section-tag" data-reveal>FAQ</div>
+    <h2 class="section-h2" data-reveal>Dúvidas<br><em>frequentes</em></h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Como faço a marcação? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">A forma mais rápida é via WhatsApp — envie mensagem para o 912 000 111 com o dia e hora pretendidos e o serviço desejado. Respondemos em menos de 30 minutos. Também pode telefonar ou aparecer directamente, sujeito a disponibilidade.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Posso aparecer sem marcação? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, aceitamos walk-ins consoante disponibilidade. Em dias de semana raramente há espera. Ao fim de semana e às sextas à tarde pode ter que aguardar 20–40 minutos. Para garantir hora certa, marque sempre com antecedência.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Que produtos usam? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Usamos exclusivamente produtos profissionais de primeira linha: American Crew, Layrite, Uppercut Deluxe, Reuzel e Proraso para as barbas. Todos disponíveis para compra na barbearia. Se tiver alguma sensibilidade ou preferência de produto, informe o seu barbeiro.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Qual é o tempo de espera para uma visita? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Com marcação, o tempo de espera é normalmente zero. Um corte simples demora 30–40 minutos. O combo completo (corte + barba) demora 50–70 minutos. A navalha clássica com toalha quente demora cerca de 40 minutos.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Fazem serviços para grupos ou eventos? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Para despedidas de solteiro, casamentos e eventos empresariais temos pacotes especiais. Entre em contacto via WhatsApp para orçamento personalizado para grupos de 3 ou mais pessoas.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Onde ficam localizados? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Estamos no coração de Lisboa, com fácil acesso de metro e autocarros. Morada completa e Google Maps disponíveis no formulário de contacto abaixo. Existem parques de estacionamento a menos de 200 metros.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact">
+  <div class="contact-info" data-reveal>
+    <div class="section-tag" style="margin-bottom:20px">Encontre-nos</div>
+    <h2><em>Venha</em><br>visitar-nos</h2>
+    <div style="margin-top:40px">
+      <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone / WhatsApp</div><div class="c-val">912 000 111</div></div></div>
+      <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@cortereal.pt</div></div></div>
+      <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Morada</div><div class="c-val">Rua Example 123, Lisboa</div></div></div>
+      <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">Seg–Sex: 9h–20h · Sáb: 9h–19h · Dom: 10h–17h</div></div></div>
+      <div class="c-item"><div class="c-icon">🚇</div><div><div class="c-label">Metro mais próximo</div><div class="c-val">Marquês de Pombal (5 min a pé)</div></div></div>
+    </div>
+  </div>
+  <div class="contact-form" data-reveal>
+    <h3>Marcar corte</h3>
+    <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+    <div class="fg"><label>Telefone / WhatsApp</label><input type="tel" placeholder="9XX XXX XXX"></div>
+    <div class="fg"><label>Serviço</label><select><option>Corte de cabelo (€14)</option><option>Acabamento a máquina (€8)</option><option>Barba clássica (€12)</option><option>Combo corte + barba (€22)</option><option>Navalha clássica (€18)</option><option>Tratamento capilar (€20)</option><option>Pacote noivo (€45)</option></select></div>
+    <div class="fg"><label>Data e hora pretendida</label><input type="text" placeholder="Ex: Quarta, 14h"></div>
+    <div class="fg"><label>Barbeiro preferido</label><select><option>Sem preferência</option><option>Rodrigo Sousa</option><option>Tiago Ferreira</option><option>André Lima</option></select></div>
+    <button class="btn-submit" id="form-submit">✂️ Confirmar Marcação</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Corte<span>Real</span></div>
+  <p>© 2026 CorteReal · Barbearia Premium em Lisboa · Todos os dias</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351912000111?text=Olá!%20Queria%20marcar%20um%20corte." title="Marcar via WhatsApp">💈</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cookie
+  if (!localStorage.getItem('cr_cookie')) setTimeout(() => document.getElementById('cookie').classList.add('show'), 900);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('cr_cookie','1'); document.getElementById('cookie').classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('cr_cookie','0'); document.getElementById('cookie').classList.remove('show'); };
+
+  // Nav
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  // Hero entrance
+  const tl = gsap.timeline({ delay: .1 });
+  tl.from('.hero-tag', { opacity: 0, x: -20, duration: .6 })
+    .from('.hero-h1', { opacity: 0, y: 60, duration: 1, ease: 'power4.out' }, '-=.3')
+    .from('.hero-sub', { opacity: 0, y: 20, duration: .7 }, '-=.5')
+    .from('.hero-btns', { opacity: 0, y: 16, duration: .6 }, '-=.4')
+    .from('.hero-badges .hero-badge-item', { opacity: 0, y: 16, stagger: .08, duration: .5 }, '-=.3')
+    .from('.hero-bg-word', { opacity: 0, scale: 1.05, duration: 1.5 }, 0)
+    .from('.hero-line', { scaleY: 0, duration: 1, ease: 'power3.inOut', transformOrigin: 'top' }, 0);
+
+  // Scroll reveals
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  // Counters
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, { scrollTrigger: { trigger: el, start: 'top 80%' }, n: end, duration: 2, ease: 'power2.out', onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; } });
+  });
+
+  // FAQ
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement, body = item.querySelector('.faq-body'), inner = item.querySelector('.faq-body-inner'), isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => { el.classList.remove('open'); el.querySelector('.faq-body').style.height = '0'; });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+
+  // Form
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = '✓ Marcação enviada!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = '✂️ Confirmar Marcação'; b.style.background = ''; }, 3000);
+  });
+</script>
+</body>
+</html>

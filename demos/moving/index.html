@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MudançasExpress · Empresa de Mudanças em Lisboa</title>
+  <meta name="description" content="Empresa de mudanças em Lisboa. Residenciais, comerciais, bens segurados, preço fixo. Fins de semana sem custo extra.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1e40af; --blue-d: #1e3a8a; --blue-l: #dbeafe; --blue-m: #3b82f6;
+      --yellow: #facc15; --yellow-d: #ca8a04; --yellow-l: #fefce8;
+      --dark: #0c1425; --white: #fff; --off: #f8faff;
+      --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
+      --wa: #25d366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* COOKIE */
+    .cookie { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(120px); width: min(600px, calc(100% - 32px)); z-index: 9999; background: var(--dark); color: #fff; padding: 20px 28px; border-radius: 12px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; box-shadow: 0 20px 60px rgba(0,0,0,.4); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .cookie.show { transform: translateX(-50%) translateY(0); }
+    .cookie p { font-size: 13px; color: rgba(255,255,255,.7); flex: 1; min-width: 200px; }
+    .cookie p a { color: var(--yellow); }
+    .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .cookie-accept { background: var(--yellow); color: var(--dark); font-weight: 700; font-size: 13px; padding: 9px 20px; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; }
+    .cookie-decline { background: transparent; color: rgba(255,255,255,.5); font-size: 13px; padding: 9px 16px; border: 1px solid rgba(255,255,255,.15); border-radius: 6px; cursor: pointer; font-family: inherit; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 64px; display: flex; align-items: center; justify-content: space-between; transition: all .4s; }
+    nav.scrolled { background: rgba(255,255,255,.96); backdrop-filter: blur(20px); box-shadow: 0 1px 0 var(--border); padding: 14px 64px; }
+    .nav-logo { font-size: 20px; font-weight: 800; color: var(--blue); letter-spacing: -.5px; }
+    .nav-logo span { color: var(--yellow-d); }
+    .nav-cta { background: var(--blue); color: #fff; font-weight: 700; font-size: 14px; padding: 11px 24px; border-radius: 8px; transition: background .15s, transform .15s; }
+    .nav-cta:hover { background: var(--blue-d); transform: translateY(-1px); }
+    @media (max-width: 600px) { nav, nav.scrolled { padding: 16px 20px; } }
+
+    /* HERO — diagonal split */
+    .hero { min-height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; }
+    .hero-bg-left { position: absolute; inset: 0; background: var(--dark); clip-path: polygon(0 0, 65% 0, 55% 100%, 0 100%); z-index: 0; }
+    @media (max-width: 900px) { .hero-bg-left { clip-path: none; } }
+    .hero-bg-right { position: absolute; inset: 0; background: var(--yellow); clip-path: polygon(65% 0, 100% 0, 100% 100%, 55% 100%); z-index: 0; }
+    @media (max-width: 900px) { .hero-bg-right { display: none; } }
+    .hero-truck { position: absolute; right: 3%; bottom: 10%; font-size: clamp(80px, 12vw, 180px); z-index: 1; animation: truck-bounce 3s ease-in-out infinite; }
+    @keyframes truck-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .hero-inner { position: relative; z-index: 2; padding: 120px 64px 80px; max-width: 680px; }
+    @media (max-width: 600px) { .hero-inner { padding: 100px 20px 60px; } }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); color: var(--yellow); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 7px 16px; border-radius: 100px; margin-bottom: 28px; }
+    .hero-h1 { font-size: clamp(44px, 7vw, 88px); font-weight: 900; color: var(--white); line-height: .95; letter-spacing: -3px; margin-bottom: 20px; }
+    .hero-h1 em { color: var(--yellow); font-style: normal; display: block; }
+    .hero-sub { font-size: 17px; color: rgba(255,255,255,.65); line-height: 1.7; max-width: 440px; margin-bottom: 44px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+    .btn-yellow { background: var(--yellow); color: var(--dark); font-weight: 800; font-size: 15px; padding: 15px 30px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s, box-shadow .15s; }
+    .btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,204,21,.35); }
+    .btn-ghost-light { border: 1px solid rgba(255,255,255,.2); color: #fff; font-weight: 600; font-size: 15px; padding: 14px 24px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, background .2s; }
+    .btn-ghost-light:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.06); }
+    .hero-badges { display: flex; gap: 20px; flex-wrap: wrap; }
+    .badge { display: flex; align-items: center; gap: 8px; }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); flex-shrink: 0; }
+    .badge span { font-size: 13px; color: rgba(255,255,255,.65); }
+
+    /* FEATURES BAR */
+    .features-bar { background: var(--blue); padding: 28px 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    @media (max-width: 800px) { .features-bar { grid-template-columns: 1fr 1fr; padding: 24px 20px; } }
+    .feat { display: flex; align-items: center; gap: 12px; }
+    .feat-icon { font-size: 24px; flex-shrink: 0; }
+    .feat-text strong { display: block; font-size: 14px; font-weight: 700; color: #fff; }
+    .feat-text span { font-size: 12px; color: rgba(255,255,255,.6); }
+
+    /* SERVICES */
+    .services { padding: 100px 64px; background: var(--off); }
+    @media (max-width: 600px) { .services { padding: 72px 20px; } }
+    .section-top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; gap: 24px; flex-wrap: wrap; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+    .section-top h2 { font-size: clamp(30px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
+    .section-top p { font-size: 15px; color: var(--muted); max-width: 280px; line-height: 1.65; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
+    .s-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: box-shadow .2s, transform .2s, border-color .2s; }
+    .s-card:hover { box-shadow: 0 8px 32px rgba(30,64,175,.1); transform: translateY(-4px); border-color: var(--blue-l); }
+    .s-icon-wrap { width: 48px; height: 48px; background: var(--blue-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .s-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .s-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* PROCESS */
+    .process { padding: 100px 64px; background: var(--white); }
+    @media (max-width: 600px) { .process { padding: 72px 20px; } }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 56px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; top: 28px; left: 12.5%; right: 12.5%; height: 2px; background: var(--border); z-index: 0; }
+    @media (max-width: 800px) { .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; } .process-steps::before { display: none; } }
+    .p-step { text-align: center; position: relative; z-index: 1; padding: 0 16px; }
+    .p-circle { width: 56px; height: 56px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--blue); }
+    .p-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .p-step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* STATS */
+    .stats { padding: 80px 64px; background: var(--dark); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 960px; margin: 0 auto; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+    .stat-n { font-size: clamp(36px, 5vw, 60px); font-weight: 900; color: var(--yellow); letter-spacing: -2px; display: block; margin-bottom: 6px; }
+    .stat-l { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* COVERAGE */
+    .coverage { padding: 80px 64px; background: var(--blue-l); }
+    @media (max-width: 600px) { .coverage { padding: 64px 20px; } }
+    .coverage-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .coverage-inner h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 32px; color: var(--blue-d); }
+    .city-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .city-tag { background: #fff; border: 1.5px solid var(--blue-l); color: var(--blue); font-size: 14px; font-weight: 600; padding: 8px 18px; border-radius: 100px; transition: background .15s, border-color .15s; }
+    .city-tag:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* REVIEWS */
+    .reviews { padding: 100px 64px; background: var(--white); }
+    @media (max-width: 600px) { .reviews { padding: 72px 20px; } }
+    .r-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 900px) { .r-grid { grid-template-columns: 1fr; } }
+    .r-card { border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: border-color .2s, box-shadow .2s; }
+    .r-card:hover { border-color: var(--blue-m); box-shadow: 0 4px 24px rgba(30,64,175,.08); }
+    .r-stars { color: var(--yellow-d); font-size: 16px; letter-spacing: 2px; margin-bottom: 14px; }
+    .r-text { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .r-auth { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--blue); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-name { font-weight: 700; font-size: 14px; }
+    .r-src { font-size: 12px; color: var(--muted); }
+
+    /* CTA */
+    .cta { background: var(--yellow); padding: 100px 64px; text-align: center; }
+    .cta h2 { font-size: clamp(32px, 5vw, 60px); font-weight: 900; letter-spacing: -2px; color: var(--dark); margin-bottom: 12px; }
+    .cta p { font-size: 17px; color: rgba(12,20,37,.65); margin-bottom: 44px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-dark { background: var(--dark); color: #fff; font-weight: 700; font-size: 15px; padding: 15px 30px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s; }
+    .btn-dark:hover { transform: translateY(-2px); }
+    .btn-wa { background: var(--wa); color: #fff; font-weight: 700; font-size: 15px; padding: 15px 24px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s; }
+    .btn-wa:hover { transform: translateY(-2px); }
+
+    /* CONTACT */
+    .contact { padding: 100px 64px; background: var(--off); }
+    @media (max-width: 600px) { .contact { padding: 72px 20px; } }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; max-width: 1100px; margin: 0 auto; }
+    @media (max-width: 800px) { .contact-wrap { grid-template-columns: 1fr; gap: 48px; } }
+    .contact-info h3 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 32px; }
+    .c-item { display: flex; gap: 14px; margin-bottom: 20px; }
+    .c-icon { width: 44px; height: 44px; background: var(--blue-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .c-val { font-weight: 600; font-size: 15px; margin-top: 2px; }
+    .c-form { background: #fff; border-radius: 16px; padding: 40px; border: 1px solid var(--border); }
+    .c-form h3 { font-size: 20px; font-weight: 800; margin-bottom: 28px; }
+    .fg { margin-bottom: 14px; }
+    .fg label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 12px 16px; background: var(--off); border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--text); outline: none; transition: border-color .2s; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--blue); background: #fff; }
+    .fg textarea { resize: vertical; height: 100px; }
+    .btn-submit { width: 100%; background: var(--blue); color: #fff; font-weight: 700; font-size: 15px; padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; margin-top: 6px; transition: background .15s; }
+    .btn-submit:hover { background: var(--blue-d); }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: rgba(255,255,255,.4); padding: 40px 64px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .f-logo { font-size: 18px; font-weight: 800; color: #fff; }
+    .f-logo span { color: var(--yellow); }
+    footer p { font-size: 12px; }
+    footer a { color: var(--yellow); }
+
+    /* WA */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── ABOUT ── */
+    .about { padding: 100px 64px; background: var(--off); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .about { padding: 72px 20px; } }
+    .about-wrap { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 800px) { .about-wrap { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text h2 { font-size: clamp(28px,4vw,46px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; }
+    .about-text h2 em { color: var(--blue); font-style: normal; }
+    .about-text p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .about-pill { background: var(--blue-l); color: var(--blue-d); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(30,64,175,.15); }
+    .about-fleet { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+    .fleet-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 22px 18px; text-align: center; }
+    .fleet-icon { font-size: 28px; margin-bottom: 8px; }
+    .fleet-n { font-size: 28px; font-weight: 900; color: var(--blue); letter-spacing: -1px; display: block; margin-bottom: 4px; }
+    .fleet-l { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    /* ── PACKING TIPS ── */
+    .packing { padding: 100px 64px; background: var(--white); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .packing { padding: 72px 20px; } }
+    .packing-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
+    @media (max-width: 800px) { .packing-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .packing h2 { font-size: clamp(28px,4vw,44px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .packing h2 em { color: var(--blue); font-style: normal; }
+    .packing > .packing-inner > div > p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+    .tip-list { display: flex; flex-direction: column; gap: 16px; }
+    .tip-item { display: flex; gap: 16px; align-items: flex-start; }
+    .tip-num { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tip-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .tip-content p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .insurance-box { background: var(--blue-l); border: 1px solid rgba(30,64,175,.15); border-radius: 16px; padding: 32px; }
+    .insurance-box h3 { font-size: 20px; font-weight: 800; color: var(--blue-d); margin-bottom: 12px; }
+    .insurance-box p { font-size: 14px; color: var(--blue-d); line-height: 1.7; margin-bottom: 16px; }
+    .insurance-items { display: flex; flex-direction: column; gap: 10px; }
+    .ins-item { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--blue-d); }
+    .ins-item::before { content: '✓'; font-weight: 900; color: var(--blue); }
+    /* ── FAQ ── */
+    .faq { padding: 100px 64px; background: var(--off); border-top: 1px solid var(--border); }
+    @media (max-width: 600px) { .faq { padding: 72px 20px; } }
+    .faq-inner { max-width: 780px; margin: 0 auto; }
+    .faq-list { margin-top: 52px; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; cursor: pointer; font-size: 16px; font-weight: 600; background: none; border: none; color: var(--text); text-align: left; font-family: inherit; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s, background .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--blue); background: var(--blue); color: #fff; }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 20px; font-size: 15px; color: var(--muted); line-height: 1.8; }
+    [data-reveal] { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+    @media (max-width: 600px) { .features-bar { grid-template-columns: 1fr 1fr; padding: 20px; } }
+  </style>
+</head>
+<body>
+
+<div class="cookie" id="cookie">
+  <p>Usamos cookies para melhorar a experiência no site. <a href="#">Saber mais</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<nav id="nav">
+  <div class="nav-logo">Mudanças<span>Express</span> 🚚</div>
+  <a href="tel:+351919012345" class="nav-cta">📞 919 012 345</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-left"></div>
+  <div class="hero-bg-right"></div>
+  <div class="hero-truck">🚚</div>
+  <div class="hero-inner">
+    <div class="hero-tag">⭐ 4.9 · Empresa Certificada · Lisboa</div>
+    <h1 class="hero-h1">A SUA<br>MUDANÇA,<br><em>SEM STRESS.</em></h1>
+    <p class="hero-sub">Mudanças residenciais e comerciais. Bens segurados, preço fixo, fins de semana sem custo extra.</p>
+    <div class="hero-btns">
+      <a href="tel:+351919012345" class="btn-yellow">📞 Pedir Orçamento Grátis</a>
+      <a href="https://wa.me/351919012345" class="btn-ghost-light">💬 WhatsApp</a>
+    </div>
+    <div class="hero-badges">
+      <div class="badge"><div class="badge-dot"></div><span>Bens segurados</span></div>
+      <div class="badge"><div class="badge-dot"></div><span>Preço fixo garantido</span></div>
+      <div class="badge"><div class="badge-dot"></div><span>Fins de semana</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BAR -->
+<div class="features-bar">
+  <div class="feat"><div class="feat-icon">🛡️</div><div class="feat-text"><strong>Bens Segurados</strong><span>100% cobertos em trânsito</span></div></div>
+  <div class="feat"><div class="feat-icon">💰</div><div class="feat-text"><strong>Preço Fixo</strong><span>Sem surpresas na fatura</span></div></div>
+  <div class="feat"><div class="feat-icon">📅</div><div class="feat-text"><strong>Fins de Semana</strong><span>Sem custo adicional</span></div></div>
+  <div class="feat"><div class="feat-icon">⚡</div><div class="feat-text"><strong>Resposta Rápida</strong><span>Orçamento em 24 horas</span></div></div>
+</div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-top" data-reveal>
+    <div><div class="section-label">Serviços</div><h2>Tudo o que precisa<br>para a sua mudança</h2></div>
+    <p>De uma caixa a uma empresa inteira — tratamos de tudo.</p>
+  </div>
+  <div class="services-grid">
+    <div class="s-card" data-reveal><div class="s-icon-wrap">🏠</div><h3>Mudanças Residenciais</h3><p>Apartamentos, moradias, quartos. Com ou sem embalagem. Para qualquer destino.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><div class="s-icon-wrap">🏢</div><h3>Mudanças Comerciais</h3><p>Escritórios e lojas. Fora de horas para não interromper o negócio.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><div class="s-icon-wrap">📦</div><h3>Embalagem Profissional</h3><p>Materiais incluídos. Embalagem cuidadosa de frágeis e electrónicos.</p></div>
+    <div class="s-card" data-reveal><div class="s-icon-wrap">🪑</div><h3>Transporte de Mobiliário</h3><p>Peças isoladas, mudanças parciais e mobiliário volumoso.</p></div>
+    <div class="s-card" data-reveal data-delay=".05"><div class="s-icon-wrap">🎹</div><h3>Objectos Especiais</h3><p>Pianos, obras de arte e peças frágeis com equipamento especializado.</p></div>
+    <div class="s-card" data-reveal data-delay=".1"><div class="s-icon-wrap">🏗️</div><h3>Armazenamento</h3><p>Guarda-móveis seguro para obras ou entre mudanças.</p></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="section-label" data-reveal>Como funciona</div>
+  <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px" data-reveal>Simples, rápido e sem stress</h2>
+  <div class="process-steps">
+    <div class="p-step" data-reveal><div class="p-circle">1</div><h4>Pedido de orçamento</h4><p>Contacta-nos por telefone ou WhatsApp. Respondemos em 24h.</p></div>
+    <div class="p-step" data-reveal data-delay=".1"><div class="p-circle">2</div><h4>Orçamento fixo</h4><p>Preço detalhado e definitivo. Nenhum custo extra no dia da mudança.</p></div>
+    <div class="p-step" data-reveal data-delay=".2"><div class="p-circle">3</div><h4>Marcação</h4><p>Escolhe a data. Disponíveis 7 dias por semana incluindo feriados.</p></div>
+    <div class="p-step" data-reveal data-delay=".3"><div class="p-circle">4</div><h4>Mudança feita</h4><p>Equipa profissional cuida de tudo. Os seus bens chegam em segurança.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-n" data-count="650" data-suffix="+">0</span><span class="stat-l">Mudanças realizadas</span></div>
+    <div><span class="stat-n" data-count="10" data-suffix=" anos">0</span><span class="stat-l">De experiência</span></div>
+    <div><span class="stat-n" data-count="100" data-suffix="%">0</span><span class="stat-l">Bens segurados</span></div>
+    <div><span class="stat-n" data-count="4" data-suffix=".9 ⭐">0</span><span class="stat-l">Avaliação Google</span></div>
+  </div>
+</div>
+
+<!-- COVERAGE -->
+<section class="coverage" data-reveal>
+  <div class="coverage-inner">
+    <h2>Onde trabalhamos</h2>
+    <div class="city-grid">
+      <div class="city-tag">Lisboa</div><div class="city-tag">Porto</div><div class="city-tag">Cascais</div><div class="city-tag">Sintra</div><div class="city-tag">Oeiras</div><div class="city-tag">Setúbal</div><div class="city-tag">Braga</div><div class="city-tag">Coimbra</div><div class="city-tag">Faro</div><div class="city-tag">+ Todo o país</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="section-top" data-reveal>
+    <div><div class="section-label">Testemunhos</div><h2>O que dizem<br>sobre nós</h2></div>
+    <p>4.9 estrelas em 218 avaliações no Google Maps</p>
+  </div>
+  <div class="r-grid">
+    <div class="r-card" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"Mudança de Cascais para o Porto. Chegaram a horas, embalaram com cuidado. Nada se partiu. Excelente serviço!"</p><div class="r-auth"><div class="r-av">FS</div><div><div class="r-name">Filipa Sousa</div><div class="r-src">Google · há 1 mês</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".1"><div class="r-stars">★★★★★</div><p class="r-text">"Transportaram o meu piano de cauda de Lisboa para Braga sem um único arranhão. Equipa fantástica."</p><div class="r-auth"><div class="r-av">AF</div><div><div class="r-name">António Ferreira</div><div class="r-src">Google · há 3 semanas</div></div></div></div>
+    <div class="r-card" data-reveal data-delay=".2"><div class="r-stars">★★★★★</div><p class="r-text">"Mudança de escritório ao sábado. Terminaram antes do previsto e deixaram tudo organizado. Voltamos a usar."</p><div class="r-auth"><div class="r-av">SM</div><div><div class="r-name">Sara Monteiro</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-wrap">
+    <div class="about-text" data-reveal>
+      <div class="section-label">Sobre nós</div>
+      <h2>10 anos a mover<br><em>Portugal</em></h2>
+      <p>A MudançasExpress nasceu em 2015 com um objetivo claro: eliminar o stress que normalmente acompanha uma mudança. Desde então, realizámos mais de 650 mudanças — de uma caixa a uma empresa inteira.</p>
+      <p>A nossa frota de 5 viaturas inclui carrinhas de diferentes dimensões e um camião equipado com elevador hidráulico para andares altos. Toda a equipa tem formação em manuseamento seguro de bens e protecção de propriedade.</p>
+      <p>Trabalhamos com todos os bens segurados durante o transporte. Em caso de incidente, o nosso seguro cobre até €50.000 por mudança. Sem letras pequenas.</p>
+      <div class="about-pills">
+        <span class="about-pill">✓ Seguro de bens até €50.000</span>
+        <span class="about-pill">✓ GPS em todas as viaturas</span>
+        <span class="about-pill">✓ Equipa treinada e verificada</span>
+        <span class="about-pill">✓ Fins de semana sem extra</span>
+        <span class="about-pill">✓ Preço fixo garantido</span>
+        <span class="about-pill">✓ Materiais de embalagem incluídos</span>
+      </div>
+    </div>
+    <div class="about-fleet" data-reveal>
+      <div class="fleet-card"><div class="fleet-icon">🚐</div><span class="fleet-n">3</span><span class="fleet-l">Carrinhas médias para apartamentos</span></div>
+      <div class="fleet-card"><div class="fleet-icon">🚛</div><span class="fleet-n">2</span><span class="fleet-l">Camiões com elevador hidráulico</span></div>
+      <div class="fleet-card"><div class="fleet-icon">👷</div><span class="fleet-n">8</span><span class="fleet-l">Profissionais treinados</span></div>
+      <div class="fleet-card"><div class="fleet-icon">🛡️</div><span class="fleet-n">€50k</span><span class="fleet-l">Seguro de bens por mudança</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKING TIPS -->
+<section class="packing">
+  <div class="packing-inner">
+    <div data-reveal>
+      <div class="section-label">Guia de preparação</div>
+      <h2>Como preparar<br>a sua <em>mudança</em></h2>
+      <p>Uma mudança bem preparada é uma mudança rápida e sem danos. Seguindo estes conselhos, o processo será muito mais eficiente.</p>
+      <div class="tip-list">
+        <div class="tip-item"><div class="tip-num">1</div><div class="tip-content"><h4>Comece com 2–3 semanas de antecedência</h4><p>Embale primeiro os objectos que usa menos frequentemente — livros, decoração, roupa de estação.</p></div></div>
+        <div class="tip-item"><div class="tip-num">2</div><div class="tip-content"><h4>Etiquete cada caixa claramente</h4><p>Escreva o conteúdo e o quarto de destino em cada caixa. Isso poupa horas na chegada.</p></div></div>
+        <div class="tip-item"><div class="tip-num">3</div><div class="tip-content"><h4>Proteja os frágeis individualmente</h4><p>Use papel de jornal, roupa ou plástico de bolhas. Coloque "FRÁGIL" bem visível nas caixas correspondentes.</p></div></div>
+        <div class="tip-item"><div class="tip-num">4</div><div class="tip-content"><h4>Prepare uma caixa de "primeiro dia"</h4><p>Inclua o essencial para as primeiras 24h: toalhas, roupa, carregadores, medicamentos e artigos de higiene.</p></div></div>
+        <div class="tip-item"><div class="tip-num">5</div><div class="tip-content"><h4>Documente o estado dos bens</h4><p>Fotografe os bens de maior valor antes da mudança. Serve como referência em caso de reclamação de seguro.</p></div></div>
+      </div>
+    </div>
+    <div data-reveal>
+      <div class="insurance-box">
+        <h3>🛡️ Os seus bens estão protegidos</h3>
+        <p>Todos os trabalhos da MudançasExpress estão cobertos por seguro de responsabilidade civil e transporte de bens. Em caso de dano, o processo de indemnização é simples e rápido.</p>
+        <div class="insurance-items">
+          <div class="ins-item">Bens segurados durante todo o transporte</div>
+          <div class="ins-item">Cobertura até €50.000 por mudança</div>
+          <div class="ins-item">Processo de reclamação em 48 horas</div>
+          <div class="ins-item">Sem franquia para danos menores</div>
+          <div class="ins-item">Seguro válido em todo o território nacional</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;margin-top:16px">
+        <h4 style="font-size:16px;font-weight:700;margin-bottom:12px;color:var(--text)">O que não podemos transportar</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:1.65">Por razões legais e de segurança, não transportamos: substâncias inflamáveis ou explosivas, animais vivos, plantas de grandes dimensões, dinheiro ou valores não declarados, e substâncias ilegais. Para dúvidas específicas, consulte-nos antes da mudança.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="section-label" data-reveal>Perguntas frequentes</div>
+    <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;margin-bottom:0" data-reveal>Respostas às suas dúvidas</h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Como é calculado o preço de uma mudança? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">O preço depende do volume de bens, distância, número de andares (com ou sem elevador), data e se inclui serviço de embalagem. Após visita ou videochamada, enviamos orçamento fixo detalhado. Não há custos ocultos — o preço acordado é o preço final.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Com quanta antecedência devo contactar? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Recomendamos pelo menos 1–2 semanas de antecedência, especialmente para mudanças ao fim de semana que costumam esgotar-se rapidamente. Em casos de urgência, tentamos sempre acomodar, mas sujeito a disponibilidade.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">O que acontece se algum bem for danificado? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Todos os bens estão segurados durante o transporte até €50.000. Em caso de dano, comunicamos imediatamente e iniciamos o processo de indemnização — normalmente resolvido em 48–72 horas. Recomendamos fotografar bens de valor antes da mudança como precaução.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Trabalham aos fins de semana e feriados? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Trabalhamos todos os dias da semana, incluindo sábados, domingos e feriados nacionais. Ao contrário de outras empresas, não cobramos qualquer acréscimo por mudanças ao fim de semana — o preço é exactamente o mesmo.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Fazem mudanças internacionais ou para o interior? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Fazemos mudanças para qualquer ponto de Portugal Continental e Ilhas. Para mudanças internacionais dentro da Europa, consulte-nos — trabalhamos com parceiros certificados para destinos europeus.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">É necessário pagar sinal? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Após aprovação do orçamento, pedimos um sinal de 30% para reservar a data. O restante é pago no dia da mudança, após a conclusão do serviço. Aceitamos transferência bancária, MB Way e cartão.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">O serviço inclui montagem e desmontagem de móveis? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. A desmontagem na origem e montagem no destino estão incluídas no serviço completo. Para mudanças com apenas transporte, a desmontagem e montagem têm um custo adicional por hora, indicado no orçamento.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" data-reveal>
+  <h2>Pronto para mudar?</h2>
+  <p>Orçamento gratuito em menos de 24 horas. Sem compromisso.</p>
+  <div class="cta-btns">
+    <a href="tel:+351919012345" class="btn-dark">📞 919 012 345 — Ligar</a>
+    <a href="https://wa.me/351919012345" class="btn-wa">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+  <div class="contact-wrap">
+    <div class="contact-info" data-reveal>
+      <div class="section-label">Contacto</div>
+      <h3>Fale<br>Connosco</h3>
+      <div style="margin-top:24px">
+        <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone</div><div class="c-val">919 012 345</div></div></div>
+        <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@mudancasexpress.pt</div></div></div>
+        <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Área</div><div class="c-val">Lisboa, Porto e todo o país</div></div></div>
+        <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">Todos os dias · 8h–20h</div></div></div>
+      </div>
+    </div>
+    <div class="c-form" data-reveal>
+      <h3>Pedir Orçamento</h3>
+      <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+      <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+      <div class="fg"><label>Tipo de mudança</label><select><option>Residencial</option><option>Comercial</option><option>Transporte de móvel</option><option>Piano / objecto especial</option><option>Armazenamento</option></select></div>
+      <div class="fg"><label>Mensagem</label><textarea placeholder="Origem, destino, data aproximada..."></textarea></div>
+      <button class="btn-submit" id="form-submit">Pedir Orçamento Gratuito</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">Mudanças<span>Express</span> 🚚</div>
+  <p>© 2026 MudançasExpress · Empresa de mudanças em Lisboa</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351919012345">💬</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!localStorage.getItem('me_cookie')) setTimeout(() => document.getElementById('cookie').classList.add('show'), 1000);
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('me_cookie','1'); document.getElementById('cookie').classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('me_cookie','0'); document.getElementById('cookie').classList.remove('show'); };
+
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  const tl = gsap.timeline({ delay: .15 });
+  tl.from('.hero-tag', { opacity: 0, y: 16, duration: .5 })
+    .from('.hero-h1', { opacity: 0, y: 60, duration: 1, ease: 'power4.out' }, '-=.2')
+    .from('.hero-sub', { opacity: 0, y: 20, duration: .7 }, '-=.5')
+    .from('.hero-btns', { opacity: 0, y: 16, duration: .6 }, '-=.4')
+    .from('.hero-badges', { opacity: 0, duration: .5 }, '-=.3')
+    .from('.hero-truck', { opacity: 0, x: 80, duration: 1, ease: 'power3.out' }, '-=.8');
+
+  // Scroll reveals via IntersectionObserver
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count), suffix = el.dataset.suffix || '', obj = { n: 0 };
+    gsap.to(obj, { scrollTrigger: { trigger: el, start: 'top 80%' }, n: end, duration: 2, ease: 'power2.out', onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; } });
+  });
+
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = 'Enviado!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = 'Pedir Orçamento Gratuito'; b.style.background = ''; }, 3000);
+  });
+
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const body = item.querySelector('.faq-body');
+      const inner = item.querySelector('.faq-body-inner');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-body').style.height = '0';
+      });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

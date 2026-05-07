@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChaveMestre · Chaveiro em Lisboa · Urgência 24h</title>
+  <meta name="description" content="Chaveiro profissional em Lisboa. Abertura de portas de urgência, substituição de fechaduras, cópias de chaves. Disponível 24 horas. Resposta em 30 minutos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #0f0f0f; --bg3: #161616;
+      --gold: #e8a000; --gold-l: #ffc233; --gold-d: #b37a00;
+      --white: #fff; --off: #f5f0e8;
+      --muted: rgba(255,255,255,.45); --border: rgba(255,255,255,.08);
+      --wa: #25d366; --r: 4px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── COOKIE ── */
+    .cookie {
+      position: fixed; bottom: 24px; left: 24px; right: 24px; max-width: 540px; z-index: 9999;
+      background: rgba(15,15,15,.96); backdrop-filter: blur(20px);
+      border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
+      transform: translateY(120px); opacity: 0; transition: transform .5s cubic-bezier(.16,1,.3,1), opacity .5s;
+    }
+    .cookie.show { transform: translateY(0); opacity: 1; }
+    .cookie p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .cookie p a { color: var(--gold); }
+    .cookie-btns { display: flex; gap: 10px; }
+    .cookie-accept { background: var(--gold); color: #000; font-weight: 700; font-size: 13px; padding: 10px 20px; border: none; border-radius: var(--r); cursor: pointer; font-family: inherit; transition: background .15s; }
+    .cookie-accept:hover { background: var(--gold-l); }
+    .cookie-decline { background: transparent; color: var(--muted); font-size: 13px; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: inherit; transition: border-color .15s, color .15s; }
+    .cookie-decline:hover { border-color: rgba(255,255,255,.25); color: var(--white); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 24px 48px; display: flex; align-items: center; justify-content: space-between;
+      transition: padding .4s, background .4s, backdrop-filter .4s;
+    }
+    nav.scrolled { padding: 16px 48px; background: rgba(8,8,8,.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 20px; font-weight: 900; letter-spacing: -1px; }
+    .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-phone { display: flex; align-items: center; gap: 8px; background: var(--gold); color: #000; font-weight: 800; font-size: 14px; padding: 10px 20px; border-radius: 100px; transition: transform .15s, background .15s; }
+    .nav-phone:hover { transform: scale(1.04); background: var(--gold-l); }
+    @media (max-width: 600px) { nav { padding: 18px 20px; } nav.scrolled { padding: 14px 20px; } .nav-logo { font-size: 17px; } }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 120px 48px 80px; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(232,160,0,.06) 0%, transparent 70%);
+    }
+    .hero-line-deco {
+      position: absolute; top: 0; right: 15%; width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent); opacity: .2;
+    }
+    .hero-glyph {
+      position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
+      font-size: clamp(180px, 20vw, 280px); opacity: .04; user-select: none; pointer-events: none;
+      line-height: 1;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 32px;
+    }
+    .hero-badge::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+    .hero-h1 { font-size: clamp(52px, 9vw, 110px); font-weight: 900; line-height: .95; letter-spacing: -3px; margin-bottom: 28px; }
+    .hero-h1 .line { overflow: hidden; display: block; }
+    .hero-h1 .line span { display: block; }
+    .hero-h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub { font-size: clamp(16px, 2vw, 19px); color: var(--muted); max-width: 480px; line-height: 1.65; margin-bottom: 44px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+    .btn-gold { background: var(--gold); color: #000; font-weight: 800; font-size: 15px; padding: 16px 32px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s, box-shadow .15s; box-shadow: 0 0 0 0 rgba(232,160,0,0); }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(232,160,0,.35); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--white); font-weight: 600; font-size: 15px; padding: 16px 28px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, background .2s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.04); }
+    .hero-trust { display: flex; gap: 32px; flex-wrap: wrap; }
+    .hero-trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-weight: 500; }
+    .hero-trust-item span { color: var(--gold); font-size: 16px; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap { background: var(--gold); padding: 14px 0; overflow: hidden; }
+    .marquee-inner { display: flex; gap: 0; white-space: nowrap; will-change: transform; }
+    .marquee-item { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #000; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
+    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(0,0,0,.4); flex-shrink: 0; }
+
+    /* ── SERVICES ── */
+    .services { padding: 120px 48px; background: var(--bg2); }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .services-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 64px; gap: 24px; flex-wrap: wrap; }
+    .services-header h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; letter-spacing: -2px; line-height: 1; }
+    .services-header p { font-size: 15px; color: var(--muted); max-width: 280px; line-height: 1.6; }
+    .services-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    @media (max-width: 700px) { .services-list { grid-template-columns: 1fr; } }
+    .s-item { background: var(--bg2); padding: 36px 32px; display: flex; gap: 24px; align-items: flex-start; transition: background .2s; cursor: default; }
+    .s-item:hover { background: var(--bg3); }
+    .s-num { font-size: 13px; font-weight: 700; color: var(--gold); opacity: .6; flex-shrink: 0; width: 28px; margin-top: 4px; }
+    .s-content h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .s-content p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── STATS ── */
+    .stats { padding: 80px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; text-align: center; }
+    @media (max-width: 700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-num { font-size: clamp(40px, 6vw, 64px); font-weight: 900; color: var(--gold); letter-spacing: -2px; line-height: 1; display: block; margin-bottom: 8px; }
+    .stat-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+    /* ── REVIEWS ── */
+    .reviews { padding: 120px 48px; background: var(--bg); }
+    .reviews-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 64px; }
+    @media (max-width: 900px) { .reviews-track { grid-template-columns: 1fr; } }
+    .r-card { border: 1px solid var(--border); border-radius: 8px; padding: 32px; background: var(--bg2); transition: border-color .2s, transform .2s; }
+    .r-card:hover { border-color: rgba(232,160,0,.3); transform: translateY(-4px); }
+    .r-stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 20px; }
+    .r-text { font-size: 15px; color: rgba(255,255,255,.75); line-height: 1.7; margin-bottom: 28px; font-style: italic; }
+    .r-author { display: flex; align-items: center; gap: 12px; }
+    .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; }
+    .r-name { font-weight: 700; font-size: 14px; }
+    .r-src { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── CTA BAND ── */
+    .cta-band { padding: 100px 48px; background: var(--bg3); text-align: center; position: relative; overflow: hidden; }
+    .cta-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(232,160,0,.05), transparent); }
+    .cta-band h2 { font-size: clamp(32px, 5vw, 60px); font-weight: 900; letter-spacing: -2px; margin-bottom: 16px; position: relative; }
+    .cta-band p { font-size: 17px; color: var(--muted); margin-bottom: 44px; position: relative; }
+    .cta-band-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    /* ── CONTACT ── */
+    .contact { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
+    @media (max-width: 800px) { .contact { grid-template-columns: 1fr; } }
+    .contact-info { background: var(--bg3); padding: 80px 48px; border-top: 1px solid var(--border); }
+    .contact-info h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 48px; }
+    .c-item { display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start; }
+    .c-icon { width: 44px; height: 44px; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .c-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .c-val { font-size: 16px; font-weight: 600; }
+    .contact-form { background: var(--bg2); padding: 80px 48px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+    @media (max-width: 800px) { .contact-form { border-left: none; border-top: 1px solid var(--border); } }
+    .contact-form h3 { font-size: 22px; font-weight: 800; margin-bottom: 36px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .fg input, .fg textarea, .fg select { width: 100%; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); color: var(--white); font-family: inherit; font-size: 15px; outline: none; transition: border-color .2s; }
+    .fg input:focus, .fg textarea:focus { border-color: var(--gold); }
+    .fg textarea { resize: vertical; height: 110px; }
+    .fg select option { background: var(--bg); }
+    .btn-submit { width: 100%; background: var(--gold); color: #000; font-weight: 800; font-size: 15px; padding: 16px; border: none; border-radius: var(--r); cursor: pointer; font-family: inherit; margin-top: 8px; transition: background .15s, transform .15s; }
+    .btn-submit:hover { background: var(--gold-l); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .f-logo { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; }
+    .f-logo em { color: var(--gold); font-style: normal; }
+    footer p { font-size: 12px; color: var(--muted); }
+    footer a { color: var(--gold); }
+
+    /* ── WA FLOAT ── */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 500; width: 60px; height: 60px; border-radius: 50%; background: var(--wa); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px rgba(37,211,102,.4); transition: transform .2s; }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid rgba(37,211,102,.3); animation: wa-ring 2s ease-out infinite; }
+    @keyframes wa-ring { 0% { transform: scale(.9); opacity: .8; } 100% { transform: scale(1.4); opacity: 0; } }
+
+    /* ── UTILS ── */
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    /* ── ABOUT ── */
+    .about { padding: 100px 48px; background: var(--bg3); border-top: 1px solid var(--border); }
+    .about-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    @media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text h2 { font-size: clamp(30px,4vw,50px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 24px; }
+    .about-text h2 em { color: var(--gold); font-style: normal; }
+    .about-text p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .about-pill { background: rgba(232,160,0,.08); border: 1px solid rgba(232,160,0,.2); color: var(--gold-l); font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 100px; }
+    .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .about-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 24px 20px; }
+    .about-card-n { font-size: 34px; font-weight: 900; color: var(--gold); letter-spacing: -2px; display: block; margin-bottom: 6px; }
+    .about-card-l { font-size: 13px; color: var(--muted); line-height: 1.4; }
+    /* ── GUARANTEE BAR ── */
+    .guarantee { padding: 56px 48px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .guarantee-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; }
+    @media (max-width: 700px) { .guarantee-inner { grid-template-columns: 1fr 1fr; gap: 24px; } }
+    .g-item { text-align: center; }
+    .g-icon { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 14px; }
+    .g-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .g-item p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    /* ── PRICING ── */
+    .pricing { padding: 100px 48px; background: var(--bg2); border-top: 1px solid var(--border); }
+    .pricing-inner { max-width: 1100px; margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 36px 28px; transition: border-color .2s, transform .2s; }
+    .price-card:hover { border-color: rgba(232,160,0,.4); transform: translateY(-4px); }
+    .price-card.featured { border-color: var(--gold); background: linear-gradient(180deg, rgba(232,160,0,.06) 0%, var(--bg) 100%); }
+    .price-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .price-card.featured .price-tag { color: var(--gold); }
+    .price-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .price-from { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .price-amount { font-size: 48px; font-weight: 900; color: var(--gold); letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+    .price-amount span { font-size: 18px; font-weight: 400; color: var(--muted); }
+    .price-list { list-style: none; margin: 24px 0 28px; display: flex; flex-direction: column; gap: 10px; }
+    .price-list li { font-size: 14px; color: var(--muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .price-list li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+    .price-btn { display: block; text-align: center; padding: 12px; border: 1px solid var(--border); border-radius: var(--r); font-size: 14px; font-weight: 700; color: var(--white); transition: background .15s, border-color .15s; }
+    .price-btn:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.25); }
+    .price-card.featured .price-btn { background: var(--gold); color: #000; border-color: var(--gold); }
+    .price-card.featured .price-btn:hover { background: var(--gold-l); }
+    .price-note { font-size: 13px; color: var(--muted); text-align: center; margin-top: 24px; }
+    /* ── FAQ ── */
+    .faq { padding: 100px 48px; }
+    .faq-inner { max-width: 800px; margin: 0 auto; }
+    .faq-list { margin-top: 56px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 22px 0; cursor: pointer; font-size: 17px; font-weight: 600; background: none; border: none; color: var(--white); text-align: left; font-family: inherit; gap: 16px; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform .3s, border-color .3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--gold); color: var(--gold); }
+    .faq-body { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16,1,.3,1); }
+    .faq-body-inner { padding-bottom: 24px; font-size: 15px; color: var(--muted); line-height: 1.8; }
+    [data-reveal] { opacity: 0; transform: translateY(36px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+    @media (max-width: 600px) { .hero { padding: 100px 20px 60px; } .services, .reviews, .stats, .cta-band, .contact-info, .contact-form, .about, .guarantee, .pricing, .faq { padding: 72px 20px; } footer { padding: 32px 20px; } }
+  </style>
+</head>
+<body>
+
+<!-- COOKIE -->
+<div class="cookie" id="cookie">
+  <p>Usamos cookies para melhorar a sua experiência. Ao continuar, aceita a nossa <a href="#">política de privacidade</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" id="c-accept">Aceitar cookies</button>
+    <button class="cookie-decline" id="c-decline">Recusar</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Chave<em>Mestre</em> 🗝️</div>
+  <a href="tel:+351912345678" class="nav-phone">📞 912 345 678</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line-deco"></div>
+  <div class="hero-glyph">🔐</div>
+  <div class="hero-inner">
+    <div class="hero-badge">Chaveiro Certificado · Lisboa · 24h</div>
+    <h1 class="hero-h1">
+      <span class="line"><span>Bloqueado</span></span>
+      <span class="line"><span>fora de <em>casa?</em></span></span>
+    </h1>
+    <p class="hero-sub">Abertura de portas de urgência em Lisboa. Respondemos em 30 minutos, a qualquer hora do dia ou da noite.</p>
+    <div class="hero-btns">
+      <a href="tel:+351912345678" class="btn-gold">📞 Ligar Agora — 24h</a>
+      <a href="https://wa.me/351912345678" class="btn-ghost">💬 WhatsApp</a>
+    </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item"><span>⭐</span> 4.9 · 287 avaliações</div>
+      <div class="hero-trust-item"><span>✓</span> +12 anos de experiência</div>
+      <div class="hero-trust-item"><span>✓</span> Sem taxa de deslocação</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="marquee">
+    <div class="marquee-item">URGÊNCIA 24H <span class="marquee-dot"></span></div>
+    <div class="marquee-item">LISBOA & ARREDORES <span class="marquee-dot"></span></div>
+    <div class="marquee-item">RESPOSTA EM 30 MIN <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CERTIFICADO <span class="marquee-dot"></span></div>
+    <div class="marquee-item">GARANTIA INCLUÍDA <span class="marquee-dot"></span></div>
+    <div class="marquee-item">ORÇAMENTO GRATUITO <span class="marquee-dot"></span></div>
+    <div class="marquee-item">URGÊNCIA 24H <span class="marquee-dot"></span></div>
+    <div class="marquee-item">LISBOA & ARREDORES <span class="marquee-dot"></span></div>
+    <div class="marquee-item">RESPOSTA EM 30 MIN <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CERTIFICADO <span class="marquee-dot"></span></div>
+    <div class="marquee-item">GARANTIA INCLUÍDA <span class="marquee-dot"></span></div>
+    <div class="marquee-item">ORÇAMENTO GRATUITO <span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" data-reveal>
+  <div class="wrap">
+    <div class="section-label">O que fazemos</div>
+    <div class="services-header">
+      <h2>Serviços de<br>Chaveiro</h2>
+      <p>Profissionais treinados para qualquer situação, com equipamento de última geração.</p>
+    </div>
+    <div class="services-list">
+      <div class="s-item" data-reveal><div class="s-num">01</div><div class="s-content"><h3>Abertura de Portas — Urgência</h3><p>Bloqueado fora de casa, escritório ou carro? Chegamos em 30 minutos sem danificar a fechadura.</p></div></div>
+      <div class="s-item" data-reveal><div class="s-num">02</div><div class="s-content"><h3>Cópias e Duplicados de Chaves</h3><p>Duplicados em minutos para todos os tipos de chaves — residenciais, automóvel e alta segurança.</p></div></div>
+      <div class="s-item" data-reveal><div class="s-num">03</div><div class="s-content"><h3>Substituição de Fechaduras</h3><p>Instalação de fechaduras modernas e certificadas. Mul-T-Lock, EVVA, Keso e Yale disponíveis.</p></div></div>
+      <div class="s-item" data-reveal><div class="s-num">04</div><div class="s-content"><h3>Fechaduras de Automóvel</h3><p>Bloqueado no carro ou chave partida na ignição? Abertura sem arrombamento para qualquer marca.</p></div></div>
+      <div class="s-item" data-reveal><div class="s-num">05</div><div class="s-content"><h3>Fechaduras de Alta Segurança</h3><p>Aumente a protecção da sua habitação com fechaduras anti-arrombamento certificadas.</p></div></div>
+      <div class="s-item" data-reveal><div class="s-num">06</div><div class="s-content"><h3>Soluções para Empresas</h3><p>Controlo de acessos, sistemas master key e segurança para escritórios e armazéns.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats" data-reveal>
+  <div class="stats-grid">
+    <div><span class="stat-num" data-count="30" data-suffix=" min">0</span><span class="stat-label">Tempo de resposta</span></div>
+    <div><span class="stat-num" data-count="12" data-suffix=" anos">0</span><span class="stat-label">De experiência</span></div>
+    <div><span class="stat-num" data-count="2400" data-suffix="+">0</span><span class="stat-label">Trabalhos realizados</span></div>
+    <div><span class="stat-num" data-count="4" data-suffix=".9 ⭐">0</span><span class="stat-label">Avaliação Google</span></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="wrap">
+    <div class="section-label">Clientes</div>
+    <h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-2px;" data-reveal>O que dizem<br>sobre nós</h2>
+    <div class="reviews-track">
+      <div class="r-card" data-reveal><div class="r-stars">★★★★★</div><p class="r-text">"Fiquei bloqueada fora de casa às 23h. Ligei e em menos de 25 minutos chegaram. Abriram sem danificar nada e o preço foi exactamente o que disseram. Muito profissionais!"</p><div class="r-author"><div class="r-av">AM</div><div><div class="r-name">Ana Mendes</div><div class="r-src">Google · há 2 semanas</div></div></div></div>
+      <div class="r-card" data-reveal data-delay=".1"><div class="r-stars">★★★★★</div><p class="r-text">"Precisava de trocar todas as fechaduras após uma mudança. Vieram, orçamentaram no local e fizeram tudo no mesmo dia. Preço justo, trabalho impecável."</p><div class="r-author"><div class="r-av">JF</div><div><div class="r-name">João Ferreira</div><div class="r-src">Google · há 1 mês</div></div></div></div>
+      <div class="r-card" data-reveal data-delay=".2"><div class="r-stars">★★★★★</div><p class="r-text">"Chave partida na fechadura de manhã cedo. Chegaram em 20 minutos, resolveram e ainda me explicaram como prevenir. Serviço 5 estrelas mesmo!"</p><div class="r-author"><div class="r-av">CS</div><div><div class="r-name">Carla Santos</div><div class="r-src">Google · há 3 semanas</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-inner">
+    <div class="about-text" data-reveal>
+      <div class="section-label">Quem somos</div>
+      <h2>12 anos a resolver<br>emergências em <em>Lisboa</em></h2>
+      <p>A ChaveMestre nasceu em 2012 com uma missão simples: oferecer um serviço de chaveiro rápido, honesto e com preços transparentes em Lisboa. Não somos uma central de contacto — somos técnicos locais que conhecem cada bairro da cidade.</p>
+      <p>A nossa equipa está distribuída estrategicamente por Lisboa para garantir os tempos de resposta prometidos. Cada trabalho é executado com equipamento profissional de última geração, sem danificar propriedade e sem custos ocultos.</p>
+      <p>Somos certificados, segurados e comprometidos com a qualidade. Mais de 2.400 clientes já confiaram em nós para os momentos mais stressantes do dia a dia.</p>
+      <div class="about-pills">
+        <span class="about-pill">✓ Certificados CNPCE</span>
+        <span class="about-pill">✓ Seguros até €500.000</span>
+        <span class="about-pill">✓ Garantia 12 meses</span>
+        <span class="about-pill">✓ Sem taxa de deslocação</span>
+        <span class="about-pill">✓ Fatura sempre emitida</span>
+        <span class="about-pill">✓ MB Way, cartão, transferência</span>
+      </div>
+    </div>
+    <div class="about-cards" data-reveal>
+      <div class="about-card"><span class="about-card-n">2012</span><span class="about-card-l">Ano de fundação em Lisboa</span></div>
+      <div class="about-card"><span class="about-card-n">4</span><span class="about-card-l">Técnicos na cidade, 24h</span></div>
+      <div class="about-card"><span class="about-card-n">30 min</span><span class="about-card-l">Tempo médio de chegada</span></div>
+      <div class="about-card"><span class="about-card-n">0€</span><span class="about-card-l">Taxa de deslocação</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<div class="guarantee" data-reveal>
+  <div class="guarantee-inner">
+    <div class="g-item"><div class="g-icon">⚡</div><h4>Resposta em 30 min</h4><p>Equipa distribuída por Lisboa para tempos de chegada mínimos, a qualquer hora.</p></div>
+    <div class="g-item"><div class="g-icon">🛡️</div><h4>Sem danos garantido</h4><p>Técnicos treinados para abrir sem danificar portas, marcos ou fechaduras.</p></div>
+    <div class="g-item"><div class="g-icon">💰</div><h4>Preço fixo</h4><p>Orçamento antes de começar. Nenhum custo oculto ou surpresa na fatura final.</p></div>
+    <div class="g-item"><div class="g-icon">📄</div><h4>Fatura garantida</h4><p>Emitimos sempre fatura ou recibo com NIF. MB Way, cartão e transferência.</p></div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="pricing-inner">
+    <div class="section-label" data-reveal>Preços</div>
+    <h2 style="font-size:clamp(28px,4vw,48px);font-weight:900;letter-spacing:-1.5px;margin-bottom:12px" data-reveal>Preços transparentes,<br>sem surpresas</h2>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:0" data-reveal>Orçamento gratuito antes de qualquer trabalho. Estes são os nossos preços de referência.</p>
+    <div class="pricing-grid">
+      <div class="price-card" data-reveal>
+        <div class="price-tag">Serviço simples</div>
+        <div class="price-name">Abertura básica</div>
+        <div class="price-from">A partir de</div>
+        <div class="price-amount">60€ <span>/ serviço</span></div>
+        <ul class="price-list">
+          <li>Abertura de porta de apartamento</li>
+          <li>Sem danos na fechadura</li>
+          <li>Orçamento antes de começar</li>
+          <li>Fatura incluída</li>
+        </ul>
+        <a href="tel:+351912345678" class="price-btn">📞 Ligar para orçamento</a>
+      </div>
+      <div class="price-card featured" data-reveal data-delay=".1">
+        <div class="price-tag">Mais popular</div>
+        <div class="price-name">Substituição de fechadura</div>
+        <div class="price-from">A partir de</div>
+        <div class="price-amount">120€ <span>/ serviço</span></div>
+        <ul class="price-list">
+          <li>Desmontagem da fechadura antiga</li>
+          <li>Fornecimento de fechadura nova</li>
+          <li>Instalação certificada</li>
+          <li>Garantia de 12 meses incluída</li>
+          <li>3 chaves incluídas</li>
+        </ul>
+        <a href="tel:+351912345678" class="price-btn">📞 Ligar para orçamento</a>
+      </div>
+      <div class="price-card" data-reveal data-delay=".2">
+        <div class="price-tag">Alta segurança</div>
+        <div class="price-name">Fechadura premium</div>
+        <div class="price-from">A partir de</div>
+        <div class="price-amount">250€ <span>/ serviço</span></div>
+        <ul class="price-list">
+          <li>Fechaduras Mul-T-Lock / EVVA / Keso</li>
+          <li>Certificadas anti-arrombamento</li>
+          <li>Anti-bump e anti-picking</li>
+          <li>Garantia de 5 anos incluída</li>
+          <li>5 chaves incluídas</li>
+        </ul>
+        <a href="tel:+351912345678" class="price-btn">📞 Ligar para orçamento</a>
+      </div>
+    </div>
+    <p class="price-note" data-reveal>⚠️ Preços de referência. Serviços nocturnos (após 22h) e fins de semana podem ter acréscimo. Orçamento exacto sempre dado antes de começar.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="section-label" data-reveal>Perguntas frequentes</div>
+    <h2 style="font-size:clamp(28px,4vw,48px);font-weight:900;letter-spacing:-1.5px;margin-bottom:0" data-reveal>Tudo o que precisa de saber</h2>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item"><button class="faq-btn">Quanto custa a abertura de uma porta? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">O preço depende do tipo de fechadura e da hora do dia. Abertura de apartamento começa a partir de €60–€80 durante o dia. Em horário nocturno (após as 22h) ou ao fim de semana pode ter um acréscimo. Damos sempre orçamento exacto antes de começar, sem compromisso.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Quanto tempo demora a chegar? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">O nosso tempo médio em Lisboa é de 25–30 minutos. Em zonas como Sintra, Cascais ou Loures pode ser um pouco mais. Ligamos sempre a confirmar o tempo estimado assim que recebemos o chamado.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">A fechadura fica danificada depois da abertura? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Na grande maioria dos casos, não. Os nossos técnicos têm formação específica para abrir sem destruir. Apenas em casos extremos — fechaduras antigas ou bloqueadas por dentro — pode ser necessário forçar, e isso é sempre comunicado e incluído no orçamento antes de começar.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Trabalham 24 horas, incluindo feriados? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Estamos disponíveis 24 horas por dia, 7 dias por semana, incluindo feriados nacionais. Mantemos sempre um técnico de serviço para chamados urgentes nocturnos. O tempo de resposta pode ser ligeiramente maior durante a madrugada.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Que marcas de fechaduras instalam? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Trabalhamos com todas as marcas principais: Mul-T-Lock, EVVA, Keso, Yale, Cisa, Mottura e FAB. Temos stock das fechaduras mais comuns em stock e podemos encomendar modelos específicos em 24–48 horas.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Qual é a área de cobertura? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Cobrimos todo o Concelho de Lisboa e arredores: Sintra, Cascais, Oeiras, Loures, Amadora, Almada, Barreiro e Setúbal. Para zonas mais distantes, contacte-nos para confirmar disponibilidade e tempo de resposta estimado.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Emitem factura? Que formas de pagamento aceitam? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim, emitimos sempre fatura ou recibo com NIF se necessário. Aceitamos dinheiro, MB Way, cartão de débito/crédito e transferência bancária. Nunca cobramos antes de terminar e aprovar o trabalho.</div></div></div>
+      <div class="faq-item"><button class="faq-btn">Fazem orçamento gratuito? <span class="faq-icon">+</span></button><div class="faq-body"><div class="faq-body-inner">Sim. Antes de qualquer trabalho damos sempre um orçamento exacto e gratuito. Não há taxa de deslocação — só pagam se decidirem avançar com o serviço e ficarem satisfeitos com o preço.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" data-reveal>
+  <h2>Precisa de ajuda <em style="color:var(--gold);font-style:normal">agora?</em></h2>
+  <p>Disponíveis 24 horas. Ligamos de volta em menos de 5 minutos.</p>
+  <div class="cta-band-btns">
+    <a href="tel:+351912345678" class="btn-gold">📞 912 345 678 — Ligar Agora</a>
+    <a href="https://wa.me/351912345678" class="btn-ghost">💬 WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact">
+  <div class="contact-info" data-reveal>
+    <div class="section-label">Contacto</div>
+    <h2>Fale<br>connosco</h2>
+    <div style="margin-top:40px">
+      <div class="c-item"><div class="c-icon">📞</div><div><div class="c-label">Telefone · Urgência 24h</div><div class="c-val">912 345 678</div></div></div>
+      <div class="c-item"><div class="c-icon">💬</div><div><div class="c-label">WhatsApp</div><div class="c-val">912 345 678</div></div></div>
+      <div class="c-item"><div class="c-icon">📧</div><div><div class="c-label">Email</div><div class="c-val">geral@chavemestre.pt</div></div></div>
+      <div class="c-item"><div class="c-icon">📍</div><div><div class="c-label">Área de serviço</div><div class="c-val">Lisboa, Sintra, Cascais, Loures, Amadora</div></div></div>
+      <div class="c-item"><div class="c-icon">🕐</div><div><div class="c-label">Horário</div><div class="c-val">24 horas · 7 dias por semana</div></div></div>
+    </div>
+  </div>
+  <div class="contact-form" data-reveal>
+    <h3>Envie uma mensagem</h3>
+    <div class="fg"><label>Nome</label><input type="text" placeholder="O seu nome"></div>
+    <div class="fg"><label>Telefone</label><input type="tel" placeholder="9XX XXX XXX"></div>
+    <div class="fg"><label>Serviço</label><select><option>Abertura de porta — urgência</option><option>Substituição de fechadura</option><option>Cópia de chave</option><option>Fechadura automóvel</option><option>Alta segurança</option><option>Outro</option></select></div>
+    <div class="fg"><label>Mensagem</label><textarea placeholder="Descreva o que precisa..."></textarea></div>
+    <button class="btn-submit" id="form-submit">Enviar Mensagem</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Chave<em>Mestre</em> 🗝️</div>
+  <p>© 2026 ChaveMestre · Chaveiro profissional em Lisboa · 24h</p>
+  <p>Website por <a href="https://smarthivesolutions.pt" target="_blank">Smart Hive Solutions</a></p>
+</footer>
+
+<a class="wa-float" href="https://wa.me/351912345678" title="WhatsApp 24h">💬</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cookie
+  const cookie = document.getElementById('cookie');
+  if (!localStorage.getItem('cm_cookie')) {
+    setTimeout(() => cookie.classList.add('show'), 800);
+  }
+  document.getElementById('c-accept').onclick = () => { localStorage.setItem('cm_cookie','1'); cookie.classList.remove('show'); };
+  document.getElementById('c-decline').onclick = () => { localStorage.setItem('cm_cookie','0'); cookie.classList.remove('show'); };
+
+  // Nav
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 'top -60', onUpdate: s => nav.classList.toggle('scrolled', s.isActive) });
+
+  // Hero entrance
+  const tl = gsap.timeline({ delay: .1 });
+  tl.from('.hero-badge', { opacity: 0, y: 16, duration: .6, ease: 'power2.out' })
+    .from('.hero-h1 .line span', { y: '105%', stagger: .12, duration: 1, ease: 'power4.out' }, '-=.3')
+    .from('.hero-sub', { opacity: 0, y: 20, duration: .7, ease: 'power2.out' }, '-=.5')
+    .from('.hero-btns', { opacity: 0, y: 16, duration: .6, ease: 'power2.out' }, '-=.4')
+    .from('.hero-trust', { opacity: 0, duration: .6 }, '-=.3')
+    .from('.hero-glyph', { opacity: 0, scale: 1.1, duration: 1.2, ease: 'power2.out' }, '-=1');
+
+  // Marquee
+  const mq = document.getElementById('marquee');
+  gsap.to(mq, { x: '-50%', duration: 22, ease: 'none', repeat: -1 });
+
+  // Scroll reveals via IntersectionObserver
+  (function() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay + 's';
+      io.observe(el);
+    });
+  })();
+
+  // Counters
+  gsap.utils.toArray('[data-count]').forEach(el => {
+    const end = parseInt(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const obj = { n: 0 };
+    gsap.to(obj, {
+      scrollTrigger: { trigger: el, start: 'top 80%' },
+      n: end, duration: 2, ease: 'power2.out',
+      onUpdate() { el.textContent = Math.round(obj.n).toLocaleString('pt-PT') + suffix; }
+    });
+  });
+
+  // Form
+  document.getElementById('form-submit').addEventListener('click', function(e) {
+    e.preventDefault(); const b = this;
+    b.textContent = '✓ Mensagem enviada!'; b.style.background = '#10b981';
+    setTimeout(() => { b.textContent = 'Enviar Mensagem'; b.style.background = ''; }, 3000);
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const body = item.querySelector('.faq-body');
+      const inner = item.querySelector('.faq-body-inner');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-body').style.height = '0';
+      });
+      if (!isOpen) { item.classList.add('open'); body.style.height = inner.offsetHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+[20:22:47] Total website leads: 10219
+[20:22:47] Already processed: 9542
+[20:22:47] Remaining to score: 0
+[20:22:48] Loaded 10218 existing results
+[20:22:48] 
+Starting with 12 parallel workers...
+[20:22:48] (Ctrl+C to stop — progress is saved every 100 leads)
+
+[20:22:49] 
+=========================
