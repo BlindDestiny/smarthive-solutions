@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.log
+*.txt.bak
+crm_data.csv
+crm_activity.csv
+scorer_err.txt
+scorer_log.txt
+progress_website_score.json
