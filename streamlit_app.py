@@ -887,16 +887,92 @@ with tab_outreach:
         if len(mob) == 0:
             st.info("No mobile leads match the filters.")
         else:
+            mob_pids = mob["place_id"].astype(str).tolist()
+
+            # ── Batch panel (reads state from previous render) ──
+            selected_pids = [p for p in mob_pids if st.session_state.get(f"oa_cb_{p}", False)]
+
+            if selected_pids:
+                sel_rows = mob[mob["place_id"].astype(str).isin(selected_pids)]
+                st.info(
+                    f"**{len(selected_pids)} leads selecionados** — clica em cada link para abrir o WhatsApp, "
+                    "depois carrega em **✅ Marcar todos como contactado**."
+                )
+
+                # Big clickable WA buttons for each selected lead
+                wa_cols = st.columns(min(len(sel_rows), 4))
+                for i, (_, srow) in enumerate(sel_rows.iterrows()):
+                    wa = srow.get("wa_link")
+                    label = f"💬 {srow['name']}"
+                    if wa:
+                        wa_cols[i % 4].markdown(
+                            f'<a href="{wa}" target="_blank" style="'
+                            'display:block;background:#25d366;color:white;font-weight:700;'
+                            'text-align:center;padding:10px 8px;border-radius:10px;'
+                            'text-decoration:none;font-size:13px;margin-bottom:6px;">'
+                            f'{label}</a>',
+                            unsafe_allow_html=True
+                        )
+                    else:
+                        wa_cols[i % 4].write(f"☎️ {srow['name']} (fixo)")
+
+                st.markdown("<br>", unsafe_allow_html=True)
+                bcol1, bcol2 = st.columns([1.8, 4])
+                if bcol1.button("✅ Marcar todos como contactado", type="primary", key="oa_batch_done"):
+                    today_s = datetime.now().strftime("%Y-%m-%d")
+                    fu_s    = (datetime.now() + timedelta(days=2)).strftime("%Y-%m-%d")
+                    for pid in selected_pids:
+                        upsert_crm(pid, "contacted", today_s, fu_s, "", "whatsapp",
+                                   0, "", "Follow-up em 2 dias", "new",
+                                   "WhatsApp enviado via Outreach (batch)")
+                        st.session_state.pop(f"oa_cb_{pid}", None)
+                    st.cache_data.clear()
+                    st.rerun()
+                if bcol2.button("✕ Limpar seleção", key="oa_clear_sel"):
+                    for pid in mob_pids:
+                        st.session_state.pop(f"oa_cb_{pid}", None)
+                    st.rerun()
+
+                st.divider()
+
+            # ── Select-all / deselect-all ──
+            sc1, sc2, sc3 = st.columns([1, 1, 4])
+            if sc1.button("☑ Todos (50)", key="oa_sel_all"):
+                for pid in mob_pids[:50]:
+                    st.session_state[f"oa_cb_{pid}"] = True
+                st.rerun()
+            if sc2.button("✕ Nenhum", key="oa_desel_all"):
+                for pid in mob_pids:
+                    st.session_state.pop(f"oa_cb_{pid}", None)
+                st.rerun()
+
+            st.caption("Seleciona os leads, abre cada 💬 WA (cmd+clique abre em nova aba), depois marca todos de uma vez.")
+
+            # ── Lead rows with checkbox ──
             for _, row in mob.head(50).iterrows():
-                col_a, col_b, col_c = st.columns([3,2,1])
+                pid = str(row["place_id"])
+                col_cb, col_a, col_b, col_c, col_d = st.columns([0.4, 3.2, 2, 0.7, 1.4])
+                col_cb.checkbox("", key=f"oa_cb_{pid}")
                 col_a.write(f"**{row['name']}** — {row['city']} | {row['keyword']} | ⭐{row['rating']} ({int(row['reviews'])} reviews)")
-                col_b.write(f"📞 `{row['phone']}` | priority: **{row['priority']}**")
+                col_b.write(f"📞 `{row['phone']}` · prioridade **{row['priority']}**")
                 wa = row.get("wa_link")
-                if wa: col_c.markdown(f"[💬 WhatsApp]({wa})")
+                if wa:
+                    col_c.markdown(f'<a href="{wa}" target="_blank">💬</a>', unsafe_allow_html=True)
+                if col_d.button("✅ Contactado", key=f"oa_done_{pid}"):
+                    today_s = datetime.now().strftime("%Y-%m-%d")
+                    upsert_crm(
+                        pid, "contacted", today_s,
+                        (datetime.now() + timedelta(days=2)).strftime("%Y-%m-%d"),
+                        "", "whatsapp", 0, "", "Follow-up em 2 dias", "new",
+                        "WhatsApp enviado via Outreach tab"
+                    )
+                    st.session_state.pop(f"oa_cb_{pid}", None)
+                    st.cache_data.clear()
+                    st.rerun()
                 st.divider()
 
             if len(mob) > 50:
-                st.caption(f"Showing top 50 of {len(mob)}.")
+                st.caption(f"A mostrar top 50 de {len(mob)}.")
 
             csv_mob = mob[["name","city","keyword","phone","rating","reviews","priority","wa_link"]].to_csv(index=False).encode("utf-8")
             st.download_button("⬇️ Export mobile list", csv_mob, "outreach_mobile.csv", "text/csv")
@@ -908,10 +984,26 @@ with tab_outreach:
         if len(land) == 0:
             st.info("No landline leads match the filters.")
         else:
-            st.caption("Call during business hours: 10h–12h30 or 15h–18h.")
+            st.caption("Ligar entre 10h–12h30 ou 15h–18h.")
+            for _, row in land.head(100).iterrows():
+                pid = str(row["place_id"])
+                col_a, col_b, col_c = st.columns([3, 2, 1.4])
+                col_a.write(f"**{row['name']}** — {row['city']} | {row['keyword']} | ⭐{row['rating']} ({int(row['reviews'])} reviews)")
+                col_b.write(f"☎️ `{row['phone']}` · prioridade **{row['priority']}**")
+                if col_c.button("📞 Chamei", key=f"oa_call_{pid}"):
+                    today_s = datetime.now().strftime("%Y-%m-%d")
+                    upsert_crm(
+                        pid, "contacted", today_s,
+                        (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
+                        "", "phone", 0, "", "Follow-up em 3 dias", "new",
+                        "Chamada efectuada via Outreach tab"
+                    )
+                    st.cache_data.clear()
+                    st.rerun()
+                st.divider()
+
             show_land = ["name","city","keyword","phone","rating","reviews","address","priority"]
             show_land = [c for c in show_land if c in land.columns]
-            st.dataframe(land[show_land].head(200), use_container_width=True, height=500, hide_index=True)
             csv_land = land[show_land].to_csv(index=False).encode("utf-8")
             st.download_button("⬇️ Export call list", csv_land, "outreach_calls.csv", "text/csv")
 
