@@ -171,8 +171,9 @@ def upsert_crm(place_id, status, contact_date, follow_up_date, notes,
         "next_action":   next_action,
     }
     if str(place_id) in crm["place_id"].values:
+        idx = crm.index[crm["place_id"] == str(place_id)][0]
         for k, v in row.items():
-            crm.loc[crm["place_id"] == str(place_id), k] = v
+            crm.at[idx, k] = v
     else:
         crm = pd.concat([crm, pd.DataFrame([row])], ignore_index=True)
     save_crm(crm)
