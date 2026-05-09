@@ -1,42 +1,25 @@
 'use client'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Sparkles, ArrowRight, Zap } from 'lucide-react'
+import { Check, ArrowRight, Sparkles } from 'lucide-react'
 
 const PLANS = [
   {
-    name:'Essencial',
-    desc:'Para espaços pequenos e limpezas de manutenção.',
+    name:'Essencial', desc:'Para espaços pequenos e manutenção regular.',
     priceOnce:99, priceRecurr:79,
-    color:'#38bdf8',
-    features:[
-      'Cozinha completa','Casas de banho (até 2)','Sala e quartos',
-      'Aspiração e lavagem de chão','2–3 horas de trabalho','1 profissional',
-    ],
+    features:['Cozinha completa','Casas de banho (até 2)','Sala e quartos','Aspiração e lavagem','2–3 horas · 1 profissional'],
     highlight: false,
   },
   {
-    name:'Standard',
-    desc:'A escolha mais popular para famílias e apartamentos.',
+    name:'Standard', desc:'A escolha mais popular para famílias.',
     priceOnce:149, priceRecurr:119,
-    color:'#34d399',
-    features:[
-      'Tudo do plano Essencial','Arrumação e organização','Janelas interiores',
-      'Interior de micro-ondas e frigorífico','4–5 horas de trabalho','2 profissionais',
-      'Relatório fotográfico',
-    ],
+    features:['Tudo do Essencial','Arrumação e organização','Janelas interiores','Interior de electrodomésticos','4–5 horas · 2 profissionais','Relatório fotográfico'],
     highlight: true,
   },
   {
-    name:'Premium',
-    desc:'Limpeza total com atenção a cada detalhe.',
+    name:'Premium', desc:'Limpeza total sem deixar nada por fazer.',
     priceOnce:219, priceRecurr:179,
-    color:'#818cf8',
-    features:[
-      'Tudo do plano Standard','Limpeza de janelas exterior (R/C)','Interior de forno',
-      'Armários e prateleiras','Varandas e espaços exteriores','6+ horas de trabalho',
-      '2–3 profissionais','Garantia extendida 7 dias',
-    ],
+    features:['Tudo do Standard','Janelas exteriores (R/C)','Varandas e exterior','6+ horas · 2–3 profissionais','Garantia extendida 7 dias'],
     highlight: false,
   },
 ]
@@ -45,40 +28,38 @@ export default function Pricing() {
   const [recurring, setRecurring] = useState(false)
 
   return (
-    <section id="pricing" className="py-32 bg-[#06090f]">
+    <section id="pricing" className="py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-        <div className="text-center mb-16">
-          <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-            className="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 rounded-full px-3 py-1.5 mb-5"
-          >
-            <Zap className="w-3 h-3 text-sky-400"/>
-            <span className="font-sans text-sky-300 text-xs tracking-wide">Preços transparentes</span>
-          </motion.div>
-          <motion.h2 initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-            transition={{ duration:0.7 }}
-            className="font-display font-extrabold text-white mb-4" style={{ fontSize:'clamp(1.9rem,3.5vw,2.8rem)' }}>
+        <div className="text-center mb-14">
+          <motion.span initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
+            className="inline-block badge-light text-sky-700 font-sans text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
+            Preços transparentes
+          </motion.span>
+          <motion.h2 initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+            transition={{ duration:0.65 }}
+            className="font-display font-extrabold text-slate-900 mb-5" style={{ fontSize:'clamp(1.9rem,3.5vw,2.8rem)' }}>
             Escolha o seu plano
           </motion.h2>
 
           {/* Toggle */}
           <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-            transition={{ delay:0.2 }}
-            className="inline-flex items-center gap-4 mt-4"
-          >
-            <span className={`font-sans text-sm transition-colors ${!recurring?'text-white':'text-white/40'}`}>Única vez</span>
+            transition={{ delay:0.15 }}
+            className="inline-flex items-center gap-4">
+            <span className={`font-sans text-sm transition-colors ${!recurring?'text-slate-900 font-semibold':'text-slate-400'}`}>Única vez</span>
             <button onClick={()=>setRecurring(v=>!v)}
-              className={`relative w-14 h-7 rounded-full transition-all duration-300 ${recurring?'bg-gradient-to-r from-sky-500 to-emerald-500':'bg-white/10'}`}>
+              className={`relative w-13 h-7 rounded-full transition-colors duration-300 ${recurring?'bg-sky-600':'bg-slate-200'}`}
+              style={{ width:52, height:28 }}>
               <motion.div
-                animate={{ x: recurring ? 28 : 4 }}
+                animate={{ x: recurring ? 26 : 4 }}
                 transition={{ type:'spring', stiffness:500, damping:30 }}
-                className="absolute top-1 w-5 h-5 bg-white rounded-full shadow-md"
+                className="absolute top-1 w-5 h-5 bg-white rounded-full shadow"
               />
             </button>
-            <span className={`font-sans text-sm transition-colors ${recurring?'text-white':'text-white/40'}`}>
+            <span className={`font-sans text-sm transition-colors ${recurring?'text-slate-900 font-semibold':'text-slate-400'}`}>
               Recorrente
-              <span className="ml-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                Poupa 20%
+              <span className="ml-2 text-xs font-bold text-sky-600 bg-sky-50 border border-sky-100 px-2 py-0.5 rounded-full">
+                −20%
               </span>
             </span>
           </motion.div>
@@ -87,81 +68,78 @@ export default function Pricing() {
         <div className="grid md:grid-cols-3 gap-6">
           {PLANS.map((plan, i) => (
             <motion.div key={plan.name}
-              initial={{ opacity:0, y:28 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-              transition={{ duration:0.7, delay:i*0.12, ease:[0.22,1,0.36,1] }}
+              initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+              transition={{ duration:0.65, delay:i*0.1, ease:[0.22,1,0.36,1] }}
               className={`relative rounded-3xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 plan.highlight
-                  ? 'bg-gradient-to-b from-sky-500/15 to-emerald-500/5 border-2 border-sky-500/40 shadow-2xl shadow-sky-500/10'
-                  : 'card-glass hover:border-sky-500/15'
+                  ? 'bg-[#0f172a] shadow-2xl shadow-slate-900/20'
+                  : 'card hover:border-sky-200 hover:shadow-md hover:shadow-sky-50'
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-gradient-to-r from-sky-500 to-emerald-500 text-white font-display font-bold text-xs px-4 py-1.5 rounded-full shadow-lg">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-sky-600 text-white font-display font-bold text-xs px-4 py-1.5 rounded-full shadow">
                   <Sparkles className="w-3 h-3"/> Mais popular
                 </div>
               )}
 
               <div className="mb-6">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background:`${plan.color}18`, border:`1px solid ${plan.color}30` }}>
-                  <Sparkles className="w-5 h-5" style={{ color:plan.color }}/>
-                </div>
-                <h3 className="font-display font-bold text-white text-xl mb-1">{plan.name}</h3>
-                <p className="font-sans text-white/40 text-sm">{plan.desc}</p>
+                <h3 className={`font-display font-bold text-xl mb-1 ${plan.highlight?'text-white':'text-slate-900'}`}>{plan.name}</h3>
+                <p className={`font-sans text-sm ${plan.highlight?'text-white/40':'text-slate-400'}`}>{plan.desc}</p>
               </div>
 
-              {/* Price */}
-              <div className="mb-8 pb-8 border-b border-white/[0.07]">
+              <div className={`mb-7 pb-7 border-b ${plan.highlight?'border-white/10':'border-slate-100'}`}>
                 <div className="flex items-end gap-1">
-                  <span className="font-display font-extrabold text-white" style={{ fontSize:'clamp(2.5rem,5vw,3.5rem)', lineHeight:1 }}>
+                  <span className={`font-display font-extrabold leading-none ${plan.highlight?'text-white':'text-slate-900'}`}
+                    style={{ fontSize:'clamp(2.4rem,4vw,3rem)' }}>
                     <AnimatePresence mode="wait">
                       <motion.span key={recurring?'r':'o'}
-                        initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-8 }}
-                        transition={{ duration:0.2 }}
-                        className="inline-block"
-                      >
+                        initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-6 }}
+                        transition={{ duration:0.2 }} className="inline-block">
                         €{recurring ? plan.priceRecurr : plan.priceOnce}
                       </motion.span>
                     </AnimatePresence>
                   </span>
-                  <span className="font-sans text-white/35 text-sm mb-2">{recurring?'/mês':'/ vez'}</span>
+                  <span className={`font-sans text-sm mb-2 ${plan.highlight?'text-white/30':'text-slate-400'}`}>
+                    {recurring?'/mês':'/ vez'}
+                  </span>
                 </div>
                 {recurring && (
-                  <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} className="font-sans text-emerald-400 text-xs mt-1">
-                    Antes €{plan.priceOnce} — Poupa €{plan.priceOnce-plan.priceRecurr}/mês
+                  <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
+                    className="font-sans text-sky-400 text-xs mt-1">
+                    Poupa €{plan.priceOnce-plan.priceRecurr}/mês vs. única vez
                   </motion.div>
                 )}
               </div>
 
-              {/* Features */}
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map(f => (
                   <li key={f} className="flex items-start gap-3">
-                    <div className="w-4 h-4 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center"
-                      style={{ background:`${plan.color}20` }}>
-                      <Check className="w-2.5 h-2.5" style={{ color:plan.color }}/>
+                    <div className={`w-4 h-4 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center ${
+                      plan.highlight ? 'bg-sky-500/20' : 'bg-sky-50'
+                    }`}>
+                      <Check className="w-2.5 h-2.5 text-sky-500"/>
                     </div>
-                    <span className="font-sans text-white/55 text-sm leading-snug">{f}</span>
+                    <span className={`font-sans text-sm ${plan.highlight?'text-white/55':'text-slate-500'}`}>{f}</span>
                   </li>
                 ))}
               </ul>
 
               <a href="#contact"
-                className={`group flex items-center justify-center gap-2 font-display font-bold text-sm py-4 rounded-2xl transition-all duration-300 ${
+                className={`group flex items-center justify-center gap-2 font-display font-bold text-sm py-4 rounded-2xl transition-all duration-200 ${
                   plan.highlight
-                    ? 'bg-gradient-to-r from-sky-500 to-emerald-500 text-white hover:shadow-xl hover:shadow-sky-500/30 hover:scale-105'
-                    : 'bg-white/[0.06] text-white hover:bg-white/10 border border-white/10'
+                    ? 'bg-sky-600 hover:bg-sky-500 text-white shadow-md shadow-sky-900/30'
+                    : 'bg-slate-900 hover:bg-sky-600 text-white'
                 }`}>
                 Escolher {plan.name}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"/>
               </a>
             </motion.div>
           ))}
         </div>
 
         <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-          className="text-center font-sans text-white/20 text-sm mt-8">
-          Todos os planos incluem produtos e equipamento. Sem custos escondidos. Fatura incluída.
+          className="text-center font-sans text-slate-400 text-sm mt-8">
+          Todos os planos incluem material e produtos. Fatura emitida. Sem custos escondidos.
         </motion.p>
       </div>
     </section>

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt" className={`${syne.variable} ${inter.variable}`}>
-      <body className="bg-[#06090f] text-white antialiased overflow-x-hidden">
+      <body className="bg-white text-[#0f172a] antialiased overflow-x-hidden">
         {children}
       </body>
     </html>
