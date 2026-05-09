@@ -170,12 +170,8 @@ def upsert_crm(place_id, status, contact_date, follow_up_date, notes,
         "lost_reason":   lost_reason,
         "next_action":   next_action,
     }
-    if str(place_id) in crm["place_id"].values:
-        idx = crm.index[crm["place_id"] == str(place_id)][0]
-        for k, v in row.items():
-            crm.at[idx, k] = v
-    else:
-        crm = pd.concat([crm, pd.DataFrame([row])], ignore_index=True)
+    crm = crm[crm["place_id"] != str(place_id)].reset_index(drop=True)
+    crm = pd.concat([crm, pd.DataFrame([row])], ignore_index=True)
     save_crm(crm)
     if old_status != status:
         log_activity(place_id, "mudança_status", f"{STATUS_EMOJI.get(old_status,'')} {old_status} → {STATUS_EMOJI.get(status,'')} {status}", old_status, status, channel)
