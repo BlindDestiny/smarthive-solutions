@@ -99,7 +99,7 @@ export default function Menu() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35 }}
-            className="grid md:grid-cols-2 gap-0"
+            className="grid md:grid-cols-2 gap-x-16"
           >
             {ITEMS[active].map((item, i) => (
               <motion.div
@@ -107,9 +107,9 @@ export default function Menu() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className="group flex items-start justify-between py-5 border-b border-white/[0.06] hover:bg-white/[0.02] px-3 -mx-3 transition-colors duration-300 cursor-default"
+                className="group flex items-start justify-between gap-6 py-5 border-b border-white/[0.06] hover:bg-white/[0.02] px-3 -mx-3 transition-colors duration-300 cursor-default"
               >
-                <div className="flex-1 pr-6">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <span className="font-serif text-lg text-white group-hover:text-[#00a651] transition-colors duration-300">
                       {item.name}

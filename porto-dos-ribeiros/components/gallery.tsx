@@ -10,7 +10,7 @@ const IMAGES = [
   { url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&auto=format&fit=crop', alt: 'Jantar romântico',         aspect: 'aspect-[4/5]',   col: 'col-span-1' },
   { url: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80&auto=format&fit=crop', alt: 'Pratos especiais',         aspect: 'aspect-square',  col: 'col-span-1' },
   { url: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80&auto=format&fit=crop', alt: 'Comida colorida',          aspect: 'aspect-square',  col: 'col-span-1' },
-  { url: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3df1?w=800&q=80&auto=format&fit=crop', alt: 'Ambiente do restaurante',  aspect: 'aspect-[4/5]',   col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80&auto=format&fit=crop', alt: 'Ambiente do restaurante',  aspect: 'aspect-[4/5]',   col: 'col-span-1' },
 ]
 
 export default function Gallery() {
