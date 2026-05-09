@@ -12,6 +12,18 @@ body { -webkit-font-smoothing: antialiased; }
 
 ::selection { background: rgba(56,189,248,0.2); color:#fff; }
 
+/* Fix Syne font stretch at heavy weights */
+.font-display {
+  letter-spacing: -0.025em;
+  font-feature-settings: 'kern' 1;
+}
+
+/* Constrain reading width */
+.prose-width { max-width: 38ch; }
+
+/* Balance headings */
+h1, h2, h3 { text-wrap: balance; }
+
 .gradient-text {
   background: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
   -webkit-background-clip: text;

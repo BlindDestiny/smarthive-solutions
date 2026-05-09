@@ -8,7 +8,7 @@ const SERVICES = [
     desc:'Limpeza completa da sua casa com atenção a cada detalhe. Cozinha, casas de banho, quartos e salas reluzentes.',
     features:['Produtos eco-friendly','Equipas certificadas','Agendamento flexível'],
     accent:'#38bdf8', size:'lg',
-    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop',
+    img:'https://images.unsplash.com/photo-1527515637462-cff94ead201b?w=900&q=85&auto=format&fit=crop',
   },
   {
     icon: Building2, label:'Escritórios & Comercial',
@@ -58,7 +58,7 @@ export default function Services() {
             </motion.div>
             <motion.h2 initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ duration:0.7 }}
-              className="font-display font-extrabold text-white" style={{ fontSize:'clamp(2rem,4vw,3.5rem)' }}>
+              className="font-display font-extrabold text-white" style={{ fontSize:'clamp(1.9rem,3.5vw,2.8rem)' }}>
               Serviços para cada<br/>
               <span className="gradient-text">necessidade</span>
             </motion.h2>

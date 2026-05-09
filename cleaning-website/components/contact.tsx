@@ -34,7 +34,7 @@ export default function Contact() {
 
             <motion.h2 initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ duration:0.7 }}
-              className="font-display font-extrabold text-white mb-5" style={{ fontSize:'clamp(2rem,4vw,3rem)' }}>
+              className="font-display font-extrabold text-white mb-5" style={{ fontSize:'clamp(1.9rem,3.5vw,2.8rem)' }}>
               Orçamento grátis<br/>
               <span className="gradient-text">em 2 minutos</span>
             </motion.h2>

@@ -27,12 +27,12 @@ export default function Process() {
           </motion.div>
           <motion.h2 initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.7 }}
-            className="font-display font-extrabold text-[#06090f] mb-4" style={{ fontSize:'clamp(2rem,4vw,3rem)' }}>
+            className="font-display font-extrabold text-[#06090f] mb-4" style={{ fontSize:'clamp(2rem,3.5vw,2.8rem)' }}>
             Pronto em 4 passos
           </motion.h2>
           <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
             transition={{ delay:0.2 }}
-            className="font-sans text-[#06090f]/50 text-lg max-w-md mx-auto">
+            className="font-sans text-[#06090f]/50 text-base max-w-sm mx-auto">
             Do pedido ao espaço limpo — sem complicações, sem surpresas.
           </motion.p>
         </div>
@@ -72,7 +72,7 @@ export default function Process() {
                 </div>
 
                 <h3 className="font-display font-bold text-[#06090f] text-lg mb-2">{step.title}</h3>
-                <p className="font-sans text-[#06090f]/45 text-sm leading-relaxed">{step.desc}</p>
+                <p className="font-sans text-[#06090f]/45 text-sm leading-relaxed max-w-[180px] mx-auto">{step.desc}</p>
               </motion.div>
             ))}
           </div>
