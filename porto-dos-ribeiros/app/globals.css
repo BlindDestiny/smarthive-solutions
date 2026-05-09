@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #0a0f08; }
+::-webkit-scrollbar-thumb { background: #00a651; }
+
+::selection { background: rgba(0,166,81,0.25); color: #fff; }
+
+.marquee-wrapper:hover .animate-marquee,
+.marquee-wrapper:hover .animate-marquee2 {
+  animation-play-state: paused;
+}
