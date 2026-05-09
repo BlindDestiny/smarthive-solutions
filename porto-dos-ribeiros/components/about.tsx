@@ -32,8 +32,8 @@ export default function About() {
           >
             <div className="relative aspect-[4/5] overflow-hidden">
               <Image
-                src="https://picsum.photos/seed/ribeiros-about/800/1000"
-                alt="Porto dos Ribeiros"
+                src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800&q=80&auto=format&fit=crop"
+                alt="Porto dos Ribeiros — interior"
                 fill className="object-cover brightness-70"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f08]/80 via-transparent to-transparent" />

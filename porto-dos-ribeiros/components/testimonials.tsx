@@ -16,12 +16,12 @@ const ROW2 = [...REVIEWS].reverse()
 
 function Card({ r }: { r: typeof REVIEWS[0] }) {
   return (
-    <div className="flex-shrink-0 w-80 bg-[#0f1a0e] border border-white/[0.07] p-6 mx-3 hover:border-[#00a651]/30 transition-colors duration-300">
+    <div className="flex-shrink-0 w-72 bg-[#0f1a0e] border border-white/[0.07] p-6 mx-3 hover:border-[#00a651]/30 transition-colors duration-300 whitespace-normal align-top">
       <div className="flex items-center justify-between mb-3">
         <div className="text-[#FFD700] text-sm">{'★'.repeat(r.stars)}</div>
         <span className="text-lg">{r.lang}</span>
       </div>
-      <p className="font-sans text-white/60 text-sm leading-relaxed mb-4">"{r.quote}"</p>
+      <p className="font-sans text-white/60 text-sm leading-relaxed mb-4 break-words">"{r.quote}"</p>
       <div>
         <div className="font-serif text-white text-sm font-semibold">{r.name}</div>
         <div className="font-sans text-white/25 text-[10px] tracking-wide mt-0.5">{r.role}</div>

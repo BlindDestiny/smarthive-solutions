@@ -2,14 +2,15 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
+// Real Unsplash restaurant & food photos
 const IMAGES = [
-  { seed: 'ribeiros-g1', aspect: 'aspect-square',  col: 'col-span-1' },
-  { seed: 'ribeiros-g2', aspect: 'aspect-[4/5]',   col: 'col-span-1' },
-  { seed: 'ribeiros-g3', aspect: 'aspect-[16/9]',  col: 'col-span-2' },
-  { seed: 'ribeiros-g4', aspect: 'aspect-square',  col: 'col-span-1' },
-  { seed: 'ribeiros-g5', aspect: 'aspect-[3/4]',   col: 'col-span-1' },
-  { seed: 'ribeiros-g6', aspect: 'aspect-square',  col: 'col-span-1' },
-  { seed: 'ribeiros-g7', aspect: 'aspect-square',  col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop', alt: 'Interior do restaurante',  aspect: 'aspect-[16/9]', col: 'col-span-2' },
+  { url: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80&auto=format&fit=crop', alt: 'Prato principal',           aspect: 'aspect-square',  col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80&auto=format&fit=crop', alt: 'Mesa de comida',           aspect: 'aspect-square',  col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&auto=format&fit=crop', alt: 'Jantar romântico',         aspect: 'aspect-[4/5]',   col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80&auto=format&fit=crop', alt: 'Pratos especiais',         aspect: 'aspect-square',  col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80&auto=format&fit=crop', alt: 'Comida colorida',          aspect: 'aspect-square',  col: 'col-span-1' },
+  { url: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3df1?w=800&q=80&auto=format&fit=crop', alt: 'Ambiente do restaurante',  aspect: 'aspect-[4/5]',   col: 'col-span-1' },
 ]
 
 export default function Gallery() {
@@ -36,7 +37,7 @@ export default function Gallery() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {IMAGES.map((img, i) => (
             <motion.div
-              key={img.seed}
+              key={i}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -44,8 +45,8 @@ export default function Gallery() {
               className={`group relative overflow-hidden ${img.aspect} ${img.col}`}
             >
               <Image
-                src={`https://picsum.photos/seed/${img.seed}/800/800`}
-                alt="Porto dos Ribeiros"
+                src={img.url}
+                alt={img.alt}
                 fill
                 className="object-cover brightness-70 group-hover:scale-105 group-hover:brightness-80 transition-all duration-700"
               />
