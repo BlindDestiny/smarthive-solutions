@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const CATEGORIES = ['Signature', 'Spirits', 'Wines', 'Zero Proof'] as const
@@ -40,48 +40,31 @@ const ITEMS: Record<Cat, { name: string; desc: string; price: string; badge?: st
 
 export default function Menu() {
   const [active, setActive] = useState<Cat>('Signature')
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const init = async () => {
-      const { gsap }          = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
-      if (!sectionRef.current) return
-      const ctx = gsap.context(() => {
-        gsap.from('.menu-header', {
-          scrollTrigger: { trigger: '.menu-header', start: 'top 85%' },
-          opacity: 0, y: 35, duration: 0.9,
-        })
-        gsap.from('.menu-tabs', {
-          scrollTrigger: { trigger: '.menu-tabs', start: 'top 85%' },
-          opacity: 0, y: 20, duration: 0.7, delay: 0.15,
-        })
-      }, sectionRef)
-      return () => ctx.revert()
-    }
-    init()
-  }, [])
 
   return (
-    <section ref={sectionRef} id="menu" className="py-32 bg-[#050505] relative">
+    <section id="menu" className="py-32 bg-[#050505] relative">
       <div className="absolute top-0 left-0 right-0 h-px divider-fire" />
 
       <div className="max-w-6xl mx-auto px-8 lg:px-16">
 
-        <div className="menu-header text-center mb-20">
-          <span className="font-display text-[9px] tracking-[0.5em] text-[#e84800] uppercase block mb-5">
+        <div className="text-center mb-20">
+          <motion.span
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            className="font-display text-[9px] tracking-[0.5em] text-[#e84800] uppercase block mb-5">
             Curated Selection
-          </span>
-          <h2 className="font-display font-bold text-[#ede8e4]"
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="font-display font-bold text-[#ede8e4]"
             style={{ fontSize: 'clamp(2.2rem, 4vw, 3.5rem)' }}>
             The Menu
-          </h2>
+          </motion.h2>
           <div className="mt-5 mx-auto w-12 h-px bg-[#e84800]/50" />
         </div>
 
         {/* Tabs */}
-        <div className="menu-tabs flex justify-center gap-1 mb-16 glass p-1.5 max-w-md mx-auto" style={{ borderRadius: 2 }}>
+        <div className="flex justify-center gap-1 mb-16 glass p-1.5 max-w-md mx-auto" style={{ borderRadius: 2 }}>
           {CATEGORIES.map(cat => (
             <button key={cat} onClick={() => setActive(cat)}
               className={`flex-1 font-display text-[9px] tracking-[0.2em] uppercase py-3 transition-all duration-300 ${
