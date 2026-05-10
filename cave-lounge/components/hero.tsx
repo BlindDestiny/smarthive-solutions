@@ -249,76 +249,67 @@ export default function Hero() {
     let ctx: { revert: () => void } | null = null
 
     const init = async () => {
-      const { gsap }          = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
+      const { gsap } = await import('gsap')
       if (!sectionRef.current) return
 
       ctx = gsap.context(() => {
         /* ── Initial hidden state ── */
-        gsap.set('.mg-glow',          { opacity: 0, scale: 0.3 })
-        gsap.set('.mg-base',          { opacity: 0, scaleX: 0, transformOrigin: 'center' })
-        gsap.set('.mg-stem',          { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
-        gsap.set('.mg-bowl-back',     { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
-        gsap.set('.mg-bowl-outline',  { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
-        gsap.set('.mg-rim',           { opacity: 0, scaleX: 0, transformOrigin: 'center' })
-        gsap.set('.mg-liquid',        { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
-        gsap.set('.mg-liquid-surface',{ opacity: 0 })
-        gsap.set('.mg-shaker',        { opacity: 0, y: -60, rotate: 0 })
-        gsap.set('.mg-pour',          { opacity: 0, scaleY: 0, transformOrigin: 'top' })
-        gsap.set('.mg-garnish',       { opacity: 0, y: -40, x: -10, rotate: -30 })
-        gsap.set('.mg-smoke-a',       { opacity: 0 })
-        gsap.set('.mg-smoke-b',       { opacity: 0 })
-        gsap.set('.h-line-1',         { opacity: 0, y: 40 })
-        gsap.set('.h-line-2',         { opacity: 0, y: 40 })
-        gsap.set('.h-line-3',         { opacity: 0, y: 30 })
-        gsap.set('.h-desc',           { opacity: 0, y: 25 })
-        gsap.set('.h-ctas',           { opacity: 0, y: 20 })
+        gsap.set('.mg-glow',           { opacity: 0, scale: 0.3 })
+        gsap.set('.mg-base',           { opacity: 0, scaleX: 0, transformOrigin: 'center' })
+        gsap.set('.mg-stem',           { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
+        gsap.set('.mg-bowl-back',      { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
+        gsap.set('.mg-bowl-outline',   { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
+        gsap.set('.mg-rim',            { opacity: 0, scaleX: 0, transformOrigin: 'center' })
+        gsap.set('.mg-liquid',         { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
+        gsap.set('.mg-liquid-surface', { opacity: 0 })
+        gsap.set('.mg-shaker',         { opacity: 0, y: -60, rotate: 0 })
+        gsap.set('.mg-pour',           { opacity: 0, scaleY: 0, transformOrigin: 'top' })
+        gsap.set('.mg-garnish',        { opacity: 0, y: -40, x: -10, rotate: -30 })
+        gsap.set('.mg-smoke-a',        { opacity: 0 })
+        gsap.set('.mg-smoke-b',        { opacity: 0 })
+        gsap.set('.h-line-1',          { opacity: 0, y: 40 })
+        gsap.set('.h-line-2',          { opacity: 0, y: 40 })
+        gsap.set('.h-line-3',          { opacity: 0, y: 30 })
+        gsap.set('.h-desc',            { opacity: 0, y: 25 })
+        gsap.set('.h-ctas',            { opacity: 0, y: 20 })
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: '+=240%',
-            scrub: 1.6,
-            pin: true,
-          },
-        })
+        /* ── Auto-play timeline (no scroll trigger) ── */
+        const tl = gsap.timeline({ delay: 0.3 })
 
         tl
-          /* 1 — Glass materialises from base up */
-          .to('.mg-base',         { opacity: 1, scaleX: 1, duration: 0.25, ease: 'power2.out' })
-          .to('.mg-stem',         { opacity: 1, scaleY: 1, duration: 0.35, ease: 'power3.out' }, '-=0.05')
-          .to('.mg-bowl-back',    { opacity: 1, scaleY: 1, duration: 0.45, ease: 'power3.out' }, '-=0.1')
-          .to('.mg-bowl-outline', { opacity: 1, scaleY: 1, duration: 0.45, ease: 'power3.out' }, '-=0.4')
-          .to('.mg-rim',          { opacity: 1, scaleX: 1, duration: 0.3,  ease: 'back.out(2)' }, '-=0.1')
+          /* 1 — Glass builds from base up */
+          .to('.mg-base',          { opacity: 1, scaleX: 1, duration: 0.5, ease: 'power2.out' })
+          .to('.mg-stem',          { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out' }, '-=0.15')
+          .to('.mg-bowl-back',     { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power3.out' }, '-=0.2')
+          .to('.mg-bowl-outline',  { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power3.out' }, '-=0.65')
+          .to('.mg-rim',           { opacity: 1, scaleX: 1, duration: 0.45, ease: 'back.out(2)' }, '-=0.15')
 
-          /* 2 — Shaker appears, tilts to pour */
-          .to('.mg-shaker', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, '+=0.05')
-          .to('.mg-shaker', { rotate: -42, x: -12, duration: 0.35, ease: 'power2.inOut' }, '-=0.05')
+          /* 2 — Shaker descends and tilts */
+          .to('.mg-shaker', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '+=0.1')
+          .to('.mg-shaker', { rotate: -42, x: -12, duration: 0.55, ease: 'power2.inOut' })
 
-          /* 3 — Pour stream + liquid fills */
-          .to('.mg-pour',          { opacity: 1, scaleY: 1, duration: 0.25 }, '-=0.1')
-          .to('.mg-liquid',        { opacity: 1, scaleY: 1, duration: 0.45, ease: 'power2.out' }, '-=0.1')
-          .to('.mg-liquid-surface',{ opacity: 1, duration: 0.2 }, '-=0.05')
+          /* 3 — Pour stream then liquid fills */
+          .to('.mg-pour',           { opacity: 1, scaleY: 1, duration: 0.35 }, '-=0.15')
+          .to('.mg-liquid',         { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power2.out' }, '-=0.2')
+          .to('.mg-liquid-surface', { opacity: 1, duration: 0.3 }, '-=0.1')
 
-          /* 4 — Shaker & stream disappear */
-          .to(['.mg-shaker', '.mg-pour'], { opacity: 0, duration: 0.2 }, '-=0.05')
+          /* 4 — Shaker & stream exit */
+          .to(['.mg-shaker', '.mg-pour'], { opacity: 0, duration: 0.3 }, '-=0.1')
 
-          /* 5 — Garnish drops in */
-          .to('.mg-garnish', { opacity: 1, y: 0, x: 0, rotate: 0, duration: 0.45, ease: 'elastic.out(1, 0.6)' }, '-=0.1')
+          /* 5 — Garnish elastic drop */
+          .to('.mg-garnish', { opacity: 1, y: 0, x: 0, rotate: 0, duration: 0.7, ease: 'elastic.out(1, 0.55)' }, '-=0.15')
 
-          /* 6 — Smoke + glow */
-          .to('.mg-glow',    { opacity: 1, scale: 1, duration: 0.4 }, '-=0.2')
-          .to('.mg-smoke-a', { opacity: 0.9, duration: 0.35 }, '-=0.2')
-          .to('.mg-smoke-b', { opacity: 0.7, duration: 0.35 }, '-=0.28')
+          /* 6 — Atmosphere */
+          .to('.mg-glow',    { opacity: 1, scale: 1, duration: 0.6 }, '-=0.3')
+          .to('.mg-smoke-a', { opacity: 0.9, duration: 0.5 }, '-=0.3')
+          .to('.mg-smoke-b', { opacity: 0.7, duration: 0.5 }, '-=0.4')
 
-          /* 7 — Text sweeps in */
-          .to('.h-line-1', { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, '-=0.25')
-          .to('.h-line-2', { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, '-=0.3')
-          .to('.h-line-3', { opacity: 1, y: 0, duration: 0.4,  ease: 'power3.out' }, '-=0.3')
-          .to('.h-desc',   { opacity: 1, y: 0, duration: 0.35 }, '-=0.25')
-          .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.35 }, '-=0.22')
+          /* 7 — Text reveal */
+          .to('.h-line-1', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35')
+          .to('.h-line-2', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.45')
+          .to('.h-line-3', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.45')
+          .to('.h-desc',   { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.5 }, '-=0.35')
 
       }, sectionRef)
     }
