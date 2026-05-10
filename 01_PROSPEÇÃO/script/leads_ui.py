@@ -134,39 +134,42 @@ _KEYWORD_CAT = {
 
 _EMAIL_INTROS = {
     "saude": (
-        "Os seus potenciais pacientes pesquisam clínicas e profissionais de saúde online antes de "
-        "marcar qualquer consulta. Sem website, o <strong>{name}</strong> em {city} não aparece "
-        "nessas pesquisas — e perde marcações para concorrentes que já têm presença digital."
+        "Vi o website do <strong>{name}</strong> e tenho algumas sugestões que poderiam aumentar "
+        "o número de marcações online. A maioria das clínicas em {city} perde pacientes porque o "
+        "site não aparece nas primeiras posições do Google — e quando aparece, não converte visitas "
+        "em contactos."
     ),
     "restauracao": (
-        "Quando alguém procura onde comer em {city}, a primeira coisa que faz é pesquisar no Google. "
-        "Sem website com menu, horários e fotos, o <strong>{name}</strong> fica invisível para quem "
-        "decide onde jantar online."
+        "Passei pelo website do <strong>{name}</strong> em {city}. Com {reviews} avaliações no "
+        "Google, têm claramente uma boa reputação — mas o vosso site pode estar a deixar escapar "
+        "reservas. Um website optimizado com menu online, fotos e botão de reserva directa faz "
+        "uma diferença enorme na conversão."
     ),
     "beleza": (
-        "Os seus clientes pesquisam preços, serviços e disponibilidade online antes de reservar. "
-        "Sem website, o <strong>{name}</strong> em {city} perde reservas para concorrentes que "
-        "já aparecem no topo do Google."
+        "Vi o website do <strong>{name}</strong> em {city}. Com {reviews} avaliações, têm muito "
+        "para mostrar — mas um site mais moderno com marcações online e galeria de trabalhos poderia "
+        "trazer significativamente mais clientes novos sem esforço adicional da vossa parte."
     ),
     "servico": (
-        "Quando alguém precisa de um serviço em {city}, a primeira coisa que faz é pesquisar no Google. "
-        "O <strong>{name}</strong> tem {reviews} avaliações — com um website optimizado poderia "
-        "estar no topo dessas pesquisas e receber muito mais contactos."
+        "Vi o website do <strong>{name}</strong> em {city} — {reviews} avaliações é excelente! "
+        "Muitos negócios de serviços perdem orçamentos porque o site não aparece quando alguém "
+        "pesquisa no Google. Um redesign optimizado para SEO local pode mudar isso rapidamente."
     ),
     "eventos": (
-        "Clientes que procuram fotógrafos e serviços de eventos em {city} fazem sempre uma pesquisa "
-        "online primeiro. Um portfólio profissional online é indispensável para converter interesse "
-        "em contratações para o <strong>{name}</strong>."
+        "Vi o website do <strong>{name}</strong> e o vosso trabalho parece muito bom. Com "
+        "{reviews} avaliações em {city}, merecem um site que mostre o portfólio da melhor forma "
+        "e converta visitantes em clientes — formulários de contacto rápidos, galeria optimizada "
+        "e bom posicionamento no Google."
     ),
     "negocios": (
-        "Os seus potenciais clientes pesquisam online antes de contactar qualquer empresa. "
-        "O <strong>{name}</strong> em {city} com {reviews} avaliações merece uma presença digital "
-        "que reflicta a qualidade do serviço e capte novos contactos."
+        "Vi o website do <strong>{name}</strong> em {city}. Com {reviews} avaliações no Google, "
+        "têm claramente credibilidade no mercado — mas o site pode estar a perder potenciais "
+        "clientes que pesquisam online e não encontram de imediato o que procuram."
     ),
     "default": (
-        "Vi o <strong>{name}</strong> no Google Maps em {city} — {reviews} avaliações, muito bom! "
-        "Reparei que ainda não têm website, e hoje a maioria dos clientes pesquisa online antes "
-        "de contactar qualquer negócio."
+        "Vi o website do <strong>{name}</strong> no Google Maps em {city} — {reviews} avaliações, "
+        "muito bom! Trabalho com negócios locais a melhorar a sua presença online e notei algumas "
+        "oportunidades para o vosso site aparecer melhor no Google e converter mais visitantes."
     ),
 }
 
@@ -177,7 +180,7 @@ def build_email(name: str, city: str, reviews, keyword: str):
         intro = intro.format(name=name, city=city, reviews=int(reviews or 0), keyword=keyword or "negócio")
     except Exception:
         intro = intro.format(name=name, city=city, reviews=0, keyword="negócio")
-    subject = f"Website para o {name} — mais clientes online"
+    subject = f"Ideia rápida para o site do {name}"
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"></head>
 <body style="font-family:Arial,sans-serif;max-width:580px;margin:0 auto;padding:24px;color:#1e293b;background:#ffffff;line-height:1.6;">
@@ -188,15 +191,15 @@ def build_email(name: str, city: str, reviews, keyword: str):
   <p style="font-size:15px;">Olá,</p>
   <p style="font-size:15px;">{intro}</p>
   <div style="background:#f0f9ff;border-left:4px solid #0284c7;padding:16px 20px;margin:24px 0;border-radius:0 8px 8px 0;">
-    <p style="margin:0 0 8px;font-weight:700;font-size:14px;color:#0369a1;">O que fazemos:</p>
+    <p style="margin:0 0 8px;font-weight:700;font-size:14px;color:#0369a1;">O que podemos melhorar:</p>
     <ul style="margin:0;padding-left:18px;font-size:13px;color:#0f172a;">
-      <li>Website profissional optimizado para o Google</li>
-      <li>Adaptado para telemóvel (mobile-first)</li>
-      <li>Botão WhatsApp e formulário de contacto</li>
-      <li>Online em 7–10 dias úteis a partir de €399</li>
+      <li>SEO local — aparecer no topo do Google em {city}</li>
+      <li>Design moderno e rápido, optimizado para telemóvel</li>
+      <li>Botão WhatsApp, formulário e chamada para acção claros</li>
+      <li>Entrega em 7–10 dias úteis, sem interromper o vosso negócio</li>
     </ul>
   </div>
-  <p style="font-size:15px;">Posso mostrar exemplos do que já fizemos para negócios em {city}? Sem compromisso nenhum.</p>
+  <p style="font-size:15px;">Posso fazer uma análise rápida do vosso site e mostrar exactamente o que mudaria? Sem compromisso nenhum.</p>
   <p style="font-size:15px;">Basta responder a este email ou contactar via WhatsApp.</p>
   <div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:13px;color:#64748b;">
     <strong style="color:#0f172a;">Miguel Lourenço</strong><br>
