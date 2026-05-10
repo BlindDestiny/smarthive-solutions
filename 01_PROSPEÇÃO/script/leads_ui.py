@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import re
+import time
 import urllib.parse
 from datetime import datetime, timedelta
 
@@ -14,8 +15,12 @@ st.set_page_config(page_title="Lead Machine", layout="wide", page_icon="🚀")
 _DIR = os.path.dirname(os.path.abspath(__file__))
 MASTER_FILE   = os.path.join(_DIR, "leads_master.csv")
 CRM_FILE      = os.path.join(_DIR, "crm_data.csv")
-ACTIVITY_FILE = os.path.join(_DIR, "crm_activity.csv")
-SCORED_FILE   = os.path.join(_DIR, "leads_scored.csv")
+ACTIVITY_FILE  = os.path.join(_DIR, "crm_activity.csv")
+SCORED_FILE    = os.path.join(_DIR, "leads_scored.csv")
+EMAIL_LOG_FILE = os.path.join(_DIR, "email_log.csv")
+BREVO_API_KEY  = os.environ.get("BREVO_API_KEY", "")
+EMAIL_SENDER   = os.environ.get("EMAIL_SENDER",  "geral@smarthivesolutions.pt")
+EMAIL_SENDER_NAME = "Miguel — SmartHive Solutions"
 
 CRM_STATUSES = ["new","contacted","replied","interested","meeting","proposal","closed_won","closed_lost"]
 
@@ -108,6 +113,139 @@ def make_wa_link(phone, name, city, reviews):
     except Exception:
         msg = WA_TEMPLATE.format(name=name, city=city, reviews=0)
     return f"https://wa.me/351{d}?text={urllib.parse.quote(msg)}"
+
+# =============================================================
+# EMAIL HELPERS
+# =============================================================
+
+_KEYWORD_CAT = {
+    "dentist":"saude","clinic":"saude","physiotherapy":"saude","optician":"saude",
+    "restaurant":"restauracao","bakery":"restauracao","cafe":"restauracao","bar":"restauracao",
+    "spa":"beleza","gym":"beleza","barber":"beleza",
+    "plumber":"servico","electrician":"servico","locksmith":"servico",
+    "pest control":"servico","air conditioning repair":"servico",
+    "painting service":"servico","carpet cleaning":"servico",
+    "appliance repair":"servico","mechanic":"servico","cleaning service":"servico",
+    "wedding photographer":"eventos","event planning":"eventos","party rental":"eventos",
+    "real estate agency":"negocios","insurance agency":"negocios",
+    "accountant":"negocios","lawyer":"negocios","construction":"negocios",
+    "moving company":"negocios","transport service":"negocios","furniture delivery":"negocios",
+}
+
+_EMAIL_INTROS = {
+    "saude": (
+        "Os seus potenciais pacientes pesquisam clínicas e profissionais de saúde online antes de "
+        "marcar qualquer consulta. Sem website, o <strong>{name}</strong> em {city} não aparece "
+        "nessas pesquisas — e perde marcações para concorrentes que já têm presença digital."
+    ),
+    "restauracao": (
+        "Quando alguém procura onde comer em {city}, a primeira coisa que faz é pesquisar no Google. "
+        "Sem website com menu, horários e fotos, o <strong>{name}</strong> fica invisível para quem "
+        "decide onde jantar online."
+    ),
+    "beleza": (
+        "Os seus clientes pesquisam preços, serviços e disponibilidade online antes de reservar. "
+        "Sem website, o <strong>{name}</strong> em {city} perde reservas para concorrentes que "
+        "já aparecem no topo do Google."
+    ),
+    "servico": (
+        "Quando alguém precisa de um serviço em {city}, a primeira coisa que faz é pesquisar no Google. "
+        "O <strong>{name}</strong> tem {reviews} avaliações — com um website optimizado poderia "
+        "estar no topo dessas pesquisas e receber muito mais contactos."
+    ),
+    "eventos": (
+        "Clientes que procuram fotógrafos e serviços de eventos em {city} fazem sempre uma pesquisa "
+        "online primeiro. Um portfólio profissional online é indispensável para converter interesse "
+        "em contratações para o <strong>{name}</strong>."
+    ),
+    "negocios": (
+        "Os seus potenciais clientes pesquisam online antes de contactar qualquer empresa. "
+        "O <strong>{name}</strong> em {city} com {reviews} avaliações merece uma presença digital "
+        "que reflicta a qualidade do serviço e capte novos contactos."
+    ),
+    "default": (
+        "Vi o <strong>{name}</strong> no Google Maps em {city} — {reviews} avaliações, muito bom! "
+        "Reparei que ainda não têm website, e hoje a maioria dos clientes pesquisa online antes "
+        "de contactar qualquer negócio."
+    ),
+}
+
+def build_email(name: str, city: str, reviews, keyword: str):
+    cat   = _KEYWORD_CAT.get((keyword or "").lower(), "default")
+    intro = _EMAIL_INTROS.get(cat, _EMAIL_INTROS["default"])
+    try:
+        intro = intro.format(name=name, city=city, reviews=int(reviews or 0), keyword=keyword or "negócio")
+    except Exception:
+        intro = intro.format(name=name, city=city, reviews=0, keyword="negócio")
+    subject = f"Website para o {name} — mais clientes online"
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8"></head>
+<body style="font-family:Arial,sans-serif;max-width:580px;margin:0 auto;padding:24px;color:#1e293b;background:#ffffff;line-height:1.6;">
+  <div style="border-bottom:3px solid #0284c7;padding-bottom:14px;margin-bottom:24px;">
+    <span style="font-weight:700;font-size:17px;color:#0f172a;">SmartHive Solutions</span>
+    <span style="font-size:12px;color:#94a3b8;margin-left:10px;">Websites para negócios locais</span>
+  </div>
+  <p style="font-size:15px;">Olá,</p>
+  <p style="font-size:15px;">{intro}</p>
+  <div style="background:#f0f9ff;border-left:4px solid #0284c7;padding:16px 20px;margin:24px 0;border-radius:0 8px 8px 0;">
+    <p style="margin:0 0 8px;font-weight:700;font-size:14px;color:#0369a1;">O que fazemos:</p>
+    <ul style="margin:0;padding-left:18px;font-size:13px;color:#0f172a;">
+      <li>Website profissional optimizado para o Google</li>
+      <li>Adaptado para telemóvel (mobile-first)</li>
+      <li>Botão WhatsApp e formulário de contacto</li>
+      <li>Online em 7–10 dias úteis a partir de €399</li>
+    </ul>
+  </div>
+  <p style="font-size:15px;">Posso mostrar exemplos do que já fizemos para negócios em {city}? Sem compromisso nenhum.</p>
+  <p style="font-size:15px;">Basta responder a este email ou contactar via WhatsApp.</p>
+  <div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:13px;color:#64748b;">
+    <strong style="color:#0f172a;">Miguel Lourenço</strong><br>
+    SmartHive Solutions<br>
+    <a href="mailto:geral@smarthivesolutions.pt" style="color:#0284c7;text-decoration:none;">geral@smarthivesolutions.pt</a>
+  </div>
+</body></html>"""
+    return subject, html
+
+
+def send_brevo(api_key: str, to_email: str, to_name: str, subject: str, html: str) -> dict:
+    import requests as _r
+    try:
+        resp = _r.post(
+            "https://api.brevo.com/v3/smtp/email",
+            headers={"api-key": api_key, "content-type": "application/json"},
+            json={
+                "sender": {"name": EMAIL_SENDER_NAME, "email": EMAIL_SENDER},
+                "to": [{"email": to_email, "name": to_name}],
+                "subject": subject,
+                "htmlContent": html,
+            },
+            timeout=15,
+        )
+        if resp.status_code in (200, 201):
+            return {"ok": True}
+        return {"ok": False, "error": f"HTTP {resp.status_code}: {resp.text[:200]}"}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def load_email_log():
+    if os.path.exists(EMAIL_LOG_FILE):
+        return pd.read_csv(EMAIL_LOG_FILE, dtype={"place_id": str})
+    return pd.DataFrame(columns=["timestamp","place_id","email","subject","status","error"])
+
+
+def log_email_sent(place_id: str, email: str, subject: str, status: str, error: str = ""):
+    log = load_email_log()
+    new_row = pd.DataFrame([{
+        "timestamp": datetime.now().isoformat(),
+        "place_id":  str(place_id),
+        "email":     email,
+        "subject":   subject,
+        "status":    status,
+        "error":     error,
+    }])
+    pd.concat([log, new_row], ignore_index=True).to_csv(EMAIL_LOG_FILE, index=False)
+
 
 # =============================================================
 # CRM HELPERS
@@ -868,7 +1006,7 @@ with tab_outreach:
     oa_kw          = col_f2.selectbox("Keyword", ["All"] + avail_kws, key="oa_kw")
     oa_min_reviews = col_f3.slider("Min reviews", 0, 500, 0, key="oa_rev")
 
-    oa_tab_mobile, oa_tab_landline = st.tabs(["📱 WhatsApp / Mobile", "☎️ Call list / Landline"])
+    oa_tab_mobile, oa_tab_landline, oa_tab_email = st.tabs(["📱 WhatsApp / Mobile", "☎️ Call list / Landline", "📧 Email"])
 
     def filter_oa(base_df):
         out = base_df.copy()
@@ -1003,6 +1141,139 @@ with tab_outreach:
             show_land = [c for c in show_land if c in land.columns]
             csv_land = land[show_land].to_csv(index=False).encode("utf-8")
             st.download_button("⬇️ Export call list", csv_land, "outreach_calls.csv", "text/csv")
+
+
+    with oa_tab_email:
+        st.subheader("📧 Email Outreach")
+
+        # ── Settings ──
+        _bkey = st.session_state.get("brevo_key", BREVO_API_KEY)
+        _bsender = st.session_state.get("brevo_sender", EMAIL_SENDER)
+        with st.expander("⚙️ Configuração Brevo", expanded=not _bkey):
+            col_k, col_s = st.columns(2)
+            _bkey   = col_k.text_input("API Key Brevo", value=_bkey, type="password", key="brevo_key")
+            _bsender = col_s.text_input("Email remetente (verificado no Brevo)", value=_bsender, key="brevo_sender")
+            if not _bkey:
+                st.warning("Vai a **app.brevo.com → Settings → API Keys** e cola a chave aqui.  \n"
+                           "Conta gratuita: 300 emails/dia.")
+
+        st.divider()
+
+        # ── Build email leads list ──
+        email_log = load_email_log()
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        sent_pids  = set(email_log[email_log["status"] == "sent"]["place_id"].astype(str).tolist()) if len(email_log) else set()
+        sent_today = len(email_log[email_log["timestamp"].str.startswith(today_str) & (email_log["status"] == "sent")]) if len(email_log) else 0
+
+        em_leads = df[
+            df["email"].notna() &
+            (df["email"] != "") &
+            ~df["place_id"].astype(str).isin(sent_pids)
+        ].copy()
+
+        # ── Filters ──
+        col_f1, col_f2, col_f3 = st.columns(3)
+        em_city   = col_f1.selectbox("City",    ["All"] + sorted(em_leads["city"].dropna().unique().tolist()),    key="em_city")
+        em_kw     = col_f2.selectbox("Keyword", ["All"] + sorted(em_leads["keyword"].dropna().unique().tolist()), key="em_kw")
+        em_minrev = col_f3.slider("Min reviews", 0, 500, 0, key="em_rev")
+
+        if em_city != "All": em_leads = em_leads[em_leads["city"] == em_city]
+        if em_kw   != "All": em_leads = em_leads[em_leads["keyword"] == em_kw]
+        em_leads = em_leads[em_leads["reviews"] >= em_minrev]
+        em_leads = em_leads.sort_values("priority", ascending=False).reset_index(drop=True)
+
+        mc1, mc2, mc3 = st.columns(3)
+        mc1.metric("Leads por contactar", len(em_leads))
+        mc2.metric("Enviados hoje", sent_today)
+        mc3.metric("Total enviados", len(email_log[email_log["status"] == "sent"]) if len(email_log) else 0)
+
+        if len(em_leads) == 0:
+            st.info("Sem leads com email por contactar. Ajusta os filtros ou todos já foram enviados.")
+        else:
+            # ── Preview ──
+            with st.expander("👁️ Preview do email (primeiro lead)"):
+                sample = em_leads.iloc[0]
+                s_subj, s_html = build_email(sample["name"], sample["city"], sample.get("reviews", 0), sample.get("keyword", ""))
+                st.write(f"**Para:** {sample['email']}")
+                st.write(f"**Assunto:** {s_subj}")
+                st.components.v1.html(s_html, height=420, scrolling=True)
+
+            st.divider()
+
+            # ── Batch send ──
+            st.subheader("🚀 Envio em batch")
+            batch_n = st.slider("Quantos emails enviar agora", 5, 100, 20, key="em_batch_n")
+            batch   = em_leads.head(batch_n)
+
+            with st.expander(f"Ver os {len(batch)} leads do batch"):
+                for _, r in batch.iterrows():
+                    st.write(f"• **{r['name']}** ({r['city']}) · `{r['email']}` · {r['keyword']}")
+
+            if st.button(f"📤 Enviar {len(batch)} emails agora", type="primary", key="em_send_batch"):
+                if not _bkey:
+                    st.error("Adiciona a API Key do Brevo primeiro.")
+                else:
+                    prog      = st.progress(0, text="A enviar...")
+                    stat_area = st.empty()
+                    ok_n, fail_n = 0, 0
+                    today_s  = datetime.now().strftime("%Y-%m-%d")
+                    fu_s     = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")
+                    for i, (_, r) in enumerate(batch.iterrows()):
+                        pid   = str(r["place_id"])
+                        subj, html_body = build_email(r["name"], r["city"], r.get("reviews", 0), r.get("keyword", ""))
+                        result = send_brevo(_bkey, r["email"], r["name"], subj, html_body)
+                        if result["ok"]:
+                            ok_n += 1
+                            log_email_sent(pid, r["email"], subj, "sent")
+                            upsert_crm(pid, "contacted", today_s, fu_s, "", "email",
+                                       0, "", "Follow-up em 3 dias", "new",
+                                       f"Email enviado: {subj}")
+                        else:
+                            fail_n += 1
+                            log_email_sent(pid, r["email"], subj, "error", result.get("error", ""))
+                        prog.progress((i + 1) / len(batch), text=f"✅ {ok_n} enviados · ❌ {fail_n} erros")
+                        time.sleep(0.25)
+                    st.success(f"Batch concluído: **{ok_n} emails enviados** com sucesso!" +
+                               (f" ({fail_n} erros)" if fail_n else ""))
+                    st.cache_data.clear()
+                    st.rerun()
+
+            st.divider()
+
+            # ── Individual send ──
+            st.subheader("📬 Envio individual")
+            for _, r in em_leads.head(30).iterrows():
+                pid = str(r["place_id"])
+                ca, cb, cc, cd = st.columns([2.5, 2.2, 1.8, 1])
+                ca.write(f"**{r['name']}** · {r['city']}")
+                cb.write(f"📧 `{r['email']}`")
+                cc.write(r.get("keyword", ""))
+                if cd.button("Enviar", key=f"em_ind_{pid}"):
+                    if not _bkey:
+                        st.error("API Key em falta.")
+                    else:
+                        subj, html_body = build_email(r["name"], r["city"], r.get("reviews", 0), r.get("keyword", ""))
+                        res = send_brevo(_bkey, r["email"], r["name"], subj, html_body)
+                        if res["ok"]:
+                            log_email_sent(pid, r["email"], subj, "sent")
+                            upsert_crm(pid, "contacted", datetime.now().strftime("%Y-%m-%d"),
+                                       (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
+                                       "", "email", 0, "", "Follow-up em 3 dias", "new",
+                                       f"Email enviado: {subj}")
+                            st.success(f"Enviado para {r['email']}")
+                            st.cache_data.clear()
+                            st.rerun()
+                        else:
+                            st.error(f"Erro: {res['error']}")
+                st.divider()
+
+            # ── Email log ──
+            if len(email_log) > 0:
+                with st.expander(f"📋 Histórico de emails enviados ({len(email_log[email_log['status']=='sent'])} enviados)"):
+                    st.dataframe(
+                        email_log.sort_values("timestamp", ascending=False).head(100),
+                        use_container_width=True
+                    )
 
 
 # ═══════════════════════════════════════════════════════════════
