@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Clock, Calendar } from 'lucide-react'
 
@@ -36,99 +36,83 @@ const EVENTS = [
 ]
 
 export default function Events() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const init = async () => {
-      const { gsap }          = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
-      if (!sectionRef.current) return
-
-      const ctx = gsap.context(() => {
-        gsap.from('.events-header', {
-          scrollTrigger: { trigger: '.events-header', start: 'top 85%' },
-          opacity: 0, y: 30, duration: 0.8,
-        })
-        gsap.from('.event-card', {
-          scrollTrigger: { trigger: '.events-grid', start: 'top 80%' },
-          opacity: 0, y: 50, rotateX: -8,
-          duration: 0.8, stagger: 0.15,
-          ease: 'power3.out',
-          transformPerspective: 800,
-        })
-      }, sectionRef)
-      return () => ctx.revert()
-    }
-    init()
-  }, [])
-
   return (
-    <section ref={sectionRef} id="events" className="py-28 bg-[#0d0605] relative">
+    <section id="events" className="py-32 bg-[#080606] relative">
       <div className="absolute top-0 left-0 right-0 h-px divider-fire" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto px-8 lg:px-16">
 
-        <div className="events-header text-center mb-16">
-          <span className="font-display text-[10px] tracking-[0.4em] text-[#e84800] uppercase block mb-4">What's On</span>
-          <h2 className="font-display font-bold text-[#f5ede8]" style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)' }}>
+        <div className="text-center mb-20">
+          <motion.span
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            className="font-display text-[9px] tracking-[0.5em] text-[#e84800] uppercase block mb-5">
+            What&apos;s On
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="font-display font-bold text-[#ede8e4]"
+            style={{ fontSize: 'clamp(2.2rem, 4vw, 3.5rem)' }}>
             Nights in the Cave
-          </h2>
-          <div className="mt-4 mx-auto w-16 h-px bg-[#e84800]" />
+          </motion.h2>
+          <div className="mt-5 mx-auto w-12 h-px bg-[#e84800]/50" />
         </div>
 
-        <div className="events-grid grid md:grid-cols-2 gap-6">
-          {EVENTS.map((ev) => (
-            <div key={ev.title}
-              className={`event-card group relative overflow-hidden cursor-pointer ${ev.featured ? 'md:col-span-2 md:grid md:grid-cols-2' : ''}`}
-              style={{ borderRadius: 2, border: '1px solid rgba(232,72,0,0.1)', transition: 'border-color 0.3s, transform 0.3s, box-shadow 0.3s' }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(232,72,0,0.35)'
-                ;(e.currentTarget as HTMLElement).style.boxShadow = '0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(232,72,0,0.08)'
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(232,72,0,0.1)'
-                ;(e.currentTarget as HTMLElement).style.boxShadow = 'none'
-                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
-              }}
+        <div className="grid md:grid-cols-2 gap-5">
+          {EVENTS.map((ev, i) => (
+            <motion.div key={ev.title}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.75, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className={`group relative overflow-hidden cursor-pointer ${
+                ev.featured ? 'md:col-span-2 md:grid md:grid-cols-2' : ''
+              }`}
+              style={{ border: '1px solid rgba(255,255,255,0.06)', borderRadius: 2 }}
             >
               <div className={`relative overflow-hidden ${ev.featured ? 'aspect-[16/9] md:aspect-auto' : 'aspect-[16/9]'}`}>
                 <Image src={ev.img} alt={ev.title} fill
-                  className="object-cover group-hover:scale-[1.06] transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/30 to-transparent" />
-                {ev.featured && <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#080808] hidden md:block" />}
+                  className="object-cover group-hover:scale-[1.05] transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080606] via-[#080606]/25 to-transparent" />
+                {ev.featured && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#080606] hidden md:block" />
+                )}
                 <div className="absolute top-4 left-4">
                   <span className={`font-display text-[9px] tracking-[0.3em] uppercase px-3 py-1.5 ${
-                    ev.featured ? 'bg-[#e84800] text-white' : 'border border-[rgba(232,72,0,0.4)] text-[#e84800]'
+                    ev.featured
+                      ? 'bg-[#e84800] text-white'
+                      : 'border border-[rgba(232,72,0,0.4)] text-[#e84800]'
                   }`}>
                     {ev.tag}
                   </span>
                 </div>
               </div>
 
-              <div className={`p-6 bg-[#0d0605] ${ev.featured ? 'flex flex-col justify-center' : ''}`}>
-                <div className="font-display text-[#e84800]/60 text-[10px] tracking-[0.3em] uppercase mb-2">{ev.day}</div>
-                <h3 className="font-display text-[#f5ede8] text-lg mb-3 group-hover:text-[#ff6a00] transition-colors duration-300">{ev.title}</h3>
-                <p className="font-sans text-[#7a6055] text-sm leading-relaxed mb-4">{ev.desc}</p>
+              <div className={`p-7 bg-[#080606] ${ev.featured ? 'flex flex-col justify-center' : ''}`}>
+                <div className="font-display text-[#e84800]/50 text-[9px] tracking-[0.35em] uppercase mb-2">{ev.day}</div>
+                <h3 className="font-display text-[#ede8e4] text-lg mb-3 group-hover:text-[#ff6a00] transition-colors duration-300">{ev.title}</h3>
+                <p className="font-sans font-light text-white/45 text-sm leading-relaxed mb-4">{ev.desc}</p>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-[#e84800]/60" />
-                  <span className="font-sans text-[#7a6055] text-xs">{ev.time}</span>
+                  <Clock className="w-3.5 h-3.5 text-[#e84800]/50 flex-shrink-0" />
+                  <span className="font-sans font-light text-white/40 text-xs tracking-wide">{ev.time}</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="text-center mt-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-center mt-12">
           <a href="#reservation"
-            className="inline-flex items-center gap-2 border border-[rgba(232,72,0,0.4)] text-[#ff6a00] font-display text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#e84800] hover:text-white transition-all duration-300">
+            className="inline-flex items-center gap-2.5 border border-[rgba(232,72,0,0.35)] text-[#e84800] font-display text-[10px] tracking-[0.22em] uppercase px-9 py-4 hover:bg-[#e84800] hover:text-white transition-all duration-300">
             <Calendar className="w-3.5 h-3.5" />
             Reserve for an Event
           </a>
-        </div>
+        </motion.div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-px divider-fire" />
+      <div className="absolute bottom-0 left-0 right-0 h-px divider-subtle" />
     </section>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
+import CaveLogo from './logo'
 
 const LINKS = [
   { label: 'About',   href: '#about'   },
@@ -32,32 +32,25 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-8 lg:px-16 h-20 flex items-center justify-between">
 
-        {/* Logo — mix-blend-mode: screen removes the black background */}
         <a href="#" className="flex items-center gap-3 group">
-          <div style={{ mixBlendMode: 'screen', width: 42, height: 42, flexShrink: 0 }}>
-            <Image src="/logo.jpeg" alt="Cave Lounge" width={42} height={42}
-              style={{ objectFit: 'contain' }} />
-          </div>
-          <span className="font-display text-sm tracking-[0.25em] text-[#ff6a00] glow-text hidden sm:block"
-            style={{ fontSize: '0.85rem' }}>
+          <CaveLogo size={38} />
+          <span className="font-display tracking-[0.25em] text-[#ff6a00] glow-text hidden sm:block"
+            style={{ fontSize: '0.82rem' }}>
             CAVE LOUNGE
           </span>
         </a>
 
-        {/* Nav links */}
         <div className="hidden md:flex items-center gap-10">
           {LINKS.map(l => (
             <a key={l.href} href={l.href}
-              className="font-display text-[10px] tracking-[0.22em] text-white/35 hover:text-[#e84800] transition-colors duration-300 uppercase">
+              className="font-display text-[10px] tracking-[0.22em] text-white/40 hover:text-[#e84800] transition-colors duration-300 uppercase">
               {l.label}
             </a>
           ))}
         </div>
 
-        {/* CTA */}
         <a href="#reservation"
-          className="hidden md:block font-display text-[10px] tracking-[0.2em] uppercase px-6 py-2.5 border border-[rgba(232,72,0,0.35)] text-[#e84800] hover:bg-[#e84800] hover:text-white transition-all duration-300"
-          style={{ letterSpacing: '0.18em' }}>
+          className="hidden md:block font-display text-[10px] tracking-[0.2em] uppercase px-6 py-2.5 border border-[rgba(232,72,0,0.35)] text-[#e84800] hover:bg-[#e84800] hover:text-white transition-all duration-300">
           Reserve
         </a>
 
@@ -74,7 +67,7 @@ export default function Navbar() {
             className="md:hidden glass border-t border-white/[0.05] px-8 pb-8 pt-4 space-y-5">
             {LINKS.map(l => (
               <a key={l.href} href={l.href} onClick={() => setOpen(false)}
-                className="block font-display text-[10px] tracking-[0.22em] text-white/35 hover:text-[#e84800] transition-colors uppercase py-2">
+                className="block font-display text-[10px] tracking-[0.22em] text-white/40 hover:text-[#e84800] transition-colors uppercase py-2">
                 {l.label}
               </a>
             ))}
