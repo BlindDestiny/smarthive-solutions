@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #080808; color: #f5ede8; font-family: 'Inter', sans-serif; }
+
+.font-display { font-family: 'Cinzel', serif; letter-spacing: 0.06em; }
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(232,72,0,0.8), 0 0 60px rgba(232,72,0,0.4);
+}
+
+.glow-border {
+  border: 1px solid rgba(232,72,0,0.25);
+  box-shadow: 0 0 30px rgba(232,72,0,0.08), inset 0 0 30px rgba(232,72,0,0.04);
+}
+
+.card-cave {
+  background: rgba(20,10,8,0.8);
+  border: 1px solid rgba(232,72,0,0.12);
+  backdrop-filter: blur(12px);
+}
+
+.input-cave {
+  background: rgba(20,10,8,0.6);
+  border: 1px solid rgba(232,72,0,0.2);
+  color: #f5ede8;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-cave:focus {
+  border-color: rgba(232,72,0,0.6);
+  box-shadow: 0 0 0 2px rgba(232,72,0,0.1);
+}
+.input-cave::placeholder { color: #7a6055; }
+
+.divider-fire {
+  background: linear-gradient(90deg, transparent, #e84800, transparent);
+  height: 1px;
+}
+
+@keyframes ember-float {
+  0%   { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+  50%  { transform: translateY(-30px) rotate(5deg); opacity: 1; }
+  100% { transform: translateY(-60px) rotate(-5deg); opacity: 0; }
+}
+.ember { animation: ember-float 3s ease-in infinite; }
