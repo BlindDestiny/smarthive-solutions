@@ -2,239 +2,307 @@
 import { useEffect, useRef } from 'react'
 
 /* ─────────────────────────────────────────────────────────────
-   MARTINI GLASS SVG — built from atomic parts for GSAP control
+   COCKTAIL — full SVG martini glass with 3D layering
 ───────────────────────────────────────────────────────────── */
-function MartiniGlass() {
+function Cocktail() {
   return (
-    <div className="relative" style={{ width: 320, height: 520 }}>
+    <div className="relative" style={{ width: 360, height: 560 }}>
 
       {/* ── Ground glow ── */}
       <div className="mg-glow absolute pointer-events-none" style={{
-        width: 260, height: 80,
-        bottom: 24, left: '50%', transform: 'translateX(-50%)',
-        background: 'radial-gradient(ellipse, rgba(232,72,0,0.4) 0%, transparent 70%)',
-        filter: 'blur(28px)',
+        width: 300, height: 100,
+        bottom: 30, left: '50%', transform: 'translateX(-50%)',
+        background: 'radial-gradient(ellipse, rgba(180,15,45,0.55) 0%, rgba(232,72,0,0.15) 50%, transparent 75%)',
+        filter: 'blur(30px)',
       }} />
 
-      {/* ── Smoke wisps ── */}
-      <div className="mg-smoke-a absolute pointer-events-none" style={{
-        width: 50, height: 80, top: 60, left: '48%',
-        background: 'radial-gradient(ellipse at bottom, rgba(255,80,20,0.18), transparent 80%)',
+      {/* ── Reflection on surface ── */}
+      <div className="mg-glow absolute pointer-events-none" style={{
+        width: 160, height: 30,
+        bottom: 58, left: '50%', transform: 'translateX(-50%)',
+        background: 'radial-gradient(ellipse, rgba(200,30,60,0.25), transparent 80%)',
+        filter: 'blur(8px)',
+      }} />
+
+      {/* ── Smoke B (back) ── */}
+      <div className="mg-smoke-b absolute pointer-events-none" style={{
+        width: 44, height: 80, top: 76, left: '60%',
+        background: 'radial-gradient(ellipse at bottom, rgba(220,40,70,0.2), transparent 72%)',
         borderRadius: '50%', filter: 'blur(10px)',
+        animation: 'smokeRise 4s ease-in-out 0.5s infinite',
+      }} />
+      {/* ── Smoke A (front) ── */}
+      <div className="mg-smoke-a absolute pointer-events-none" style={{
+        width: 34, height: 65, top: 85, left: '42%',
+        background: 'radial-gradient(ellipse at bottom, rgba(200,30,55,0.15), transparent 72%)',
+        borderRadius: '50%', filter: 'blur(8px)',
         animation: 'smokeRise 3.5s ease-in-out infinite',
       }} />
-      <div className="mg-smoke-b absolute pointer-events-none" style={{
-        width: 38, height: 65, top: 70, left: '58%',
-        background: 'radial-gradient(ellipse at bottom, rgba(255,60,10,0.13), transparent 80%)',
-        borderRadius: '50%', filter: 'blur(8px)',
-        animation: 'smokeRise 4.2s ease-in-out 0.6s infinite',
-      }} />
 
-      {/* ── SHAKER (appears, tilts, pours, disappears) ── */}
+      {/* ── SHAKER ── */}
       <div className="mg-shaker absolute" style={{
-        width: 44, height: 110,
-        top: -30, left: '63%',
+        width: 46, height: 116,
+        top: -20, left: '61%',
         transformOrigin: 'bottom center',
+        filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.6))',
       }}>
-        {/* Shaker body */}
+        {/* Body */}
         <div style={{
-          width: 44, height: 85,
-          borderRadius: '8px 8px 4px 4px',
-          background: 'linear-gradient(135deg, rgba(220,220,240,0.25) 0%, rgba(180,180,200,0.15) 40%, rgba(240,240,255,0.22) 100%)',
-          border: '1px solid rgba(255,255,255,0.35)',
-          boxShadow: 'inset 3px 0 10px rgba(255,255,255,0.15), inset -2px 0 6px rgba(0,0,0,0.2), 0 10px 30px rgba(0,0,0,0.5)',
-          position: 'relative', overflow: 'hidden',
+          width: 46, height: 88, borderRadius: '10px 10px 5px 5px', position: 'relative', overflow: 'hidden',
+          background: 'linear-gradient(110deg, rgba(200,205,220,0.18) 0%, rgba(160,165,180,0.1) 35%, rgba(240,245,255,0.2) 55%, rgba(170,175,190,0.11) 80%, rgba(200,205,220,0.17) 100%)',
+          border: '1px solid rgba(255,255,255,0.28)',
+          boxShadow: 'inset 4px 0 14px rgba(255,255,255,0.12), inset -3px 0 8px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.5)',
         }}>
-          <div style={{ position:'absolute', top:0, left:'25%', right:'25%', height:'100%',
-            background:'linear-gradient(180deg, rgba(255,255,255,0.12), transparent)',
+          {/* Vertical sheen */}
+          <div style={{ position:'absolute', top:0, left:'30%', width:'18%', height:'100%',
+            background:'linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06) 50%, transparent)',
             borderRadius:'50%' }} />
+          {/* Horizontal band */}
+          <div style={{ position:'absolute', bottom:18, left:6, right:6, height:1,
+            background:'rgba(255,255,255,0.12)' }} />
         </div>
         {/* Strainer cap */}
         <div style={{
-          width: 36, height: 22,
-          margin: '0 auto',
-          borderRadius: '4px 4px 0 0',
-          background: 'linear-gradient(135deg, rgba(200,200,220,0.22), rgba(160,160,180,0.16))',
-          border: '1px solid rgba(255,255,255,0.3)',
-          position: 'relative',
+          width: 36, height: 24, margin:'0 auto', borderRadius:'5px 5px 0 0', position:'relative',
+          background: 'linear-gradient(110deg, rgba(190,195,210,0.22), rgba(150,155,170,0.14))',
+          border: '1px solid rgba(255,255,255,0.25)',
+          boxShadow: 'inset 2px 0 8px rgba(255,255,255,0.1)',
         }}>
-          {[...Array(6)].map((_, i) => (
+          {/* Perforations */}
+          {[0,1,2,3,4,5,6,7].map(i => (
             <div key={i} style={{
-              position: 'absolute',
-              width: 3, height: 3, borderRadius: '50%',
-              background: 'rgba(0,0,0,0.4)',
-              top: 5 + (i > 2 ? 7 : 0),
-              left: 5 + (i % 3) * 8,
+              position:'absolute', width:3, height:3, borderRadius:'50%',
+              background:'rgba(0,0,0,0.5)',
+              top: 4 + (i > 3 ? 9 : 0),
+              left: 4 + (i % 4) * 7,
             }} />
           ))}
         </div>
       </div>
 
-      {/* ── Pour stream (SVG path) ── */}
+      {/* ── Pour stream ── */}
       <svg className="mg-pour" style={{
-        position: 'absolute', top: 68, left: '50%',
-        transform: 'translateX(-10px)',
-        overflow: 'visible', pointerEvents: 'none',
-      }} width="60" height="100" viewBox="0 0 60 100">
+        position:'absolute', top:82, left:'50%', transform:'translateX(18px)',
+        overflow:'visible', pointerEvents:'none',
+      }} width="80" height="120" viewBox="0 0 80 120">
         <defs>
-          <linearGradient id="streamGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(220,30,60,0.9)" />
-            <stop offset="100%" stopColor="rgba(180,10,30,0.5)" />
+          <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(210,30,65,0.95)"/>
+            <stop offset="100%" stopColor="rgba(170,15,40,0.6)"/>
           </linearGradient>
         </defs>
-        <path d="M 40,0 Q 35,40 28,80 Q 25,92 22,100"
-          stroke="url(#streamGrad)" strokeWidth="4" fill="none"
-          strokeLinecap="round"
-          style={{ filter: 'blur(1px)' }} />
-        <path d="M 43,0 Q 38,40 31,80 Q 28,92 25,100"
-          stroke="rgba(255,80,80,0.3)" strokeWidth="7" fill="none"
-          strokeLinecap="round"
-          style={{ filter: 'blur(3px)' }} />
+        {/* Core stream */}
+        <path d="M 50,0 Q 44,50 32,95 Q 28,110 24,120"
+          stroke="url(#sg1)" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
+        {/* Outer glow */}
+        <path d="M 50,0 Q 44,50 32,95 Q 28,110 24,120"
+          stroke="rgba(220,60,90,0.25)" strokeWidth="11" fill="none" strokeLinecap="round"
+          style={{ filter:'blur(3px)' }}/>
+        {/* Twist highlight */}
+        <path d="M 48,0 Q 42,50 30,95"
+          stroke="rgba(255,180,200,0.2)" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
       </svg>
 
-      {/* ── MARTINI GLASS SVG ── */}
+      {/* ── MARTINI GLASS (SVG) ── */}
       <svg className="mg-glass"
-        style={{ position: 'absolute', top: 60, left: '50%', transform: 'translateX(-50%)' }}
-        width="260" height="390" viewBox="0 0 260 390">
+        style={{ position:'absolute', top:68, left:'50%', transform:'translateX(-50%)' }}
+        width="260" height="400" viewBox="0 0 260 400">
         <defs>
-          <linearGradient id="liqGrad" x1="0.5" y1="0" x2="0.5" y2="1">
-            <stop offset="0%"   stopColor="rgba(200,20,55,0.88)" />
-            <stop offset="45%"  stopColor="rgba(155,10,35,0.95)" />
-            <stop offset="100%" stopColor="rgba(80,3,15,1)" />
+          {/* Liquid radial glow */}
+          <radialGradient id="liqRad" cx="50%" cy="28%" r="62%">
+            <stop offset="0%"   stopColor="rgba(230,65,90,0.92)"/>
+            <stop offset="42%"  stopColor="rgba(185,18,48,0.97)"/>
+            <stop offset="100%" stopColor="rgba(90,4,18,1)"/>
+          </radialGradient>
+          {/* Glass left-wall gradient */}
+          <linearGradient id="wallL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0.14)"/>
+            <stop offset="100%" stopColor="rgba(255,255,255,0)"/>
           </linearGradient>
-          <linearGradient id="glassLeft" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stopColor="rgba(255,255,255,0.12)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          {/* Glass right-wall gradient */}
+          <linearGradient id="wallR" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0)"/>
+            <stop offset="100%" stopColor="rgba(255,255,255,0.07)"/>
           </linearGradient>
-          <linearGradient id="glassRight" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stopColor="rgba(255,255,255,0)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.07)" />
+          {/* Rim gradient */}
+          <linearGradient id="rimG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0.15)"/>
+            <stop offset="30%"  stopColor="rgba(255,255,255,0.6)"/>
+            <stop offset="60%"  stopColor="rgba(255,255,255,0.2)"/>
+            <stop offset="100%" stopColor="rgba(255,255,255,0.1)"/>
           </linearGradient>
-          <filter id="liqGlow">
-            <feGaussianBlur stdDeviation="4" result="b"/>
+          {/* Inner bowl clip */}
+          <clipPath id="innerBowlClip">
+            <path d="M 17,17 L 243,17 L 133,228 L 127,228 Z"/>
+          </clipPath>
+          {/* Liquid glow filter */}
+          <filter id="liqF" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
-          <clipPath id="bowlClip">
-            <path d="M 16,18 L 244,18 L 133,222 L 127,222 Z" />
-          </clipPath>
+          {/* Shimmer filter */}
+          <filter id="shimF">
+            <feGaussianBlur stdDeviation="1.5"/>
+          </filter>
         </defs>
 
-        {/* Bowl glass back tint */}
-        <path className="mg-bowl-back"
-          d="M 16,18 L 244,18 L 133,222 L 127,222 Z"
-          fill="rgba(255,255,255,0.018)" />
+        {/* ─ 1. Glass back ambient fill ─ */}
+        <path d="M 17,17 L 243,17 L 133,228 L 127,228 Z"
+          fill="rgba(255,255,255,0.012)"/>
 
-        {/* Liquid fill */}
+        {/* ─ 2. Liquid (clipped inside bowl) ─ */}
         <path className="mg-liquid"
-          d="M 45,75 L 215,75 L 133,222 L 127,222 Z"
-          fill="url(#liqGrad)"
-          filter="url(#liqGlow)" />
+          d="M 44,82 L 216,82 L 133,228 L 127,228 Z"
+          fill="url(#liqRad)" filter="url(#liqF)"
+          clipPath="url(#innerBowlClip)"/>
 
-        {/* Liquid shimmer sweep */}
-        <rect className="mg-shimmer"
-          x="45" y="75" width="170" height="147"
-          clipPath="url(#bowlClip)"
-          fill="rgba(255,255,255,0)"
-          style={{ overflow: 'hidden' }}>
-        </rect>
-        <path
-          d="M 55,90 L 90,90 L 150,215 L 115,215 Z"
-          fill="rgba(255,180,180,0.07)"
-          clipPath="url(#bowlClip)" />
+        {/* ─ 3. Liquid inner-light hotspot ─ */}
+        <ellipse cx="130" cy="115" rx="48" ry="36"
+          fill="rgba(255,120,140,0.07)"
+          clipPath="url(#innerBowlClip)"/>
 
-        {/* Liquid surface */}
-        <ellipse className="mg-liquid-surface"
-          cx="130" cy="75" rx="85" ry="9"
-          fill="rgba(220,60,80,0.5)" />
+        {/* ─ 4. Liquid shimmer sweep ─ */}
+        <rect className="mg-shimmer" x="44" y="82" width="172" height="146"
+          clipPath="url(#innerBowlClip)"
+          fill="url(#shimSweep)" style={{ mixBlendMode:'overlay' }}/>
 
-        {/* Left glass edge highlight */}
-        <path d="M 16,18 L 52,18 L 140,222 L 127,222 Z"
-          fill="url(#glassLeft)" />
+        {/* ─ 5. Liquid surface (meniscus) ─ */}
+        <path className="mg-liquid-surface"
+          d="M 44,82 Q 87,77 130,78 Q 173,77 216,82"
+          fill="none" stroke="rgba(240,100,130,0.65)" strokeWidth="1.5"/>
+        <ellipse cx="130" cy="82" rx="86" ry="7"
+          fill="rgba(230,80,110,0.3)" filter="url(#shimF)"/>
 
-        {/* Right glass edge */}
-        <path d="M 210,18 L 244,18 L 133,222 L 120,222 Z"
-          fill="url(#glassRight)" />
+        {/* ─ 6. Tiny bubbles in liquid ─ */}
+        {[
+          [90, 140],[115,105],[150,160],[170,125],[105,175],[160,100],
+        ].map(([x,y],i) => (
+          <circle key={i} cx={x} cy={y} r="1.8"
+            fill="rgba(255,200,210,0.35)"
+            clipPath="url(#innerBowlClip)"/>
+        ))}
 
-        {/* Bowl outline */}
-        <path className="mg-bowl-outline"
-          d="M 16,18 L 244,18 L 133,222 L 127,222 Z"
-          fill="none"
-          stroke="rgba(255,255,255,0.22)" strokeWidth="1" />
+        {/* ─ 7. Glass walls (thickness) ─ */}
+        {/* Left wall */}
+        <path d="M 11,14 L 17,17 L 127,228 L 127,231 Z"
+          fill="url(#wallL)"/>
+        {/* Right wall */}
+        <path d="M 249,14 L 243,17 L 133,228 L 133,231 Z"
+          fill="url(#wallR)"/>
 
-        {/* Rim ellipse */}
+        {/* ─ 8. Glass bowl outer outline ─ */}
+        <path d="M 11,14 L 249,14 L 133,231 L 127,231 Z"
+          fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="1"/>
+
+        {/* ─ 9. Glass bowl inner outline (refraction line) ─ */}
+        <path d="M 17,17 L 243,17 L 133,228 L 127,228 Z"
+          fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="0.5"/>
+
+        {/* ─ 10. Surface reflection streaks ─ */}
+        <path d="M 35,30 Q 65,45 55,75"
+          stroke="rgba(255,255,255,0.07)" strokeWidth="10" fill="none" strokeLinecap="round"/>
+        <path d="M 38,28 Q 66,43 56,73"
+          stroke="rgba(255,255,255,0.18)" strokeWidth="2" fill="none" strokeLinecap="round"/>
+
+        <path d="M 200,30 Q 185,48 192,68"
+          stroke="rgba(255,255,255,0.05)" strokeWidth="7" fill="none" strokeLinecap="round"/>
+
+        {/* ─ 11. RIM ─ */}
         <ellipse className="mg-rim"
-          cx="130" cy="18" rx="114" ry="12"
-          fill="rgba(255,255,255,0.055)"
-          stroke="rgba(255,255,255,0.35)" strokeWidth="0.8" />
+          cx="130" cy="14" rx="119" ry="13"
+          fill="rgba(255,255,255,0.05)"
+          stroke="rgba(255,255,255,0.22)" strokeWidth="0.8"/>
+        {/* Rim highlight arc */}
+        <path d="M 60,10 Q 130,2 200,10"
+          fill="none" stroke="url(#rimG)" strokeWidth="1.5" strokeLinecap="round"/>
+        {/* Rim sparkle */}
+        <circle cx="82"  cy="8"  r="1.5" fill="rgba(255,255,255,0.8)"/>
+        <circle cx="180" cy="8"  r="1"   fill="rgba(255,255,255,0.5)"/>
+        <circle cx="130" cy="4"  r="1"   fill="rgba(255,255,255,0.4)"/>
 
-        {/* Stem */}
+        {/* ─ 12. STEM ─ */}
         <line className="mg-stem"
-          x1="130" y1="222" x2="130" y2="348"
-          stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"
-          strokeLinecap="round" />
+          x1="130" y1="231" x2="130" y2="358"
+          stroke="rgba(255,255,255,0.22)" strokeWidth="1.4" strokeLinecap="round"/>
+        {/* Stem highlight */}
+        <line x1="131.5" y1="231" x2="131.5" y2="358"
+          stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" strokeLinecap="round"/>
 
-        {/* Base ellipse */}
+        {/* ─ 13. BASE ─ */}
         <ellipse className="mg-base"
-          cx="130" cy="355" rx="62" ry="8"
-          fill="rgba(255,255,255,0.08)"
-          stroke="rgba(255,255,255,0.28)" strokeWidth="0.8" />
-
+          cx="130" cy="365" rx="64" ry="9"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(255,255,255,0.25)" strokeWidth="0.8"/>
+        {/* Base depth line */}
+        <path d="M 75,365 Q 130,369 185,365"
+          fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
         {/* Base shadow */}
-        <ellipse cx="130" cy="362" rx="50" ry="5"
-          fill="rgba(0,0,0,0.4)" />
+        <ellipse cx="130" cy="373" rx="52" ry="5"
+          fill="rgba(0,0,0,0.45)" style={{ filter:'blur(4px)' }}/>
       </svg>
 
-      {/* ── Garnish: cocktail pick on rim ── */}
-      <div className="mg-garnish absolute pointer-events-none"
-        style={{ top: 100, left: '56%' }}>
-        {/* The stick */}
+      {/* ── GARNISH: cocktail pick + cranberries + orange peel ── */}
+      <div className="mg-garnish absolute" style={{
+        top: 110, left: '57%',
+        filter: 'drop-shadow(0 2px 8px rgba(180,30,0,0.5))',
+      }}>
+        {/* Pick stick */}
         <div style={{
-          width: 1.5, height: 58, borderRadius: 2,
-          background: 'linear-gradient(180deg, rgba(255,200,100,0.9), rgba(200,140,60,0.7))',
-          boxShadow: '0 0 6px rgba(255,180,80,0.5)',
-          position: 'absolute', top: 0, left: 14,
-          transformOrigin: 'bottom',
-          transform: 'rotate(5deg)',
+          width: 1.5, height: 64, borderRadius: 2,
+          background: 'linear-gradient(180deg, rgba(255,220,120,0.95), rgba(180,130,40,0.7))',
+          boxShadow: '0 0 4px rgba(255,200,80,0.4)',
+          position: 'absolute', top: 0, left: 16,
+          transform: 'rotate(8deg)', transformOrigin: 'bottom',
+        }} />
+        {/* Pearl top */}
+        <div style={{
+          width: 7, height: 7, borderRadius:'50%',
+          background: 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), rgba(220,220,240,0.6))',
+          position: 'absolute', top: -4, left: 13,
+          boxShadow: '0 0 4px rgba(255,255,255,0.5)',
         }} />
         {/* Cranberry 1 */}
         <div style={{
-          width: 10, height: 10, borderRadius: '50%',
-          background: 'radial-gradient(circle at 35% 35%, #e83060, #8b0020)',
-          boxShadow: '0 0 6px rgba(200,20,50,0.7)',
-          position: 'absolute', top: 6, left: 10,
+          width: 11, height: 11, borderRadius:'50%',
+          background: 'radial-gradient(circle at 32% 28%, #e83868, #8b0022)',
+          boxShadow: '0 0 6px rgba(200,20,55,0.7), inset 0 0 4px rgba(255,100,130,0.3)',
+          position: 'absolute', top: 8, left: 11,
         }} />
         {/* Cranberry 2 */}
         <div style={{
-          width: 9, height: 9, borderRadius: '50%',
-          background: 'radial-gradient(circle at 35% 35%, #d02050, #700015)',
-          position: 'absolute', top: 18, left: 12,
-          boxShadow: '0 0 5px rgba(180,10,40,0.6)',
+          width: 10, height: 10, borderRadius:'50%',
+          background: 'radial-gradient(circle at 32% 28%, #d02858, #720018)',
+          boxShadow: '0 0 5px rgba(180,10,45,0.6)',
+          position: 'absolute', top: 22, left: 12,
+        }} />
+        {/* Cranberry 3 (small) */}
+        <div style={{
+          width: 8, height: 8, borderRadius:'50%',
+          background: 'radial-gradient(circle at 32% 28%, #c02048, #600012)',
+          position: 'absolute', top: 34, left: 13,
         }} />
         {/* Orange peel curl */}
         <div style={{
-          width: 22, height: 10,
-          borderRadius: '0 50% 50% 0',
-          background: 'linear-gradient(135deg, #ff9900, #e86000)',
-          border: '0.5px solid rgba(255,200,50,0.5)',
-          boxShadow: '0 0 8px rgba(255,140,0,0.6)',
-          position: 'absolute', top: 30, left: 4,
-          transform: 'rotate(-20deg)',
+          width: 26, height: 9,
+          borderRadius: '0 50% 50% 0 / 0 60% 60% 0',
+          background: 'linear-gradient(110deg, #ffa500, #e86000)',
+          border: '0.5px solid rgba(255,200,50,0.45)',
+          boxShadow: '0 0 10px rgba(255,140,0,0.55), inset 0 1px 3px rgba(255,220,100,0.3)',
+          position: 'absolute', top: 44, left: 3,
+          transform: 'rotate(-22deg)',
         }} />
       </div>
 
-      {/* ── Ember particles ── */}
+      {/* ── Micro condensation drops on glass ── */}
       {[
-        { bottom: 155, left: '52%', delay: '0s',   dur: '2.8s' },
-        { bottom: 160, left: '56%', delay: '0.9s', dur: '3.2s' },
-        { bottom: 152, left: '48%', delay: '1.6s', dur: '2.5s' },
-      ].map((e, i) => (
-        <div key={i} style={{
-          position: 'absolute',
-          width: 2.5, height: 2.5, borderRadius: '50%',
-          background: 'rgba(232,72,0,0.8)',
-          bottom: e.bottom, left: e.left,
-          animation: `emberDrift ${e.dur} ease-out ${e.delay} infinite`,
-          pointerEvents: 'none',
+        { top: 130, left: '33%' }, { top: 155, left: '30%' },
+        { top: 175, left: '34%' }, { top: 200, left: '31%' },
+        { top: 145, left: '68%' }, { top: 170, left: '66%' },
+      ].map((d, i) => (
+        <div key={i} className="mg-drops" style={{
+          position: 'absolute', width: 2.5, height: 3.5, borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%',
+          background: 'rgba(255,255,255,0.18)',
+          top: d.top, left: d.left,
         }} />
       ))}
     </div>
@@ -253,63 +321,74 @@ export default function Hero() {
       if (!sectionRef.current) return
 
       ctx = gsap.context(() => {
-        /* ── Initial hidden state ── */
-        gsap.set('.mg-glow',           { opacity: 0, scale: 0.3 })
-        gsap.set('.mg-base',           { opacity: 0, scaleX: 0, transformOrigin: 'center' })
-        gsap.set('.mg-stem',           { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
-        gsap.set('.mg-bowl-back',      { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
-        gsap.set('.mg-bowl-outline',   { opacity: 0, scaleY: 0, transformOrigin: 'bottom center' })
-        gsap.set('.mg-rim',            { opacity: 0, scaleX: 0, transformOrigin: 'center' })
-        gsap.set('.mg-liquid',         { opacity: 0, scaleY: 0, transformOrigin: 'bottom' })
+        /* ── hidden initial states ── */
+        gsap.set('.mg-glow',           { opacity: 0, scale: 0.2 })
+        gsap.set('.mg-base',           { opacity: 0, scaleX: 0,   transformOrigin: 'center' })
+        gsap.set('.mg-stem',           { opacity: 0, scaleY: 0,   transformOrigin: 'bottom' })
+        gsap.set(['.mg-glass'],        { opacity: 0 })
+        gsap.set('.mg-liquid',         { opacity: 0, scaleY: 0,   transformOrigin: 'bottom' })
         gsap.set('.mg-liquid-surface', { opacity: 0 })
-        gsap.set('.mg-shaker',         { opacity: 0, y: -60, rotate: 0 })
-        gsap.set('.mg-pour',           { opacity: 0, scaleY: 0, transformOrigin: 'top' })
-        gsap.set('.mg-garnish',        { opacity: 0, y: -40, x: -10, rotate: -30 })
-        gsap.set('.mg-smoke-a',        { opacity: 0 })
-        gsap.set('.mg-smoke-b',        { opacity: 0 })
-        gsap.set('.h-line-1',          { opacity: 0, y: 40 })
-        gsap.set('.h-line-2',          { opacity: 0, y: 40 })
-        gsap.set('.h-line-3',          { opacity: 0, y: 30 })
-        gsap.set('.h-desc',            { opacity: 0, y: 25 })
-        gsap.set('.h-ctas',            { opacity: 0, y: 20 })
+        gsap.set('.mg-rim',            { opacity: 0, scaleX: 0,   transformOrigin: 'center' })
+        gsap.set('.mg-shaker',         { opacity: 0, y: -70, rotate: 0 })
+        gsap.set('.mg-pour',           { opacity: 0, scaleY: 0,   transformOrigin: 'top' })
+        gsap.set('.mg-garnish',        { opacity: 0, y: -50, x: -8, rotate: -25, scale: 0.8 })
+        gsap.set('.mg-smoke-a',        { opacity: 0, y: 20 })
+        gsap.set('.mg-smoke-b',        { opacity: 0, y: 15 })
+        gsap.set('.mg-drops',          { opacity: 0, scale: 0 })
+        gsap.set('.h-line-1',          { opacity: 0, y: 35 })
+        gsap.set('.h-line-2',          { opacity: 0, y: 35 })
+        gsap.set('.h-line-3',          { opacity: 0, y: 28 })
+        gsap.set('.h-desc',            { opacity: 0, y: 20 })
+        gsap.set('.h-ctas',            { opacity: 0, y: 18 })
 
-        /* ── Auto-play timeline (no scroll trigger) ── */
-        const tl = gsap.timeline({ delay: 0.3 })
+        /* ── 2.5 s auto-play timeline ── */
+        const tl = gsap.timeline({ delay: 0.25 })
 
         tl
-          /* 1 — Glass builds from base up */
-          .to('.mg-base',          { opacity: 1, scaleX: 1, duration: 0.5, ease: 'power2.out' })
-          .to('.mg-stem',          { opacity: 1, scaleY: 1, duration: 0.6, ease: 'power3.out' }, '-=0.15')
-          .to('.mg-bowl-back',     { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power3.out' }, '-=0.2')
-          .to('.mg-bowl-outline',  { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power3.out' }, '-=0.65')
-          .to('.mg-rim',           { opacity: 1, scaleX: 1, duration: 0.45, ease: 'back.out(2)' }, '-=0.15')
+          /* — 0.00 Glass materialises — */
+          .to('.mg-glass',  { opacity: 1, duration: 0.01 })
+          .to('.mg-base',   { opacity: 1, scaleX: 1, duration: 0.22, ease: 'power2.out' }, 0)
+          .to('.mg-stem',   { opacity: 1, scaleY: 1, duration: 0.3,  ease: 'power3.out' }, 0.12)
+          /* bowl fades in slightly after stem */
+          .to('.mg-rim',    { opacity: 1, scaleX: 1, duration: 0.28, ease: 'back.out(1.8)' }, 0.28)
 
-          /* 2 — Shaker descends and tilts */
-          .to('.mg-shaker', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '+=0.1')
-          .to('.mg-shaker', { rotate: -42, x: -12, duration: 0.55, ease: 'power2.inOut' })
+          /* — 0.38 Shaker swoops in — */
+          .to('.mg-shaker', { opacity: 1, y: 0, duration: 0.28, ease: 'power2.out' }, 0.38)
+          .to('.mg-shaker', { rotate: -44, x: -14, duration: 0.3, ease: 'power2.inOut' }, 0.6)
 
-          /* 3 — Pour stream then liquid fills */
-          .to('.mg-pour',           { opacity: 1, scaleY: 1, duration: 0.35 }, '-=0.15')
-          .to('.mg-liquid',         { opacity: 1, scaleY: 1, duration: 0.7, ease: 'power2.out' }, '-=0.2')
-          .to('.mg-liquid-surface', { opacity: 1, duration: 0.3 }, '-=0.1')
+          /* — 0.82 Pour begins — */
+          .to('.mg-pour',   { opacity: 1, scaleY: 1, duration: 0.22 }, 0.82)
 
-          /* 4 — Shaker & stream exit */
-          .to(['.mg-shaker', '.mg-pour'], { opacity: 0, duration: 0.3 }, '-=0.1')
+          /* — 0.9 Liquid rises — */
+          .to('.mg-liquid',         { opacity: 1, scaleY: 1, duration: 0.4, ease: 'power2.out' }, 0.9)
+          .to('.mg-liquid-surface', { opacity: 1, duration: 0.18 }, 1.18)
 
-          /* 5 — Garnish elastic drop */
-          .to('.mg-garnish', { opacity: 1, y: 0, x: 0, rotate: 0, duration: 0.7, ease: 'elastic.out(1, 0.55)' }, '-=0.15')
+          /* — 1.2 Shaker exits — */
+          .to(['.mg-shaker','.mg-pour'], { opacity: 0, y: -20, duration: 0.22, ease: 'power2.in' }, 1.2)
 
-          /* 6 — Atmosphere */
-          .to('.mg-glow',    { opacity: 1, scale: 1, duration: 0.6 }, '-=0.3')
-          .to('.mg-smoke-a', { opacity: 0.9, duration: 0.5 }, '-=0.3')
-          .to('.mg-smoke-b', { opacity: 0.7, duration: 0.5 }, '-=0.4')
+          /* — 1.28 Garnish drops in — */
+          .to('.mg-garnish', {
+            opacity: 1, y: 0, x: 0, rotate: 0, scale: 1,
+            duration: 0.5, ease: 'elastic.out(1.1, 0.55)',
+          }, 1.28)
 
-          /* 7 — Text reveal */
-          .to('.h-line-1', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35')
-          .to('.h-line-2', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.45')
-          .to('.h-line-3', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.45')
-          .to('.h-desc',   { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
-          .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.5 }, '-=0.35')
+          /* — 1.35 Condensation micro-drops — */
+          .to('.mg-drops', {
+            opacity: 1, scale: 1,
+            duration: 0.3, stagger: 0.04, ease: 'back.out(2)',
+          }, 1.35)
+
+          /* — 1.5 Atmosphere — */
+          .to('.mg-glow',    { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, 1.5)
+          .to('.mg-smoke-a', { opacity: 0.85, y: 0, duration: 0.4 }, 1.55)
+          .to('.mg-smoke-b', { opacity: 0.65, y: 0, duration: 0.4 }, 1.62)
+
+          /* — 1.65 Text reveals (staggered) — */
+          .to('.h-line-1', { opacity: 1, y: 0, duration: 0.38, ease: 'power3.out' }, 1.65)
+          .to('.h-line-2', { opacity: 1, y: 0, duration: 0.38, ease: 'power3.out' }, 1.78)
+          .to('.h-line-3', { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }, 1.9)
+          .to('.h-desc',   { opacity: 1, y: 0, duration: 0.32 }, 2.05)
+          .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.32 }, 2.18)
 
       }, sectionRef)
     }
@@ -321,18 +400,17 @@ export default function Hero() {
   return (
     <section ref={sectionRef} className="relative h-screen bg-[#050505] overflow-hidden">
 
-      {/* Very subtle radial ambient */}
+      {/* Ambient background radial */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 55% 65% at 68% 52%, rgba(40,8,4,0.6), transparent)',
+        background: 'radial-gradient(ellipse 50% 60% at 66% 54%, rgba(50,6,14,0.7), transparent)',
       }} />
 
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-8 lg:px-16 flex items-center gap-8">
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-8 lg:px-16 flex items-center gap-4">
 
         {/* ── Left: Text ── */}
-        <div className="w-full lg:w-[48%] flex flex-col">
-
-          <div className="h-line-1 mb-3">
-            <span className="font-display text-[9px] tracking-[0.55em] text-[#e84800] uppercase">
+        <div className="w-full lg:w-[46%] flex flex-col">
+          <div className="h-line-1 mb-4">
+            <span className="font-display text-[9px] tracking-[0.55em] text-[#e84800]/80 uppercase">
               Underground Bar &amp; Lounge
             </span>
           </div>
@@ -343,10 +421,10 @@ export default function Hero() {
             <span className="h-line-3 block text-[#e84800] glow-text">THE CAVE</span>
           </h1>
 
-          <div className="w-14 h-px bg-[#e84800]/40 my-8 h-line-3" />
+          <div className="w-10 h-px my-8 h-line-3" style={{ background: 'rgba(232,72,0,0.35)' }} />
 
-          <p className="h-desc font-sans font-light text-white/30 leading-loose max-w-xs mb-12"
-            style={{ fontSize: '0.95rem', letterSpacing: '0.02em' }}>
+          <p className="h-desc font-sans font-light text-white/25 leading-loose max-w-[300px] mb-12"
+            style={{ fontSize: '0.92rem', letterSpacing: '0.025em' }}>
             Where extraordinary cocktails meet a world built beneath the streets.
             Bold flavours. Pure atmosphere.
           </p>
@@ -354,11 +432,11 @@ export default function Hero() {
           <div className="h-ctas flex flex-wrap gap-4">
             <a href="#reservation"
               className="font-display text-[10px] tracking-[0.25em] uppercase px-9 py-4 bg-[#e84800] text-white hover:bg-[#ff5500] transition-colors duration-300"
-              style={{ animation: 'subtlePulse 3s ease-in-out infinite' }}>
+              style={{ boxShadow: '0 6px 28px rgba(232,72,0,0.3)', animation: 'subtlePulse 3s ease-in-out infinite' }}>
               Reserve Now
             </a>
             <a href="#menu"
-              className="font-display text-[10px] tracking-[0.25em] uppercase px-9 py-4 glass text-white/50 hover:text-white hover:border-[rgba(232,72,0,0.3)] transition-all duration-400">
+              className="font-display text-[10px] tracking-[0.25em] uppercase px-9 py-4 glass text-white/40 hover:text-white/70 transition-all duration-300">
               Explore Menu
             </a>
           </div>
@@ -366,17 +444,17 @@ export default function Hero() {
 
         {/* ── Right: Cocktail ── */}
         <div className="hidden lg:flex flex-1 items-center justify-center">
-          <MartiniGlass />
+          <Cocktail />
         </div>
       </div>
 
       {/* Scroll cue */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none z-20">
-        <span className="font-display text-[8px] tracking-[0.55em] text-white/15 uppercase">scroll</span>
+        <span className="font-display text-[8px] tracking-[0.55em] text-white/12 uppercase">scroll</span>
         <div style={{
-          width: 1, height: 48,
-          background: 'linear-gradient(180deg, rgba(232,72,0,0.6), transparent)',
-          animation: 'scrollLine 1.8s ease-in-out infinite',
+          width: 1, height: 44,
+          background: 'linear-gradient(180deg, rgba(232,72,0,0.5), transparent)',
+          animation: 'scrollLine 2s ease-in-out infinite',
         }} />
       </div>
     </section>
