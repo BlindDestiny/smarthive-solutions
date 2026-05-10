@@ -5,18 +5,18 @@ import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 
 const LINKS = [
-  { label: 'About',       href: '#about' },
-  { label: 'Menu',        href: '#menu' },
-  { label: 'Events',      href: '#events' },
-  { label: 'Gallery',     href: '#gallery' },
+  { label: 'About',   href: '#about'   },
+  { label: 'Menu',    href: '#menu'    },
+  { label: 'Events',  href: '#events'  },
+  { label: 'Gallery', href: '#gallery' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open,     setOpen]     = useState(false)
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40)
+    const fn = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', fn)
     return () => window.removeEventListener('scroll', fn)
   }, [])
@@ -25,34 +25,44 @@ export default function Navbar() {
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-[#080808]/95 backdrop-blur-md border-b border-[rgba(232,72,0,0.1)]' : 'bg-transparent'
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        scrolled ? 'glass border-b border-white/[0.05]' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-3">
-          <Image src="/logo.jpeg" alt="Cave Lounge" width={44} height={44} className="rounded-sm" />
-          <span className="font-display text-lg text-[#ff6a00] tracking-widest glow-text hidden sm:block">
+      <div className="max-w-7xl mx-auto px-8 lg:px-16 h-20 flex items-center justify-between">
+
+        {/* Logo — mix-blend-mode: screen removes the black background */}
+        <a href="#" className="flex items-center gap-3 group">
+          <div style={{ mixBlendMode: 'screen', width: 42, height: 42, flexShrink: 0 }}>
+            <Image src="/logo.jpeg" alt="Cave Lounge" width={42} height={42}
+              style={{ objectFit: 'contain' }} />
+          </div>
+          <span className="font-display text-sm tracking-[0.25em] text-[#ff6a00] glow-text hidden sm:block"
+            style={{ fontSize: '0.85rem' }}>
             CAVE LOUNGE
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
+        {/* Nav links */}
+        <div className="hidden md:flex items-center gap-10">
           {LINKS.map(l => (
             <a key={l.href} href={l.href}
-              className="font-display text-xs tracking-[0.2em] text-cave-muted hover:text-[#ff6a00] transition-colors duration-200 uppercase">
+              className="font-display text-[10px] tracking-[0.22em] text-white/35 hover:text-[#e84800] transition-colors duration-300 uppercase">
               {l.label}
             </a>
           ))}
         </div>
 
+        {/* CTA */}
         <a href="#reservation"
-          className="hidden md:flex items-center gap-2 border border-[rgba(232,72,0,0.5)] text-[#ff6a00] font-display text-xs tracking-[0.15em] px-5 py-2.5 hover:bg-[#e84800] hover:text-white transition-all duration-300 uppercase">
+          className="hidden md:block font-display text-[10px] tracking-[0.2em] uppercase px-6 py-2.5 border border-[rgba(232,72,0,0.35)] text-[#e84800] hover:bg-[#e84800] hover:text-white transition-all duration-300"
+          style={{ letterSpacing: '0.18em' }}>
           Reserve
         </a>
 
-        <button className="md:hidden text-cave-muted" onClick={() => setOpen(!open)}>
+        <button className="md:hidden text-white/40 hover:text-white/70 transition-colors"
+          onClick={() => setOpen(!open)}>
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
@@ -61,15 +71,15 @@ export default function Navbar() {
         {open && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#080808] border-t border-[rgba(232,72,0,0.1)] px-6 pb-6 pt-4 space-y-4">
+            className="md:hidden glass border-t border-white/[0.05] px-8 pb-8 pt-4 space-y-5">
             {LINKS.map(l => (
               <a key={l.href} href={l.href} onClick={() => setOpen(false)}
-                className="block font-display text-xs tracking-[0.2em] text-cave-muted hover:text-[#ff6a00] transition-colors uppercase py-2">
+                className="block font-display text-[10px] tracking-[0.22em] text-white/35 hover:text-[#e84800] transition-colors uppercase py-2">
                 {l.label}
               </a>
             ))}
             <a href="#reservation" onClick={() => setOpen(false)}
-              className="block text-center border border-[rgba(232,72,0,0.5)] text-[#ff6a00] font-display text-xs tracking-[0.15em] px-5 py-3 hover:bg-[#e84800] hover:text-white transition-all duration-300 uppercase mt-4">
+              className="block text-center font-display text-[10px] tracking-[0.2em] uppercase px-6 py-3 border border-[rgba(232,72,0,0.35)] text-[#e84800] hover:bg-[#e84800] hover:text-white transition-all duration-300 mt-4">
               Reserve a Table
             </a>
           </motion.div>
