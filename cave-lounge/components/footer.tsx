@@ -1,6 +1,6 @@
 'use client'
 import { Instagram, Facebook, Twitter } from 'lucide-react'
-import CaveLogo from './logo'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -9,8 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 mb-16">
 
           <div className="lg:col-span-2">
-            <a href="#" className="flex items-center gap-3 mb-7">
-              <CaveLogo size={36} />
+            <a href="#" className="flex items-center gap-2 mb-7">
+              <Image src="/logo.png" alt="Cave Lounge" width={40} height={40}
+                style={{ objectFit: 'contain', mixBlendMode: 'screen' }} />
               <span className="font-display tracking-[0.25em] text-[#ff6a00] glow-text"
                 style={{ fontSize: '0.8rem' }}>
                 CAVE LOUNGE

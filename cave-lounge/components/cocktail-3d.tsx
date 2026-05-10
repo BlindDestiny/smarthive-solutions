@@ -4,99 +4,94 @@ import { useRef, useEffect, useMemo, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
   Environment,
-  ContactShadows,
   MeshTransmissionMaterial,
+  MeshReflectorMaterial,
   Sparkles,
 } from '@react-three/drei'
 import * as THREE from 'three'
 import gsap from 'gsap'
 
 /* ══════════════════════════════════════════════════════════
-   COSMOPOLITAN GLASS
-   LatheGeometry traces the outer profile:
-   base → thin stem → bowl flare → rim
+   MARTINI / COSMOPOLITAN GLASS
+   Thin-walled LatheGeometry: base → stem → bowl → rim
 ══════════════════════════════════════════════════════════ */
-function CocktailGlass({ groupRef }: { groupRef: React.RefObject<THREE.Group> }) {
-  const geo = useMemo(() => {
+function Glass({ groupRef }: { groupRef: React.RefObject<THREE.Group> }) {
+  const bowlGeo = useMemo(() => {
     const pts = [
-      new THREE.Vector2(0.56, -2.85),
-      new THREE.Vector2(0.56, -2.65),
-      new THREE.Vector2(0.10, -2.44),
-      new THREE.Vector2(0.056, -2.2),
-      new THREE.Vector2(0.054, 0.0),
-      new THREE.Vector2(0.068, 0.12),
-      new THREE.Vector2(0.24,  0.52),
-      new THREE.Vector2(0.63,  1.08),
-      new THREE.Vector2(1.02,  1.64),
-      new THREE.Vector2(1.21,  1.98),
-      new THREE.Vector2(1.23,  2.04),
+      new THREE.Vector2(0.52, -3.1),   // base edge
+      new THREE.Vector2(0.52, -2.9),   // base thickness
+      new THREE.Vector2(0.08, -2.68),  // base → stem
+      new THREE.Vector2(0.052, -2.4),  // stem
+      new THREE.Vector2(0.050, 0.0),   // stem top
+      new THREE.Vector2(0.062, 0.12),  // flare
+      new THREE.Vector2(0.20,  0.48),  // lower bowl
+      new THREE.Vector2(0.58,  1.05),  // mid bowl
+      new THREE.Vector2(1.02,  1.68),  // upper bowl
+      new THREE.Vector2(1.22,  2.02),  // near rim
+      new THREE.Vector2(1.25,  2.08),  // rim
     ]
     return new THREE.LatheGeometry(pts, 96)
   }, [])
 
-  const baseDisk = useMemo(() =>
-    new THREE.CylinderGeometry(0.56, 0.56, 0.05, 64), [])
+  const baseGeo = useMemo(() => new THREE.CylinderGeometry(0.52, 0.52, 0.05, 64), [])
+
+  const matProps = {
+    samples: 10,
+    resolution: 512,
+    transmission: 1 as const,
+    roughness: 0 as const,
+    thickness: 0.055,
+    ior: 1.52,
+    chromaticAberration: 0.018,
+    anisotropy: 0.06,
+    distortion: 0.04,
+    distortionScale: 0.12,
+    temporalDistortion: 0.01,
+    color: '#ffffff' as const,
+    attenuationColor: '#ddf0ff' as const,
+    attenuationDistance: 0.3,
+    side: THREE.DoubleSide,
+  }
 
   return (
     <group ref={groupRef}>
-      <mesh geometry={geo} castShadow>
-        <MeshTransmissionMaterial
-          samples={12}
-          resolution={512}
-          transmission={1}
-          roughness={0}
-          thickness={0.06}
-          ior={1.52}
-          chromaticAberration={0.02}
-          anisotropy={0.08}
-          distortion={0.04}
-          distortionScale={0.15}
-          temporalDistortion={0.015}
-          color="#ffffff"
-          attenuationColor="#e8f4ff"
-          attenuationDistance={0.25}
-          side={THREE.DoubleSide}
-        />
+      <mesh geometry={bowlGeo} castShadow receiveShadow>
+        <MeshTransmissionMaterial {...matProps} />
       </mesh>
-      <mesh geometry={baseDisk} position={[0, -2.85, 0]}>
-        <MeshTransmissionMaterial
-          transmission={1} roughness={0} thickness={0.05} ior={1.52}
-          color="#ffffff" side={THREE.DoubleSide}
-        />
+      <mesh geometry={baseGeo} position={[0, -3.1, 0]}>
+        <MeshTransmissionMaterial {...matProps} />
       </mesh>
     </group>
   )
 }
 
 /* ══════════════════════════════════════════════════════════
-   LIQUID
-   Cone matching inside of the bowl, scale-y animated 0→1
+   COSMOPOLITAN LIQUID  — cone fill, scale-y 0 → 1
 ══════════════════════════════════════════════════════════ */
-function Liquid({ liquidRef }: { liquidRef: React.RefObject<THREE.Mesh> }) {
+function Liquid({ meshRef }: { meshRef: React.RefObject<THREE.Mesh> }) {
   const geo = useMemo(() => {
     const pts = [
-      new THREE.Vector2(0,    0.0),
+      new THREE.Vector2(0, 0),
       new THREE.Vector2(0.04, 0.1),
-      new THREE.Vector2(0.22, 0.48),
-      new THREE.Vector2(0.58, 1.02),
-      new THREE.Vector2(0.97, 1.56),
-      new THREE.Vector2(1.15, 1.88),
+      new THREE.Vector2(0.18, 0.44),
+      new THREE.Vector2(0.55, 0.98),
+      new THREE.Vector2(0.97, 1.58),
+      new THREE.Vector2(1.16, 1.90),
     ]
     return new THREE.LatheGeometry(pts, 64)
   }, [])
 
   return (
-    <mesh ref={liquidRef} geometry={geo}
-      position={[0, 0.08, 0]}
-      scale={[1, 0.001, 1]}>
+    <mesh ref={meshRef} geometry={geo}
+      position={[0, 0.10, 0]} scale={[1, 0.001, 1]}>
       <meshPhysicalMaterial
-        color="#d42858"
-        transparent
-        opacity={0.9}
-        roughness={0.0}
-        metalness={0.0}
+        color="#cc2855"
+        emissive="#550010"
+        emissiveIntensity={0.08}
+        transparent opacity={0.92}
+        roughness={0} metalness={0}
         ior={1.33}
-        transmission={0.12}
+        transmission={0.10}
         side={THREE.FrontSide}
       />
     </mesh>
@@ -104,26 +99,26 @@ function Liquid({ liquidRef }: { liquidRef: React.RefObject<THREE.Mesh> }) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   POUR STREAM
-   TubeGeometry along a Bezier curve — scale-y animated
+   POUR STREAM  — Bezier tube, scale-y 0 → 1
 ══════════════════════════════════════════════════════════ */
-function PourStream({ streamRef }: { streamRef: React.RefObject<THREE.Mesh> }) {
+function PourStream({ meshRef }: { meshRef: React.RefObject<THREE.Mesh> }) {
   const geo = useMemo(() => {
     const curve = new THREE.CubicBezierCurve3(
-      new THREE.Vector3(0.55, 3.8, 0),
-      new THREE.Vector3(0.7,  2.4, 0),
-      new THREE.Vector3(0.35, 1.2, 0),
-      new THREE.Vector3(0.0,  0.15, 0),
+      new THREE.Vector3( 0.48, 3.65, 0.2),   // shaker mouth
+      new THREE.Vector3( 0.60, 2.80, 0.1),
+      new THREE.Vector3( 0.35, 1.60, 0.0),
+      new THREE.Vector3( 0.05, 0.18, 0.0),   // glass opening
     )
-    return new THREE.TubeGeometry(curve, 32, 0.038, 8, false)
+    return new THREE.TubeGeometry(curve, 40, 0.048, 10, false)
   }, [])
 
   return (
-    <mesh ref={streamRef} geometry={geo} visible={false} scale={[1, 0.001, 1]}>
+    <mesh ref={meshRef} geometry={geo}
+      visible={false} scale={[1, 0.001, 1]}>
       <meshPhysicalMaterial
-        color="#e0406a"
-        transparent opacity={0.75}
-        roughness={0.0}
+        color="#e03565"
+        transparent opacity={0.82}
+        roughness={0} metalness={0}
         side={THREE.FrontSide}
       />
     </mesh>
@@ -131,22 +126,22 @@ function PourStream({ streamRef }: { streamRef: React.RefObject<THREE.Mesh> }) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   ICE CUBE — single cube
+   ICE CUBE  — single PBR ice unit
 ══════════════════════════════════════════════════════════ */
-function IceCube({ meshRef }: { meshRef: (el: THREE.Mesh | null) => void }) {
-  const geo = useMemo(() => new THREE.BoxGeometry(0.3, 0.3, 0.3), [])
+function IceCube({ r = el => {} }: { r?: (el: THREE.Mesh | null) => void }) {
+  const geo = useMemo(() => new THREE.BoxGeometry(0.34, 0.34, 0.34), [])
   return (
-    <mesh ref={meshRef} geometry={geo} castShadow>
+    <mesh ref={r} geometry={geo} castShadow>
       <MeshTransmissionMaterial
         samples={6}
-        transmission={0.9}
-        roughness={0.04}
-        thickness={0.3}
+        transmission={0.92}
+        roughness={0.03}
+        thickness={0.34}
         ior={1.31}
-        chromaticAberration={0.007}
-        color="#d5eeff"
-        attenuationColor="#b8d8ff"
-        attenuationDistance={0.6}
+        chromaticAberration={0.006}
+        color="#cce6ff"
+        attenuationColor="#a8d0ff"
+        attenuationDistance={0.55}
         side={THREE.FrontSide}
       />
     </mesh>
@@ -154,131 +149,119 @@ function IceCube({ meshRef }: { meshRef: (el: THREE.Mesh | null) => void }) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   STAINLESS STEEL SHAKER
-   3 parts via LatheGeometry: body, strainer collar, cap dome
+   BOSTON SHAKER  — 3-part LatheGeometry, stainless steel
+   Opening at y=+, closed bottom at y=−
+   When rotation.z = -1.15: opening points lower-left → pours
 ══════════════════════════════════════════════════════════ */
-function Shaker({ shakerRef }: { shakerRef: React.RefObject<THREE.Group> }) {
+function Shaker({ groupRef }: { groupRef: React.RefObject<THREE.Group> }) {
   const bodyGeo = useMemo(() => {
     const pts = [
-      new THREE.Vector2(0.28, -2.1),
-      new THREE.Vector2(0.30, -1.7),
-      new THREE.Vector2(0.38, -0.6),
-      new THREE.Vector2(0.40,  0.2),
-      new THREE.Vector2(0.37,  1.2),
-      new THREE.Vector2(0.30,  1.85),
-      new THREE.Vector2(0.27,  2.0),
+      new THREE.Vector2(0.22, -2.5),  // closed bottom
+      new THREE.Vector2(0.30, -2.35), // base widen
+      new THREE.Vector2(0.36, -1.5),  // cylinder
+      new THREE.Vector2(0.38,  0.0),  // midpoint
+      new THREE.Vector2(0.40,  1.8),  // taper toward top
+      new THREE.Vector2(0.42,  2.25), // approach collar
+      new THREE.Vector2(0.44,  2.35), // collar out
+      new THREE.Vector2(0.44,  2.55), // collar top
+      new THREE.Vector2(0.40,  2.65), // inner shoulder
+      new THREE.Vector2(0.40,  2.80), // opening
     ]
     return new THREE.LatheGeometry(pts, 64)
   }, [])
 
-  const strainerGeo = useMemo(() => {
-    const pts = [
-      new THREE.Vector2(0.27, 0.0),
-      new THREE.Vector2(0.30, 0.1),
-      new THREE.Vector2(0.30, 0.44),
-      new THREE.Vector2(0.27, 0.52),
-    ]
-    return new THREE.LatheGeometry(pts, 64)
-  }, [])
-
-  const capGeo = useMemo(() => {
-    const pts = [
-      new THREE.Vector2(0.27, 0.0),
-      new THREE.Vector2(0.28, 0.18),
-      new THREE.Vector2(0.22, 0.55),
-      new THREE.Vector2(0.14, 0.85),
-      new THREE.Vector2(0.06, 1.05),
-      new THREE.Vector2(0.04, 1.12),
-    ]
-    return new THREE.LatheGeometry(pts, 64)
-  }, [])
+  const capGeo = useMemo(() => new THREE.CylinderGeometry(0.22, 0.22, 0.12, 32), [])
 
   const metal = useMemo(() => new THREE.MeshStandardMaterial({
-    metalness: 0.92,
-    roughness: 0.1,
-    color: new THREE.Color('#b2bac8'),
-    envMapIntensity: 2.0,
-  }), [])
-
-  const metalDark = useMemo(() => new THREE.MeshStandardMaterial({
     metalness: 0.95,
     roughness: 0.08,
-    color: new THREE.Color('#a8b0c0'),
-    envMapIntensity: 2.2,
+    color: new THREE.Color('#b0b8c8'),
+    envMapIntensity: 2.5,
   }), [])
 
   return (
-    <group ref={shakerRef} position={[5, 7, 0.5]}>
+    <group ref={groupRef} position={[6, 8, 0.5]}>
       <mesh geometry={bodyGeo} material={metal} castShadow />
-      <mesh geometry={strainerGeo} material={metalDark}
-        position={[0, 2.0, 0]} castShadow />
+      {/* closed bottom cap */}
       <mesh geometry={capGeo} material={metal}
-        position={[0, 2.52, 0]} castShadow />
-      {/* base disc */}
-      <mesh position={[0, -2.1, 0]} castShadow>
-        <cylinderGeometry args={[0.28, 0.28, 0.04, 32]} />
-        <primitive object={metal} />
-      </mesh>
+        position={[0, -2.56, 0]} castShadow />
     </group>
   )
 }
 
 /* ══════════════════════════════════════════════════════════
-   OLIVE GARNISH — pick + olive + pimento
+   OLIVE GARNISH  — olive + pimento + gold pick
 ══════════════════════════════════════════════════════════ */
-function OliveGarnish({ oliveRef }: { oliveRef: React.RefObject<THREE.Group> }) {
+function Olive({ groupRef }: { groupRef: React.RefObject<THREE.Group> }) {
   return (
-    <group ref={oliveRef} position={[6, 6, 0]}>
-      {/* golden pick */}
-      <mesh rotation={[0, 0, Math.PI * 0.06]}>
-        <cylinderGeometry args={[0.013, 0.013, 2.6, 8]} />
-        <meshStandardMaterial color="#c9a84c" metalness={0.85} roughness={0.15}
-          envMapIntensity={1.5} />
+    <group ref={groupRef} position={[8, 7, 0]}>
+      {/* pick stick */}
+      <mesh rotation={[0, 0, Math.PI * 0.07]}>
+        <cylinderGeometry args={[0.014, 0.014, 2.8, 8]} />
+        <meshStandardMaterial color="#c9a84c" metalness={0.88}
+          roughness={0.12} envMapIntensity={1.8} />
+      </mesh>
+      {/* top pearl */}
+      <mesh position={[0.12, 1.35, 0]}>
+        <sphereGeometry args={[0.06, 16, 16]} />
+        <meshStandardMaterial color="#e8e8f0" metalness={0.5}
+          roughness={0.1} />
       </mesh>
       {/* olive body */}
-      <mesh position={[0.08, -1.0, 0]} castShadow>
-        <sphereGeometry args={[0.17, 32, 32]} />
-        <meshStandardMaterial color="#4a7c42" roughness={0.35}
-          metalness={0.0} envMapIntensity={0.4} />
+      <mesh position={[0.06, -1.05, 0]} castShadow>
+        <sphereGeometry args={[0.18, 32, 32]} />
+        <meshStandardMaterial color="#3d7035" roughness={0.3}
+          metalness={0.0} envMapIntensity={0.5} />
       </mesh>
       {/* pimento */}
-      <mesh position={[0.08, -1.0, 0.155]} rotation={[0, 0, 0]}>
-        <circleGeometry args={[0.065, 16]} />
-        <meshStandardMaterial color="#cc2218" roughness={0.45} />
+      <mesh position={[0.06, -1.05, 0.165]}>
+        <circleGeometry args={[0.068, 20]} />
+        <meshStandardMaterial color="#cc2020" roughness={0.4} />
       </mesh>
     </group>
   )
 }
 
 /* ══════════════════════════════════════════════════════════
-   AMBIENT PARTICLES — subtle pink/warm dust
+   REFLECTIVE FLOOR
 ══════════════════════════════════════════════════════════ */
-function Particles() {
+function Floor() {
   return (
-    <>
-      <Sparkles count={60} scale={[5, 7, 3]} position={[0, 0.5, -1]}
-        size={0.5} speed={0.15} opacity={0.12} color="#ff6688" />
-      <Sparkles count={30} scale={[3, 5, 3]} position={[0, 1, 0]}
-        size={0.3} speed={0.08} opacity={0.08} color="#ffffff" />
-    </>
+    <mesh position={[0, -3.65, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry args={[30, 30]} />
+      <MeshReflectorMaterial
+        blur={[400, 100]}
+        resolution={512}
+        mixBlur={1}
+        mixStrength={60}
+        roughness={0.95}
+        depthScale={1.1}
+        minDepthThreshold={0.4}
+        maxDepthThreshold={1.4}
+        color="#040404"
+        metalness={0.6}
+        mirror={0}
+      />
+    </mesh>
   )
 }
 
 /* ══════════════════════════════════════════════════════════
-   CAMERA RIG — subtle cinematic drift
+   CAMERA — cinematic drift
 ══════════════════════════════════════════════════════════ */
 function CameraRig() {
   useFrame(({ camera, clock }) => {
     const t = clock.getElapsedTime()
-    camera.position.x += (Math.sin(t * 0.10) * 0.12 - camera.position.x) * 0.018
-    camera.position.y += (0.4 + Math.sin(t * 0.07) * 0.08 - camera.position.y) * 0.018
-    camera.lookAt(0, 0, 0)
+    camera.position.x += (0.15 + Math.sin(t * 0.09) * 0.1 - camera.position.x) * 0.015
+    camera.position.y += (-0.1 + Math.sin(t * 0.07) * 0.06 - camera.position.y) * 0.015
+    camera.lookAt(0.2, 0.4, 0)
   })
   return null
 }
 
 /* ══════════════════════════════════════════════════════════
-   MAIN SCENE — GSAP timeline orchestration
+   MAIN SCENE  + GSAP TIMELINE
+   Ice 0-2s | Shaker pour 2-5s | Olive 5-6.5s
 ══════════════════════════════════════════════════════════ */
 function Scene() {
   const glassRef  = useRef<THREE.Group>(null)
@@ -288,137 +271,147 @@ function Scene() {
   const oliveRef  = useRef<THREE.Group>(null)
   const iceRefs   = useRef<(THREE.Mesh | null)[]>(Array(5).fill(null))
 
-  const iceFinal: [number, number, number][] = [
-    [-0.32, 0.60,  0.10],
-    [ 0.28, 0.48, -0.10],
-    [-0.08, 0.38,  0.22],
-    [ 0.22, 0.68,  0.14],
-    [-0.22, 0.52, -0.18],
+  /* Final mid-air ice positions — match the reference composition */
+  const iceFinal: [number,number,number][] = [
+    [-1.05,  2.85,  0.35],   // upper-left, highest
+    [-0.55,  2.20, -0.25],   // upper center-left
+    [-0.80,  1.60,  0.50],   // mid-left
+    [-0.12,  1.10, -0.30],   // center
+    [ 0.30,  0.60,  0.40],   // lower, near glass opening
   ]
-  const iceStart: [number, number, number][] = [
-    [-5, 6,  0.8],
-    [ 5, 7, -0.6],
-    [-4, 8,  1.0],
-    [ 6, 5, -0.8],
-    [ 0.5, 9, 0.4],
+  const iceStart: [number,number,number][] = [
+    [-6,  7,  1.0],
+    [ 6,  7, -0.8],
+    [-5,  9,  1.5],
+    [ 6,  5, -1.2],
+    [ 0,  9,  0.6],
   ]
-  const iceRotStart = [
-    [1.2, 2.4, 0.8],
-    [2.1, 0.6, 1.8],
-    [0.5, 3.2, 2.1],
-    [1.8, 1.4, 0.3],
-    [3.0, 2.0, 1.2],
+  const iceRot0 = [
+    [1.4, 2.5, 0.9],
+    [2.2, 0.7, 1.9],
+    [0.6, 3.1, 2.2],
+    [1.9, 1.5, 0.4],
+    [3.1, 2.1, 1.3],
   ]
 
   useEffect(() => {
-    // ── Set initial states ──────────────────────────────
     iceRefs.current.forEach((ice, i) => {
       if (!ice) return
       ice.position.set(...iceStart[i])
-      ice.rotation.set(iceRotStart[i][0], iceRotStart[i][1], iceRotStart[i][2])
+      ice.rotation.set(iceRot0[i][0], iceRot0[i][1], iceRot0[i][2])
     })
 
-    const tl = gsap.timeline({ defaults: { ease: 'power2.inOut' } })
+    const tl = gsap.timeline()
 
-    // ── PHASE 1: Ice cubes (0 → 2s) ─────────────────────
+    /* ── ICE (0 → 2s) ─────────────────────────────────── */
     iceRefs.current.forEach((ice, i) => {
       if (!ice) return
-      const delay = 0.08 + i * 0.22
+      const t0 = 0.08 + i * 0.24
 
-      // Arc trajectory: first go up slightly then curve down
+      /* arc: rise briefly then sweep to final position */
       tl.to(ice.position, {
-        x: iceFinal[i][0] * 0.6,
-        y: iceFinal[i][1] + 1.8,
+        x: iceFinal[i][0] * 0.5,
+        y: iceFinal[i][1] + 2.2,
         z: iceFinal[i][2],
-        duration: 0.55,
+        duration: 0.6,
         ease: 'power1.out',
-      }, delay)
+      }, t0)
       tl.to(ice.position, {
         x: iceFinal[i][0],
         y: iceFinal[i][1],
         z: iceFinal[i][2],
-        duration: 0.45,
+        duration: 0.5,
         ease: 'power3.in',
-      }, delay + 0.55)
+      }, t0 + 0.6)
 
-      // Tumble during flight
+      /* tumble during flight */
       tl.to(ice.rotation, {
-        x: `+=${Math.PI * (1.5 + i * 0.3)}`,
-        y: `+=${Math.PI * (1.2 + i * 0.4)}`,
-        z: `+=${Math.PI * 0.8}`,
-        duration: 1.0,
-        ease: 'power1.out',
-      }, delay)
+        x: `+=${Math.PI * (1.8 + i * 0.25)}`,
+        y: `+=${Math.PI * (1.3 + i * 0.35)}`,
+        z: `+=${Math.PI * 0.9}`,
+        duration: 1.1,
+        ease: 'power1.inOut',
+      }, t0)
+
+      /* settle: slight rocking to rest */
+      tl.to(ice.rotation, {
+        x: iceFinal[i][0] * 0.3,
+        y: iceFinal[i][1] * 0.1,
+        duration: 0.3,
+        ease: 'power2.out',
+      }, t0 + 1.1)
     })
 
-    // Glass vibration on ice impact
-    tl.to(glassRef.current!.position, {
-      x: 0.07, duration: 0.04, yoyo: true, repeat: 8, ease: 'power1.inOut',
-    }, 1.65)
-    tl.to(glassRef.current!.rotation, {
-      z: 0.018, duration: 0.04, yoyo: true, repeat: 8, ease: 'power1.inOut',
-    }, 1.65)
+    /* glass micro-vibration when first ice hits */
+    if (glassRef.current) {
+      tl.to(glassRef.current.position, {
+        x: 0.06, duration: 0.04, yoyo: true, repeat: 8, ease: 'power1.inOut',
+      }, 1.55)
+      tl.to(glassRef.current.rotation, {
+        z: 0.014, duration: 0.04, yoyo: true, repeat: 8, ease: 'power1.inOut',
+      }, 1.55)
+    }
 
-    // ── PHASE 2: Shaker pours (2 → 5s) ──────────────────
-    // Shaker sweeps in from upper-right
+    /* ── SHAKER (2 → 5s) ───────────────────────────────── */
+    /* Enter: slide in from upper-right */
     tl.to(shakerRef.current!.position, {
-      x: 1.35, y: 3.4, z: 0.35,
-      duration: 1.0, ease: 'power3.out',
+      x: 2.1, y: 3.6, z: 0.4,
+      duration: 0.9, ease: 'power2.out',
     }, 2.1)
 
-    // Rotate into pouring position
+    /* Rotate into horizontal pouring position
+       rotation.z = -1.15 makes the opening (y+) point lower-left */
     tl.to(shakerRef.current!.rotation, {
-      z: Math.PI * 0.52,
-      x: -0.18,
-      duration: 0.85, ease: 'power2.inOut',
-    }, 2.9)
+      z: -1.15, x: -0.12,
+      duration: 0.75, ease: 'power2.inOut',
+    }, 2.85)
 
-    // Settle slightly downward
+    /* Tiny nudge downward to pouring height */
     tl.to(shakerRef.current!.position, {
-      y: 3.0,
+      y: 3.2,
       duration: 0.4, ease: 'power1.out',
-    }, 3.6)
+    }, 3.5)
 
-    // Stream appears and liquid fills
-    tl.set(streamRef.current!, { visible: true }, 3.25)
-    tl.to((streamRef.current! as THREE.Mesh).scale, {
-      y: 1, duration: 0.28, ease: 'power1.out',
-    }, 3.25)
+    /* Stream on */
+    if (streamRef.current) {
+      tl.set(streamRef.current, { visible: true }, 3.3)
+      tl.to((streamRef.current as THREE.Mesh).scale, {
+        y: 1, duration: 0.25, ease: 'power1.out',
+      }, 3.3)
+    }
 
+    /* Liquid fills glass */
     tl.to(liquidRef.current!.scale, {
-      y: 1.0, duration: 1.65, ease: 'power1.out',
-    }, 3.35)
+      y: 1.0, duration: 1.55, ease: 'power1.out',
+    }, 3.38)
 
-    // Stream stops
-    tl.to((streamRef.current! as THREE.Mesh).scale, {
-      y: 0.001, duration: 0.22, ease: 'power2.in',
-    }, 4.75)
-    tl.set(streamRef.current!, { visible: false }, 4.98)
+    /* Stream off */
+    if (streamRef.current) {
+      tl.to((streamRef.current as THREE.Mesh).scale, {
+        y: 0.001, duration: 0.2, ease: 'power2.in',
+      }, 4.7)
+      tl.set(streamRef.current, { visible: false }, 4.92)
+    }
 
-    // Shaker exits upper right
-    tl.to(shakerRef.current!.position, {
-      x: 6, y: 6, z: 0.5,
-      duration: 0.85, ease: 'power2.in',
-    }, 4.85)
-    tl.to(shakerRef.current!.rotation, {
-      z: 0, x: 0, duration: 0.85, ease: 'power2.in',
-    }, 4.85)
+    /* Shaker holds position (final composition stays) */
 
-    // ── PHASE 3: Olive garnish (5 → 6.5s) ───────────────
+    /* ── OLIVE (5 → 6.5s) ──────────────────────────────── */
     tl.to(oliveRef.current!.position, {
-      x: 1.08, y: 2.45, z: 0.28,
-      duration: 1.0, ease: 'power3.out',
+      x: 1.12, y: 2.42, z: 0.32,
+      duration: 0.95, ease: 'power3.out',
     }, 5.1)
     tl.to(oliveRef.current!.rotation, {
-      y: Math.PI * 1.4,
-      z: -0.18,
-      duration: 1.0, ease: 'power3.out',
+      y: Math.PI * 1.6, z: -0.2,
+      duration: 0.95, ease: 'power3.out',
     }, 5.1)
-    // slight bounce settle
     tl.to(oliveRef.current!.position, {
-      y: 2.38,
-      duration: 0.25, ease: 'bounce.out',
+      y: 2.34,
+      duration: 0.22, ease: 'power2.in',
     }, 5.95)
+    tl.to(oliveRef.current!.position, {
+      y: 2.40,
+      duration: 0.15, ease: 'power2.out',
+    }, 6.17)
 
     return () => { tl.kill() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -426,95 +419,86 @@ function Scene() {
 
   return (
     <>
-      {/* ── Lighting ── */}
-      <ambientLight intensity={0.06} />
+      {/* ── Pure black bg ── */}
+      <color attach="background" args={['#000000']} />
 
-      {/* Key light: warm from upper-left */}
+      {/* ── Studio lighting ────────────────────────────── */}
+      {/* No ambient — keep it dark */}
+      <ambientLight intensity={0.03} />
+
+      {/* KEY: strong warm from upper-right (mimics studio strobe) */}
       <directionalLight
-        position={[-3.5, 5.5, 3]}
-        intensity={2.8}
-        color="#fff6ee"
+        position={[4, 6, 3]}
+        intensity={4.5}
+        color="#fff8f2"
         castShadow
         shadow-mapSize={[2048, 2048]}
-        shadow-camera-near={0.1}
-        shadow-camera-far={30}
-        shadow-camera-left={-6}
-        shadow-camera-right={6}
-        shadow-camera-top={6}
-        shadow-camera-bottom={-6}
+        shadow-camera-near={0.5}
+        shadow-camera-far={40}
+        shadow-camera-left={-8}
+        shadow-camera-right={8}
+        shadow-camera-top={8}
+        shadow-camera-bottom={-8}
       />
 
-      {/* Rim light: cool blue from back-right */}
-      <pointLight position={[3.5, 3.5, -3]} intensity={2.0} color="#3870ff" />
+      {/* FILL: cool blue from left, very dim */}
+      <pointLight position={[-4, 2, 2]} intensity={0.6} color="#3060cc" />
 
-      {/* Pink fill under glass (liquid glow) */}
-      <pointLight position={[0, -1.2, 1]} intensity={0.8} color="#e83060" />
+      {/* RIM: back left to separate glass from bg */}
+      <pointLight position={[-2, 4, -3]} intensity={1.2} color="#8090cc" />
 
-      {/* Top spot */}
-      <spotLight
-        position={[0, 7, 2]}
-        intensity={1.8}
-        angle={0.28}
-        penumbra={0.9}
-        color="#fff8f4"
-        castShadow
-      />
+      {/* LIQUID GLOW: pink light from inside glass area */}
+      <pointLight position={[0.1, -0.5, 1.2]} intensity={0.55} color="#d42855" />
 
-      {/* ── Environment map (HDRI reflections) ── */}
-      <Environment preset="night" />
+      {/* ── HDRI reflections ── */}
+      <Environment preset="studio" />
 
-      {/* ── Glass group ── */}
-      <group position={[0, 0, 0]}>
-        <CocktailGlass groupRef={glassRef} />
-        <Liquid liquidRef={liquidRef} />
-        <PourStream streamRef={streamRef} />
+      {/* ── GLASS ── */}
+      <group position={[0.1, 0, 0]}>
+        <Glass groupRef={glassRef} />
+        <Liquid meshRef={liquidRef} />
+        <PourStream meshRef={streamRef} />
       </group>
 
-      {/* ── Ice cubes ── */}
+      {/* ── ICE CUBES ── */}
       {Array.from({ length: 5 }, (_, i) => (
-        <IceCube key={i} meshRef={el => { iceRefs.current[i] = el }} />
+        <IceCube key={i} r={el => { iceRefs.current[i] = el }} />
       ))}
 
-      {/* ── Shaker ── */}
-      <Shaker shakerRef={shakerRef} />
+      {/* ── SHAKER ── */}
+      <Shaker groupRef={shakerRef} />
 
-      {/* ── Olive ── */}
-      <OliveGarnish oliveRef={oliveRef} />
+      {/* ── OLIVE ── */}
+      <Olive groupRef={oliveRef} />
 
-      {/* ── Floor shadow ── */}
-      <ContactShadows
-        position={[0, -3.6, 0]}
-        opacity={0.45}
-        scale={9}
-        blur={2.5}
-        far={5}
-        color="#000000"
-      />
+      {/* ── REFLECTIVE FLOOR ── */}
+      <Floor />
 
-      {/* ── Ambient particles ── */}
-      <Particles />
+      {/* ── AMBIENT DUST ── */}
+      <Sparkles count={50} scale={[6, 8, 4]} position={[0, 1, -1]}
+        size={0.4} speed={0.1} opacity={0.08} color="#ff6688" />
 
-      {/* ── Camera cinematic drift ── */}
+      {/* ── CAMERA ── */}
       <CameraRig />
     </>
   )
 }
 
 /* ══════════════════════════════════════════════════════════
-   EXPORT — drop into right side of hero
+   EXPORT
 ══════════════════════════════════════════════════════════ */
 export default function CocktailHero3D() {
   return (
-    <div style={{ width: '100%', height: '100%', background: 'transparent' }}>
+    <div style={{ width: '100%', height: '100%' }}>
       <Canvas
         shadows
-        dpr={[1, 2]}
-        camera={{ position: [0, 0.4, 7.5], fov: 38 }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0.2, -0.1, 8.5], fov: 40 }}
         gl={{
           antialias: true,
-          alpha: true,
+          alpha: false,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.25,
+          toneMappingExposure: 1.3,
         }}
       >
         <Suspense fallback={null}>

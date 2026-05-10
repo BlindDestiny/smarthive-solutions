@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import CaveLogo from './logo'
+import Image from 'next/image'
 
 const LINKS = [
   { label: 'About',   href: '#about'   },
@@ -32,8 +32,9 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-8 lg:px-16 h-20 flex items-center justify-between">
 
-        <a href="#" className="flex items-center gap-3 group">
-          <CaveLogo size={38} />
+        <a href="#" className="flex items-center gap-2 group">
+          <Image src="/logo.png" alt="Cave Lounge" width={44} height={44}
+            style={{ objectFit: 'contain', mixBlendMode: 'screen' }} />
           <span className="font-display tracking-[0.25em] text-[#ff6a00] glow-text hidden sm:block"
             style={{ fontSize: '0.82rem' }}>
             CAVE LOUNGE
