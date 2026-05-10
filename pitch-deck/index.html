@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartHive Solutions — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy:   #0f172a;
+  --navy2:  #1e293b;
+  --gold:   #d97706;
+  --goldb:  #f59e0b;
+  --sky:    #0284c7;
+  --skyb:   #38bdf8;
+  --white:  #ffffff;
+  --light:  #f8fafc;
+  --text:   #0f172a;
+  --muted:  #64748b;
+  --border: #e2e8f0;
+  --green:  #059669;
+  --red:    #dc2626;
+}
+body { background:#e2e8f0; font-family:'Inter',sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+/* ── PRINT ── */
+@page { size: A4 landscape; margin: 0; }
+@media print {
+  body { background: white; }
+  .no-print { display:none; }
+  .slide { margin:0 !important; box-shadow:none !important; }
+}
+
+/* ── SLIDE BASE ── */
+.slide {
+  width: 297mm;
+  height: 210mm;
+  background: white;
+  margin: 0 auto 24px;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── FONTS ── */
+.serif { font-family: 'Playfair Display', serif; }
+.sans  { font-family: 'Inter', sans-serif; }
+
+/* ── UTILITIES ── */
+.text-gold  { color: var(--gold); }
+.text-sky   { color: var(--sky); }
+.text-muted { color: var(--muted); }
+.text-white { color: var(--white); }
+.text-navy  { color: var(--navy); }
+
+/* ── SLIDE 1: CAPA ── */
+#s1 { background: var(--navy); }
+#s1 .stripe {
+  position: absolute; top:0; left:0; right:0; height:5px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--goldb) 50%, var(--gold) 100%);
+}
+#s1 .content {
+  flex:1; display:flex; flex-direction:column;
+  justify-content:center; padding: 18mm 22mm;
+  position: relative; z-index:2;
+}
+#s1 .bg-circle {
+  position:absolute; width:500px; height:500px; border-radius:50%;
+  background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+  right:-100px; top:-100px; pointer-events:none;
+}
+#s1 .logo { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+#s1 .logo-icon {
+  width:40px; height:40px; background:var(--gold); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px;
+}
+#s1 .logo-text { font-family:'Inter'; font-weight:700; font-size:16px; color:rgba(255,255,255,0.7); letter-spacing:0.02em; }
+#s1 h1 {
+  font-family:'Playfair Display'; font-weight:800; font-size:44px;
+  color:white; line-height:1.1; margin-bottom:16px;
+}
+#s1 h1 span { color:var(--goldb); }
+#s1 .tagline { font-size:15px; color:rgba(255,255,255,0.5); margin-bottom:32px; font-weight:400; max-width:380px; line-height:1.6; }
+#s1 .pills { display:flex; gap:10px; flex-wrap:wrap; }
+#s1 .pill {
+  background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.65); font-size:11px; font-weight:600;
+  padding:6px 14px; border-radius:99px; letter-spacing:0.03em;
+}
+#s1 .corner { position:absolute; right:22mm; bottom:18mm; text-align:right; }
+#s1 .corner .name  { font-weight:700; color:rgba(255,255,255,0.8); font-size:13px; }
+#s1 .corner .email { color:rgba(255,255,255,0.35); font-size:11px; margin-top:3px; }
+#s1 .slide-num { display:none; }
+
+/* ── SECTION HEADER (reused) ── */
+.section-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;
+  font-size:10px; font-weight:700; padding:4px 12px; border-radius:99px;
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;
+}
+
+/* ── SLIDE 2: O PROBLEMA ── */
+#s2 { background: white; }
+#s2 .top-bar { height:5px; background: var(--gold); }
+#s2 .body { flex:1; display:grid; grid-template-columns:1fr 1fr; gap:0; }
+#s2 .left { padding:14mm 10mm 14mm 18mm; display:flex; flex-direction:column; justify-content:center; border-right:1px solid var(--border); }
+#s2 .left h2 { font-family:'Playfair Display'; font-size:30px; color:var(--navy); line-height:1.2; margin-bottom:14px; }
+#s2 .left p { font-size:13px; color:var(--muted); line-height:1.7; max-width:260px; }
+#s2 .right { padding:14mm 18mm 14mm 10mm; display:flex; flex-direction:column; justify-content:center; gap:14px; }
+.stat-box {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:16px; background:var(--light); border-radius:14px;
+  border-left:3px solid var(--gold);
+}
+.stat-box .num { font-family:'Playfair Display'; font-size:34px; font-weight:800; color:var(--gold); line-height:1; min-width:60px; }
+.stat-box .info .label { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+.stat-box .info .sub   { font-size:11px; color:var(--muted); line-height:1.4; }
+
+/* ── SLIDE 3: A REALIDADE ── */
+#s3 { background: white; }
+#s3 .top-bar { height:5px; background: var(--sky); }
+#s3 .body { flex:1; display:flex; flex-direction:column; padding:10mm 18mm; }
+#s3 h2 { font-family:'Playfair Display'; font-size:28px; color:var(--navy); margin-bottom:10mm; }
+#s3 .compare { display:grid; grid-template-columns:1fr 1fr; gap:12px; flex:1; }
+.comp-card { border-radius:16px; padding:18px; display:flex; flex-direction:column; gap:10px; }
+.comp-card.yes { background:#f0fdf4; border:1.5px solid #bbf7d0; }
+.comp-card.no  { background:#fff5f5; border:1.5px solid #fecaca; }
+.comp-card .comp-title { font-weight:800; font-size:13px; display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.comp-card.yes .comp-title { color:var(--green); }
+.comp-card.no  .comp-title { color:var(--red); }
+.comp-item { display:flex; align-items:center; gap:8px; font-size:12px; }
+.comp-item .dot { width:18px; height:18px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; }
+.yes .dot { background:#dcfce7; color:var(--green); }
+.no  .dot { background:#fee2e2; color:var(--red); }
+
+/* ── SLIDE 4: A SOLUÇÃO ── */
+#s4 { background: var(--navy); }
+#s4 .top-bar { height:5px; background:linear-gradient(90deg, var(--sky),var(--skyb)); }
+#s4 .body { flex:1; display:flex; flex-direction:column; padding:12mm 18mm; }
+#s4 .tag { color:var(--skyb); background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.2); }
+#s4 h2 { font-family:'Playfair Display'; font-size:32px; color:white; margin-bottom:10mm; }
+#s4 h2 span { color:var(--goldb); }
+#s4 .pillars { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; flex:1; }
+.pillar {
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09);
+  border-radius:16px; padding:18px; display:flex; flex-direction:column; gap:10px;
+}
+.pillar .icon { font-size:26px; margin-bottom:4px; }
+.pillar h3 { font-size:13px; font-weight:700; color:white; }
+.pillar p  { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.5; }
+.pillar .tag2 { font-size:9px; font-weight:700; color:var(--goldb); background:rgba(217,119,6,0.15); border:1px solid rgba(217,119,6,0.2); padding:3px 8px; border-radius:99px; align-self:flex-start; letter-spacing:0.05em; }
+
+/* ── SLIDE 5: COMO FUNCIONA ── */
+#s5 { background: var(--light); }
+#s5 .top-bar { height:5px; background:var(--gold); }
+#s5 .body { flex:1; display:flex; flex-direction:column; padding:10mm 18mm; }
+#s5 h2 { font-family:'Playfair Display'; font-size:28px; color:var(--navy); margin-bottom:8mm; }
+#s5 .steps { display:grid; grid-template-columns:repeat(5,1fr); align-items:start; gap:0; flex:1; }
+.step { text-align:center; padding:0 8px; }
+.step .num { width:42px; height:42px; border-radius:50%; background:var(--sky); color:white; font-weight:800; font-size:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+.step h3 { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:5px; }
+.step p  { font-size:11px; color:var(--muted); line-height:1.5; }
+.step-arrow { display:flex; align-items:center; justify-content:center; padding-top:20px; font-size:18px; color:var(--border); font-weight:300; }
+.step.highlight .num { background:var(--gold); }
+#s5 .bottom {
+  margin-top:auto; padding:12px 18px; background:white; border:1px solid var(--border);
+  border-radius:12px; display:flex; align-items:center; gap:12px;
+}
+#s5 .bottom .b-icon { font-size:20px; }
+#s5 .bottom p { font-size:12px; color:var(--muted); }
+#s5 .bottom strong { color:var(--navy); }
+
+/* ── SLIDE 6: PORTFOLIO ── */
+#s6 { background: white; }
+#s6 .top-bar { height:5px; background:var(--sky); }
+#s6 .body { flex:1; display:flex; flex-direction:column; padding:10mm 18mm; }
+#s6 h2 { font-family:'Playfair Display'; font-size:28px; color:var(--navy); margin-bottom:8mm; }
+#s6 .demos { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; flex:1; }
+.demo-card { border-radius:16px; overflow:hidden; border:1px solid var(--border); display:flex; flex-direction:column; }
+.demo-card .thumb { height:80px; display:flex; align-items:center; justify-content:center; font-size:32px; }
+.demo-card .info { padding:14px; flex:1; display:flex; flex-direction:column; gap:5px; }
+.demo-card .biz-type { font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+.demo-card h3 { font-family:'Playfair Display'; font-size:15px; color:var(--navy); }
+.demo-card p  { font-size:11px; color:var(--muted); line-height:1.5; flex:1; }
+.demo-card .url { font-size:10px; color:var(--sky); font-weight:600; margin-top:6px; }
+.demo-card .plan-badge { font-size:9px; font-weight:700; padding:3px 8px; border-radius:99px; align-self:flex-start; }
+
+/* ── SLIDE 7: PREÇOS ── */
+#s7 { background: var(--light); }
+#s7 .top-bar { height:5px; background:var(--gold); }
+#s7 .body { flex:1; display:flex; flex-direction:column; padding:10mm 18mm; }
+#s7 h2 { font-family:'Playfair Display'; font-size:28px; color:var(--navy); margin-bottom:7mm; }
+#s7 .plans { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; flex:1; }
+.plan-card { border-radius:16px; padding:20px; display:flex; flex-direction:column; border:1.5px solid var(--border); background:white; }
+.plan-card.featured { border-color:var(--sky); background:var(--navy); }
+.plan-card .plan-name { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
+.plan-card:not(.featured) .plan-name { color:var(--muted); }
+.plan-card.featured .plan-name { color:var(--skyb); }
+.plan-card .price { font-family:'Playfair Display'; font-size:36px; font-weight:800; line-height:1; }
+.plan-card:not(.featured) .price { color:var(--navy); }
+.plan-card.featured .price { color:white; }
+.plan-card .period { font-size:11px; color:var(--muted); margin-bottom:4px; }
+.plan-card.featured .period { color:rgba(255,255,255,0.4); }
+.plan-card .monthly { font-size:11px; color:var(--sky); font-weight:600; margin-bottom:14px; }
+.plan-card.featured .monthly { color:var(--goldb); }
+.plan-card hr { border:none; border-top:1px solid var(--border); margin-bottom:12px; }
+.plan-card.featured hr { border-color:rgba(255,255,255,0.1); }
+.plan-feat { font-size:11px; color:var(--muted); display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+.plan-card.featured .plan-feat { color:rgba(255,255,255,0.55); }
+.plan-feat::before { content:'✓'; font-weight:700; color:var(--green); flex-shrink:0; }
+.plan-card.featured .plan-feat::before { color:var(--goldb); }
+.plan-card .popular-tag { background:var(--sky); color:white; font-size:9px; font-weight:700; padding:3px 10px; border-radius:99px; align-self:flex-start; margin-bottom:10px; letter-spacing:0.05em; }
+
+/* ── SLIDE 8: POR QUE SMARTHIVE ── */
+#s8 { background: white; }
+#s8 .top-bar { height:5px; background:var(--gold); }
+#s8 .body { flex:1; display:grid; grid-template-columns:1fr 1.2fr; gap:0; }
+#s8 .left { padding:14mm 10mm 14mm 18mm; display:flex; flex-direction:column; justify-content:center; border-right:1px solid var(--border); }
+#s8 .left h2 { font-family:'Playfair Display'; font-size:28px; color:var(--navy); line-height:1.2; margin-bottom:12px; }
+#s8 .left h2 span { color:var(--sky); }
+#s8 .left p { font-size:12px; color:var(--muted); line-height:1.7; max-width:240px; margin-bottom:16px; }
+#s8 .proof { display:flex; gap:20px; }
+#s8 .proof .p-stat .p-num { font-family:'Playfair Display'; font-size:28px; font-weight:800; color:var(--gold); }
+#s8 .proof .p-stat .p-label { font-size:10px; color:var(--muted); }
+#s8 .right { padding:14mm 18mm 14mm 10mm; display:flex; flex-direction:column; justify-content:center; gap:11px; }
+.why-item { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--light); }
+.why-item .wi-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+.why-item .wi-text h3 { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:2px; }
+.why-item .wi-text p  { font-size:11px; color:var(--muted); line-height:1.4; }
+
+/* ── SLIDE 9: PRÓXIMOS PASSOS ── */
+#s9 { background: var(--navy); }
+#s9 .stripe { position:absolute; top:0; left:0; right:0; height:5px; background:linear-gradient(90deg,var(--gold),var(--goldb)); }
+#s9 .body { flex:1; display:flex; flex-direction:column; padding:12mm 18mm; position:relative; z-index:2; }
+#s9 .bg-dec { position:absolute; bottom:-60px; right:-60px; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle,rgba(56,189,248,0.06) 0%,transparent 70%); pointer-events:none; }
+#s9 .tag { color:var(--goldb); background:rgba(217,119,6,0.12); border-color:rgba(217,119,6,0.2); }
+#s9 h2 { font-family:'Playfair Display'; font-size:30px; color:white; margin-bottom:10mm; }
+#s9 h2 span { color:var(--goldb); }
+#s9 .next-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; flex:1; }
+.next-step { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px; display:flex; flex-direction:column; gap:10px; }
+.next-step .ns-num { font-family:'Playfair Display'; font-size:36px; font-weight:800; color:rgba(255,255,255,0.1); line-height:1; }
+.next-step .ns-icon { font-size:24px; margin-top:-4px; }
+.next-step h3 { font-size:13px; font-weight:700; color:white; }
+.next-step p  { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.5; }
+.next-step .ns-tag { font-size:9px; font-weight:700; color:var(--goldb); background:rgba(217,119,6,0.15); border:1px solid rgba(217,119,6,0.2); padding:3px 8px; border-radius:99px; align-self:flex-start; letter-spacing:0.05em; }
+
+/* ── SLIDE 10: CONTACTO ── */
+#s10 { background: var(--navy); }
+#s10 .stripe { position:absolute; top:0; left:0; right:0; height:5px; background:linear-gradient(90deg,var(--gold),var(--goldb),var(--sky)); }
+#s10 .body { flex:1; display:grid; grid-template-columns:1fr 1fr; position:relative; z-index:2; }
+#s10 .bg-dec { position:absolute; top:-80px; right:-80px; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle,rgba(217,119,6,0.07) 0%,transparent 70%); pointer-events:none; }
+#s10 .left { padding:14mm 10mm 14mm 18mm; display:flex; flex-direction:column; justify-content:center; border-right:1px solid rgba(255,255,255,0.06); }
+#s10 .logo { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+#s10 .logo-icon { width:36px; height:36px; background:var(--gold); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+#s10 .logo-text { font-weight:700; font-size:15px; color:white; }
+#s10 h2 { font-family:'Playfair Display'; font-size:30px; color:white; line-height:1.2; margin-bottom:12px; }
+#s10 h2 span { color:var(--goldb); }
+#s10 .desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.6; max-width:250px; margin-bottom:20px; }
+#s10 .guarantee { display:flex; gap:6px; flex-wrap:wrap; }
+#s10 .guarantee .g-pill { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.55); font-size:10px; font-weight:600; padding:5px 12px; border-radius:99px; }
+#s10 .right { padding:14mm 18mm 14mm 10mm; display:flex; flex-direction:column; justify-content:center; gap:12px; }
+.contact-row { display:flex; align-items:center; gap:12px; }
+.contact-row .ci { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.contact-row .cd .cl { font-size:10px; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px; }
+.contact-row .cd .cv { font-size:13px; font-weight:600; color:white; }
+.contact-row .cd .cv a { color:white; text-decoration:none; }
+#s10 .cta-box { margin-top:4px; background:var(--gold); border-radius:12px; padding:14px 18px; }
+#s10 .cta-box p { font-size:12px; font-weight:700; color:white; margin-bottom:3px; }
+#s10 .cta-box span { font-size:11px; color:rgba(255,255,255,0.75); }
+
+/* ── SLIDE NUMBER ── */
+.slide-num {
+  position:absolute; bottom:8mm; right:10mm;
+  font-size:10px; color:rgba(0,0,0,0.18); font-weight:600;
+}
+#s1 .slide-num, #s4 .slide-num, #s9 .slide-num, #s10 .slide-num { color:rgba(255,255,255,0.15); }
+
+/* ── PRINT BUTTON ── */
+.no-print {
+  position:fixed; bottom:24px; right:24px; z-index:999;
+  background:#0f172a; color:white; font-family:'Inter'; font-size:13px; font-weight:700;
+  padding:12px 22px; border-radius:12px; border:none; cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+.no-print:hover { background:#1e293b; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 — CAPA
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s1">
+  <div class="stripe"></div>
+  <div class="bg-circle"></div>
+  <div class="content">
+    <div class="logo">
+      <div class="logo-icon">✦</div>
+      <span class="logo-text">SmartHive Solutions</span>
+    </div>
+    <h1>A presença digital<br>que o seu negócio<br><span>merece.</span></h1>
+    <p class="tagline">Websites profissionais para negócios locais em Portugal —<br>rápidos, acessíveis e com resultados garantidos.</p>
+    <div class="pills">
+      <span class="pill">🌐 Websites</span>
+      <span class="pill">📱 SEO Local</span>
+      <span class="pill">📊 Google Maps</span>
+      <span class="pill">💬 WhatsApp Business</span>
+      <span class="pill">📸 Social Media</span>
+    </div>
+  </div>
+  <div class="corner">
+    <div class="name">Miguel Lourenço</div>
+    <div class="email">geral@smarthivesolutions.pt</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 — O PROBLEMA
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="top-bar"></div>
+  <div class="body">
+    <div class="left">
+      <span class="section-tag">📊 O Problema</span>
+      <h2>Os seus clientes<br>pesquisam no Google.<br>Aparece?</h2>
+      <p>A maioria dos negócios locais em Portugal perde clientes todos os dias por não ter presença digital. Enquanto a concorrência aparece no Google, eles ficam invisíveis.</p>
+    </div>
+    <div class="right">
+      <div class="stat-box">
+        <div class="num">97%</div>
+        <div class="info">
+          <div class="label">Pesquisa online antes de visitar</div>
+          <div class="sub">97% dos consumidores pesquisa produtos e serviços locais na internet antes de contactar ou visitar um negócio.</div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <div class="num">68%</div>
+        <div class="info">
+          <div class="label">Negócios locais sem website</div>
+          <div class="sub">Mais de metade dos pequenos negócios em Portugal ainda não tem um website profissional activo.</div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <div class="num">3×</div>
+        <div class="info">
+          <div class="label">Mais contactos com website</div>
+          <div class="sub">Negócios com presença digital profissional recebem em média 3x mais contactos de clientes novos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">02 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 — A REALIDADE
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="top-bar"></div>
+  <div class="body">
+    <span class="section-tag" style="margin:0 18mm">🔍 A Realidade</span>
+    <h2 style="margin:0 18mm 6mm">Com website vs. Sem website</h2>
+    <div class="compare" style="margin:0 18mm; flex:1;">
+      <div class="comp-card yes">
+        <div class="comp-title">✅ Com website profissional</div>
+        <div class="comp-item"><div class="dot">✓</div><span>Aparece no Google quando alguém pesquisa o serviço</span></div>
+        <div class="comp-item"><div class="dot">✓</div><span>Clientes fazem reservas online a qualquer hora</span></div>
+        <div class="comp-item"><div class="dot">✓</div><span>Apresenta serviços, preços e fotos profissionais</span></div>
+        <div class="comp-item"><div class="dot">✓</div><span>Botão WhatsApp para contacto imediato</span></div>
+        <div class="comp-item"><div class="dot">✓</div><span>Reviews Google integradas, credibilidade instant</span></div>
+        <div class="comp-item"><div class="dot">✓</div><span>Disponível 24/7 — trabalha enquanto dorme</span></div>
+      </div>
+      <div class="comp-card no">
+        <div class="comp-title">❌ Sem website</div>
+        <div class="comp-item"><div class="dot">✗</div><span>Invisível no Google, clientes não encontram</span></div>
+        <div class="comp-item"><div class="dot">✗</div><span>Perde reservas para concorrentes que aparecem</span></div>
+        <div class="comp-item"><div class="dot">✗</div><span>Depende de Facebook e boca-a-boca</span></div>
+        <div class="comp-item"><div class="dot">✗</div><span>Sem credibilidade digital perante clientes novos</span></div>
+        <div class="comp-item"><div class="dot">✗</div><span>Dificuldade em comunicar preços e serviços</span></div>
+        <div class="comp-item"><div class="dot">✗</div><span>Clientes ficam com dúvidas, não contactam</span></div>
+      </div>
+    </div>
+    <div style="margin:6mm 18mm 0; padding:10px 16px; background:#eff6ff; border-radius:10px; border:1px solid #bfdbfe;">
+      <p style="font-size:11px; color:#1d4ed8; font-weight:600;">💡 Cada dia sem website é um dia a oferecer clientes à concorrência.</p>
+    </div>
+  </div>
+  <span class="slide-num">03 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 — A SOLUÇÃO
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="top-bar"></div>
+  <div class="body">
+    <span class="section-tag tag">✦ A Solução</span>
+    <h2>A SmartHive cria a sua<br><span>presença digital completa</span></h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon">🌐</div>
+        <span class="tag2">CORE</span>
+        <h3>Website Profissional</h3>
+        <p>Design moderno, optimizado para mobile, com animações e carregamento rápido. Feito à medida do seu negócio.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">📍</div>
+        <span class="tag2">VISIBILIDADE</span>
+        <h3>SEO Local & Google</h3>
+        <p>Optimização para aparecer nos resultados de pesquisa locais. Google My Business configurado e verificado.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">💬</div>
+        <span class="tag2">CONVERSÃO</span>
+        <h3>WhatsApp & Contacto</h3>
+        <p>Botão WhatsApp com mensagem pré-preenchida. Formulários de contacto e reservas integrados.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">📊</div>
+        <span class="tag2">GESTÃO</span>
+        <h3>Analytics & Suporte</h3>
+        <p>Google Analytics instalado. Painel para gerir o site. 1h de suporte mensal incluída no plano.</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num" style="color:rgba(255,255,255,0.15)">04 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 5 — COMO FUNCIONA
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="top-bar"></div>
+  <div class="body">
+    <span class="section-tag">⚡ Como Funciona</span>
+    <h2>Online em 7–10 dias úteis</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Conversa</h3>
+        <p>Chamada de 15 min para perceber o negócio, objectivos e estilo visual pretendido.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Briefing</h3>
+        <p>Enviamos questionário simples. O cliente fornece logo, fotos e textos — ou tratamos nós.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step highlight">
+        <div class="num">3</div>
+        <h3>Desenvolvimento</h3>
+        <p>Criamos o website. Em 5–7 dias temos uma versão para aprovação com ajustes incluídos.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="num">4</div>
+        <h3>Online!</h3>
+        <p>Publicamos, configuramos Google, domínio e SSL. 30 dias de suporte gratuito após entrega.</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <span class="b-icon">💳</span>
+      <p><strong>Pagamento em 2 prestações:</strong> 50% na aprovação do projecto · 50% na entrega. Sem subscrições obrigatórias.</p>
+    </div>
+  </div>
+  <span class="slide-num">05 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 6 — PORTFOLIO / DEMOS
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="top-bar"></div>
+  <div class="body">
+    <span class="section-tag">🎨 Portfolio</span>
+    <h2>Exemplos de trabalho real</h2>
+    <div class="demos">
+
+      <div class="demo-card">
+        <div class="thumb" style="background:linear-gradient(135deg,#0f172a,#1e293b)">🍽️</div>
+        <div class="info">
+          <div class="biz-type">Restaurante · Lisboa</div>
+          <h3>The Venue</h3>
+          <p>Fine dining premium com menu de degustação, reservas online e galeria de eventos. Design escuro e elegante.</p>
+          <div class="url">thevenue.smarthive.pt</div>
+          <span class="plan-badge" style="background:#eff6ff;color:#1d4ed8;">Plano Premium</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="thumb" style="background:linear-gradient(135deg,#052e16,#166534)">🇧🇷</div>
+        <div class="info">
+          <div class="biz-type">Restaurante Brasileiro · Porto</div>
+          <h3>Porto dos Ribeiros</h3>
+          <p>Cardápio completo, sistema de reservas, galeria e opções vegetarianas. Design vibrante e acolhedor.</p>
+          <div class="url">portodosribeiros.smarthive.pt</div>
+          <span class="plan-badge" style="background:#f0fdf4;color:#166534;">Plano Standard</span>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="thumb" style="background:linear-gradient(135deg,#0c4a6e,#0369a1)">🧹</div>
+        <div class="info">
+          <div class="biz-type">Limpeza Profissional · Lisboa</div>
+          <h3>SparkClean</h3>
+          <p>Serviços de limpeza com preçário online, formulário de orçamento e sistema de marcação. Moderno e funcional.</p>
+          <div class="url">sparkclean.smarthive.pt</div>
+          <span class="plan-badge" style="background:#f0f9ff;color:#0369a1;">Plano Standard</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <span class="slide-num">06 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 7 — PREÇOS
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="top-bar"></div>
+  <div class="body">
+    <span class="section-tag">💰 Preços Transparentes</span>
+    <h2>Planos para cada negócio</h2>
+    <div class="plans">
+
+      <div class="plan-card">
+        <div class="plan-name">Básico</div>
+        <div class="price">€399</div>
+        <div class="period">setup único</div>
+        <div class="monthly">+ €29/mês manutenção</div>
+        <hr>
+        <div class="plan-feat">Até 5 páginas</div>
+        <div class="plan-feat">Design mobile-first</div>
+        <div class="plan-feat">Formulário de contacto</div>
+        <div class="plan-feat">Botão WhatsApp</div>
+        <div class="plan-feat">Google Maps integrado</div>
+        <div class="plan-feat">Domínio + alojamento</div>
+        <div class="plan-feat">Prazo: 5–7 dias úteis</div>
+      </div>
+
+      <div class="plan-card featured">
+        <span class="popular-tag">⭐ MAIS VENDIDO</span>
+        <div class="plan-name">Standard</div>
+        <div class="price">€599</div>
+        <div class="period">setup único</div>
+        <div class="monthly">+ €49/mês manutenção</div>
+        <hr>
+        <div class="plan-feat">Até 10 páginas</div>
+        <div class="plan-feat">Design premium animado</div>
+        <div class="plan-feat">SEO básico (meta, título, mapa)</div>
+        <div class="plan-feat">Galeria de fotos/vídeos</div>
+        <div class="plan-feat">Google Analytics</div>
+        <div class="plan-feat">3 meses suporte incluídos</div>
+        <div class="plan-feat">Prazo: 7–10 dias úteis</div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">Premium</div>
+        <div class="price">€899</div>
+        <div class="period">setup único</div>
+        <div class="monthly">+ €79/mês manutenção</div>
+        <hr>
+        <div class="plan-feat">Até 20 páginas</div>
+        <div class="plan-feat">Design topo de gama</div>
+        <div class="plan-feat">SEO avançado + sitemap XML</div>
+        <div class="plan-feat">Blog / Notícias</div>
+        <div class="plan-feat">Reservas / formulários avançados</div>
+        <div class="plan-feat">6 meses suporte incluídos</div>
+        <div class="plan-feat">Prazo: 14–18 dias úteis</div>
+      </div>
+
+    </div>
+    <p style="font-size:10px; color:var(--muted); text-align:center; margin-top:10px;">Todos os planos incluem domínio .pt ou .com (1.º ano), alojamento, SSL e 30 dias de garantia. Fatura emitida.</p>
+  </div>
+  <span class="slide-num">07 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 8 — POR QUE SMARTHIVE
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="top-bar"></div>
+  <div class="body">
+    <div class="left">
+      <span class="section-tag">🏆 Porquê nós</span>
+      <h2>Por que escolher<br>a <span>SmartHive</span>?</h2>
+      <p>Não somos uma agência grande e cara. Somos especialistas locais que entendem as necessidades reais dos negócios em Portugal.</p>
+      <div class="proof">
+        <div class="p-stat">
+          <div class="p-num">15+</div>
+          <div class="p-label">websites entregues</div>
+        </div>
+        <div class="p-stat">
+          <div class="p-num">7d</div>
+          <div class="p-label">tempo médio entrega</div>
+        </div>
+        <div class="p-stat">
+          <div class="p-num">100%</div>
+          <div class="p-label">satisfação garantida</div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="why-item">
+        <span class="wi-icon">⚡</span>
+        <div class="wi-text">
+          <h3>Rapidez real</h3>
+          <p>7–10 dias úteis do briefing à publicação. Sem atrasos, com datas comprometidas por escrito.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <span class="wi-icon">💰</span>
+        <div class="wi-text">
+          <h3>Preço justo e transparente</h3>
+          <p>Preço fechado desde o início. Sem cobranças surpresa. IVA incluído, fatura emitida.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <span class="wi-icon">🎯</span>
+        <div class="wi-text">
+          <h3>Feito para negócios locais</h3>
+          <p>Especializados em restaurantes, serviços, comércio local e profissionais liberais em Portugal.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <span class="wi-icon">🛡️</span>
+        <div class="wi-text">
+          <h3>Garantia de satisfação</h3>
+          <p>Se não ficar satisfeito dentro do prazo de garantia, corrigimos sem custo adicional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">08 / 10</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 9 — PRÓXIMOS PASSOS
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="stripe"></div>
+  <div class="bg-dec"></div>
+  <div class="body">
+    <span class="section-tag tag">🚀 Vamos começar?</span>
+    <h2>Começar é<br><span>mais simples do que parece</span></h2>
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="ns-num">01</div>
+        <div class="ns-icon">📞</div>
+        <span class="ns-tag">HOJE · GRÁTIS</span>
+        <h3>Conversa rápida</h3>
+        <p>15 minutos por WhatsApp ou chamada para perceber o que precisa e mostrar exemplos do que fazemos.</p>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">02</div>
+        <div class="ns-icon">📋</div>
+        <span class="ns-tag">EM 24H</span>
+        <h3>Proposta e orçamento</h3>
+        <p>Enviamos proposta detalhada com preço fechado, prazo e tudo o que está incluído. Sem surpresas.</p>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">03</div>
+        <div class="ns-icon">🌐</div>
+        <span class="ns-tag">EM 7–10 DIAS</span>
+        <h3>Online e a receber clientes</h3>
+        <p>O seu website profissional está publicado e a receber visitas. Acompanhamento contínuo incluído.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 — CONTACTO
+══════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="stripe"></div>
+  <div class="bg-dec"></div>
+  <div class="body">
+    <div class="left">
+      <div class="logo">
+        <div class="logo-icon">✦</div>
+        <span class="logo-text">SmartHive Solutions</span>
+      </div>
+      <h2>Pronto para<br><span>aparecer no Google?</span></h2>
+      <p class="desc">Orçamento gratuito em 24h. Sem obrigações, sem complicações. Falarmos é sempre o primeiro passo.</p>
+      <div class="guarantee">
+        <span class="g-pill">✓ Sem compromisso</span>
+        <span class="g-pill">✓ Resposta em 24h</span>
+        <span class="g-pill">✓ Orçamento grátis</span>
+        <span class="g-pill">✓ Resultados garantidos</span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="contact-row">
+        <div class="ci" style="background:rgba(37,211,102,0.15)">💬</div>
+        <div class="cd">
+          <div class="cl">WhatsApp</div>
+          <div class="cv">+351 912 345 678</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci" style="background:rgba(2,132,199,0.15)">📧</div>
+        <div class="cd">
+          <div class="cl">Email</div>
+          <div class="cv">geral@smarthivesolutions.pt</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci" style="background:rgba(217,119,6,0.15)">🌐</div>
+        <div class="cd">
+          <div class="cl">Website</div>
+          <div class="cv">smarthivesolutions.pt</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci" style="background:rgba(100,116,139,0.15)">📍</div>
+        <div class="cd">
+          <div class="cl">Localização</div>
+          <div class="cv">Lisboa, Portugal</div>
+        </div>
+      </div>
+      <div class="cta-box">
+        <p>Peça o seu orçamento hoje</p>
+        <span>Resposta garantida em menos de 24 horas · Sem spam</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Print button -->
+<button class="no-print" onclick="window.print()">🖨️ Guardar como PDF</button>
+
+</body>
+</html>
