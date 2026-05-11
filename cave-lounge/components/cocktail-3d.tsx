@@ -8,13 +8,6 @@ import {
   MeshReflectorMaterial,
   useTexture,
 } from '@react-three/drei'
-import {
-  EffectComposer,
-  Bloom,
-  Vignette,
-  ChromaticAberration,
-} from '@react-three/postprocessing'
-import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
 import gsap from 'gsap'
 
@@ -479,29 +472,6 @@ function Scene() {
       {/* ── Camera drift (activates after animation) ── */}
       <CameraRig active={camActive} />
 
-      {/* ── Post-processing ── */}
-      <EffectComposer>
-        {/* Bloom: liquid and glass highlights glow */}
-        <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.55}
-          luminanceSmoothing={0.9}
-          blendFunction={BlendFunction.ADD}
-        />
-        {/* Chromatic aberration: glass refraction feel */}
-        <ChromaticAberration
-          offset={new THREE.Vector2(0.0006, 0.0006)}
-          radialModulation={false}
-          modulationOffset={0}
-          blendFunction={BlendFunction.NORMAL}
-        />
-        {/* Vignette: darken edges like studio photo */}
-        <Vignette
-          offset={0.35}
-          darkness={0.65}
-          blendFunction={BlendFunction.NORMAL}
-        />
-      </EffectComposer>
     </>
   )
 }
@@ -511,7 +481,7 @@ function Scene() {
 ───────────────────────────────────────────────────────── */
 export default function CocktailHero3D() {
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Canvas
         shadows
         dpr={[1, 2]}
@@ -520,13 +490,27 @@ export default function CocktailHero3D() {
           antialias: true,
           alpha: false,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.35,
+          /* higher exposure = free bloom-like highlight glow */
+          toneMappingExposure: 1.5,
         }}
       >
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
       </Canvas>
+
+      {/* CSS vignette — darkens edges like studio photography */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 80% 80% at 60% 50%, transparent 40%, rgba(0,0,0,0.65) 100%)',
+      }} />
+
+      {/* Subtle chromatic-aberration fake — barely perceptible blue shift on edges */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 90% 90% at 60% 50%, transparent 60%, rgba(10,20,60,0.18) 100%)',
+        mixBlendMode: 'screen',
+      }} />
     </div>
   )
 }
