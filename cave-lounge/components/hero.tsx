@@ -3,6 +3,24 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 
+/* ─────────────────────────────────────────────────────────
+   Each layer = same image, different clip-path region.
+   Since the image has pure #000 background matching the
+   hero, stacked clipped copies blend seamlessly.
+───────────────────────────────────────────────────────── */
+
+const IMG = {
+  src: '/cocktail-hero.png',
+  alt: 'Cosmopolitan cocktail',
+  fill: true as const,
+  quality: 95,
+  priority: true,
+  style: {
+    objectFit: 'cover' as const,
+    objectPosition: '60% center',
+  },
+}
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -10,13 +28,59 @@ export default function Hero() {
     const init = async () => {
       const { gsap } = await import('gsap')
       if (!sectionRef.current) return
-      gsap.set(['.h-line-1','.h-line-2','.h-line-3','.h-desc','.h-ctas'], { opacity: 0, y: 32 })
-      gsap.timeline({ delay: 0.3 })
-        .to('.h-line-1', { opacity: 1, y: 0, duration: 0.6,  ease: 'power3.out' })
-        .to('.h-line-2', { opacity: 1, y: 0, duration: 0.6,  ease: 'power3.out' }, '-=0.3')
-        .to('.h-line-3', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.3')
-        .to('.h-desc',   { opacity: 1, y: 0, duration: 0.45 }, '-=0.2')
-        .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.45 }, '-=0.25')
+
+      /* ── Text starts hidden ── */
+      gsap.set(['.h-line-1','.h-line-2','.h-line-3','.h-desc','.h-ctas'],
+        { opacity: 0, y: 28 })
+
+      const tl = gsap.timeline()
+
+      /* ── STEP 1: Glass rises from below (0 → 1s) ── */
+      tl.from('.cl-glass', {
+        clipPath: 'polygon(15% 100%, 78% 100%, 78% 100%, 15% 100%)',
+        opacity: 0,
+        duration: 1.0,
+        ease: 'power3.out',
+      }, 0)
+
+      /* ── STEP 2: Ice cubes fall from above (0.3 → 1.6s) ── */
+      tl.from('.cl-ice', {
+        clipPath: 'polygon(0% 0%, 68% 0%, 68% 0%, 0% 0%)',
+        opacity: 0,
+        duration: 1.1,
+        ease: 'power2.out',
+      }, 0.3)
+
+      /* ── STEP 3: Shaker slides in from right (1.2 → 2.6s) ── */
+      tl.from('.cl-shaker', {
+        clipPath: 'polygon(100% 0%, 100% 0%, 100% 58%, 100% 58%)',
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power2.out',
+      }, 1.2)
+
+      /* ── STEP 4: Pour stream reveals top → bottom (2.1 → 3s) ── */
+      tl.from('.cl-stream', {
+        clipPath: 'polygon(28% 18%, 62% 18%, 62% 18%, 28% 18%)',
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power1.out',
+      }, 2.1)
+
+      /* ── STEP 5: Olive slides in from right (2.8 → 3.5s) ── */
+      tl.from('.cl-olive', {
+        clipPath: 'polygon(80% 36%, 80% 36%, 80% 62%, 80% 62%)',
+        opacity: 0,
+        duration: 0.7,
+        ease: 'back.out(1.4)',
+      }, 2.8)
+
+      /* ── Text sweeps in alongside assembly ── */
+      tl.to('.h-line-1', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 0.15)
+      tl.to('.h-line-2', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 0.30)
+      tl.to('.h-line-3', { opacity: 1, y: 0, duration: 0.50, ease: 'power3.out' }, 0.45)
+      tl.to('.h-desc',   { opacity: 1, y: 0, duration: 0.45 }, 0.65)
+      tl.to('.h-ctas',   { opacity: 1, y: 0, duration: 0.45 }, 0.80)
     }
     init()
   }, [])
@@ -25,26 +89,51 @@ export default function Hero() {
     <section ref={sectionRef} className="relative h-screen overflow-hidden"
       style={{ background: '#000000' }}>
 
-      {/* Right side: cocktail image */}
+      {/* ── Right side: deconstructed photo layers ── */}
       <div className="absolute inset-y-0 right-0 w-[62%] overflow-hidden">
-        <Image
-          src="/cocktail-hero.png"
-          alt="Cosmopolitan cocktail"
-          fill
-          priority
-          style={{ objectFit: 'cover', objectPosition: '60% center' }}
-        />
-        {/* Gradient fade left edge into black */}
+
+        {/* GLASS — lower center, reveals bottom→up */}
+        <div className="cl-glass absolute inset-0"
+          style={{ clipPath: 'polygon(15% 36%, 78% 36%, 78% 100%, 15% 100%)' }}>
+          <Image {...IMG} />
+        </div>
+
+        {/* ICE CUBES — upper left area, reveals top→down (falling) */}
+        <div className="cl-ice absolute inset-0"
+          style={{ clipPath: 'polygon(0% 0%, 68% 0%, 68% 62%, 0% 62%)' }}>
+          <Image {...IMG} />
+        </div>
+
+        {/* SHAKER — upper right, reveals right→left (enters from right) */}
+        <div className="cl-shaker absolute inset-0"
+          style={{ clipPath: 'polygon(45% 0%, 100% 0%, 100% 58%, 45% 58%)' }}>
+          <Image {...IMG} />
+        </div>
+
+        {/* POUR STREAM — center arc, reveals top→bottom */}
+        <div className="cl-stream absolute inset-0"
+          style={{ clipPath: 'polygon(28% 18%, 62% 18%, 62% 68%, 28% 68%)' }}>
+          <Image {...IMG} />
+        </div>
+
+        {/* OLIVE — right rim, slides from right */}
+        <div className="cl-olive absolute inset-0"
+          style={{ clipPath: 'polygon(46% 36%, 80% 36%, 80% 62%, 46% 62%)' }}>
+          <Image {...IMG} />
+        </div>
+
+        {/* Gradient: left edge blends into black */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(90deg, #000000 0%, #000000 8%, rgba(0,0,0,0.7) 28%, rgba(0,0,0,0.15) 55%, transparent 80%)',
+          background: 'linear-gradient(90deg, #000 0%, #000 6%, rgba(0,0,0,0.65) 26%, rgba(0,0,0,0.1) 52%, transparent 75%)',
         }} />
+
         {/* Bottom vignette */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.5) 100%)',
+          background: 'linear-gradient(180deg, transparent 65%, rgba(0,0,0,0.45) 100%)',
         }} />
       </div>
 
-      {/* Left side: text */}
+      {/* ── Left: text ── */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-8 lg:px-16 flex items-center">
         <div className="w-full lg:w-[50%] flex flex-col">
 
@@ -60,7 +149,8 @@ export default function Hero() {
             <span className="h-line-3 block text-[#e84800] glow-text">THE CAVE</span>
           </h1>
 
-          <div className="h-line-3 w-10 h-px my-8" style={{ background: 'rgba(232,72,0,0.35)' }} />
+          <div className="h-line-3 w-10 h-px my-8"
+            style={{ background: 'rgba(232,72,0,0.35)' }} />
 
           <p className="h-desc font-sans font-light text-white/35 leading-loose max-w-sm mb-12"
             style={{ fontSize: '0.92rem', letterSpacing: '0.025em' }}>
