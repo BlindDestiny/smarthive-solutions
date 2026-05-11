@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -11,9 +12,9 @@ export default function Hero() {
       if (!sectionRef.current) return
       gsap.set(['.h-line-1','.h-line-2','.h-line-3','.h-desc','.h-ctas'], { opacity: 0, y: 32 })
       gsap.timeline({ delay: 0.3 })
-        .to('.h-line-1', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' })
-        .to('.h-line-2', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.3')
-        .to('.h-line-3', { opacity: 1, y: 0, duration: 0.5,  ease: 'power3.out' }, '-=0.3')
+        .to('.h-line-1', { opacity: 1, y: 0, duration: 0.6,  ease: 'power3.out' })
+        .to('.h-line-2', { opacity: 1, y: 0, duration: 0.6,  ease: 'power3.out' }, '-=0.3')
+        .to('.h-line-3', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.3')
         .to('.h-desc',   { opacity: 1, y: 0, duration: 0.45 }, '-=0.2')
         .to('.h-ctas',   { opacity: 1, y: 0, duration: 0.45 }, '-=0.25')
     }
@@ -22,19 +23,34 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className="relative h-screen overflow-hidden"
-      style={{ background: '#0a0a0a' }}>
+      style={{ background: '#000000' }}>
 
-      {/* Ambient radial glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 60% 70% at 68% 52%, rgba(35,6,4,0.8), transparent)',
-      }} />
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 30% 40% at 72% 55%, rgba(232,72,0,0.06), transparent)',
-      }} />
+      {/* ── Right side: cocktail image ── */}
+      <div className="absolute inset-y-0 right-0 w-[62%] overflow-hidden">
+        <Image
+          src="/cocktail-hero.png"
+          alt="Cosmopolitan cocktail"
+          fill
+          priority
+          style={{
+            objectFit: 'cover',
+            /* shift right so we see the cocktail half, not the Velvet text */
+            objectPosition: '78% center',
+          }}
+        />
+        {/* Gradient fade: left edge blends into black */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'linear-gradient(90deg, #000000 0%, #000000 8%, rgba(0,0,0,0.7) 28%, rgba(0,0,0,0.15) 55%, transparent 80%)',
+        }} />
+        {/* Bottom vignette */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.5) 100%)',
+        }} />
+      </div>
 
-      {/* Content */}
+      {/* ── Left side: text content ── */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-8 lg:px-16 flex items-center">
-        <div className="w-full lg:w-[52%] flex flex-col">
+        <div className="w-full lg:w-[50%] flex flex-col">
 
           <div className="h-line-1 mb-4">
             <span className="font-display text-[9px] tracking-[0.55em] text-[#e84800]/80 uppercase">
@@ -50,7 +66,7 @@ export default function Hero() {
 
           <div className="h-line-3 w-10 h-px my-8" style={{ background: 'rgba(232,72,0,0.35)' }} />
 
-          <p className="h-desc font-sans font-light text-white/30 leading-loose max-w-sm mb-12"
+          <p className="h-desc font-sans font-light text-white/35 leading-loose max-w-sm mb-12"
             style={{ fontSize: '0.92rem', letterSpacing: '0.025em' }}>
             Where extraordinary cocktails meet a world built beneath the streets.
             Bold flavours. Pure atmosphere.
