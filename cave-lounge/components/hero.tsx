@@ -34,8 +34,7 @@ export default function Hero() {
           priority
           style={{
             objectFit: 'cover',
-            /* shift right so we see the cocktail half, not the Velvet text */
-            objectPosition: '78% center',
+            objectPosition: '60% center',
           }}
         />
         {/* Gradient fade: left edge blends into black */}
