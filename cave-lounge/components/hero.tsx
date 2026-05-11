@@ -33,49 +33,46 @@ export default function Hero() {
       gsap.set(['.h-line-1','.h-line-2','.h-line-3','.h-desc','.h-ctas'],
         { opacity: 0, y: 28 })
 
+      /* ── Set all initial states explicitly ── */
+      gsap.set('.cl-glass',  { clipPath: 'polygon(15% 100%, 78% 100%, 78% 100%, 15% 100%)', opacity: 0 })
+      gsap.set('.cl-ice',    { clipPath: 'polygon(0% 0%, 68% 0%, 68% 0%, 0% 0%)',           opacity: 0 })
+      gsap.set('.cl-shaker', { clipPath: 'polygon(100% 0%, 100% 0%, 100% 58%, 100% 58%)',   opacity: 0 })
+      gsap.set('.cl-stream', { clipPath: 'polygon(28% 18%, 62% 18%, 62% 18%, 28% 18%)',     opacity: 0 })
+      gsap.set('.cl-olive',  { clipPath: 'polygon(80% 36%, 80% 36%, 80% 62%, 80% 62%)',     opacity: 0 })
+
       const tl = gsap.timeline()
 
-      /* ── STEP 1: Glass rises from below (0 → 1s) ── */
-      tl.from('.cl-glass', {
-        clipPath: 'polygon(15% 100%, 78% 100%, 78% 100%, 15% 100%)',
-        opacity: 0,
-        duration: 1.0,
-        ease: 'power3.out',
+      /* ── STEP 1: Glass rises from below ── */
+      tl.to('.cl-glass', {
+        clipPath: 'polygon(15% 36%, 78% 36%, 78% 100%, 15% 100%)',
+        opacity: 1, duration: 1.0, ease: 'power3.out',
       }, 0)
 
-      /* ── STEP 2: Ice cubes fall from above (0.3 → 1.6s) ── */
-      tl.from('.cl-ice', {
-        clipPath: 'polygon(0% 0%, 68% 0%, 68% 0%, 0% 0%)',
-        opacity: 0,
-        duration: 1.1,
-        ease: 'power2.out',
+      /* ── STEP 2: Ice cubes fall from above ── */
+      tl.to('.cl-ice', {
+        clipPath: 'polygon(0% 0%, 68% 0%, 68% 62%, 0% 62%)',
+        opacity: 1, duration: 1.1, ease: 'power2.out',
       }, 0.3)
 
-      /* ── STEP 3: Shaker slides in from right (1.2 → 2.6s) ── */
-      tl.from('.cl-shaker', {
-        clipPath: 'polygon(100% 0%, 100% 0%, 100% 58%, 100% 58%)',
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power2.out',
+      /* ── STEP 3: Shaker slides in from right ── */
+      tl.to('.cl-shaker', {
+        clipPath: 'polygon(45% 0%, 100% 0%, 100% 58%, 45% 58%)',
+        opacity: 1, duration: 1.2, ease: 'power2.out',
       }, 1.2)
 
-      /* ── STEP 4: Pour stream reveals top → bottom (2.1 → 3s) ── */
-      tl.from('.cl-stream', {
-        clipPath: 'polygon(28% 18%, 62% 18%, 62% 18%, 28% 18%)',
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power1.out',
+      /* ── STEP 4: Stream pours top → bottom ── */
+      tl.to('.cl-stream', {
+        clipPath: 'polygon(28% 18%, 62% 18%, 62% 68%, 28% 68%)',
+        opacity: 1, duration: 0.9, ease: 'power1.out',
       }, 2.1)
 
-      /* ── STEP 5: Olive slides in from right (2.8 → 3.5s) ── */
-      tl.from('.cl-olive', {
-        clipPath: 'polygon(80% 36%, 80% 36%, 80% 62%, 80% 62%)',
-        opacity: 0,
-        duration: 0.7,
-        ease: 'back.out(1.4)',
+      /* ── STEP 5: Olive slides in from right ── */
+      tl.to('.cl-olive', {
+        clipPath: 'polygon(46% 36%, 80% 36%, 80% 62%, 46% 62%)',
+        opacity: 1, duration: 0.7, ease: 'back.out(1.4)',
       }, 2.8)
 
-      /* ── Text sweeps in alongside assembly ── */
+      /* ── Text ── */
       tl.to('.h-line-1', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 0.15)
       tl.to('.h-line-2', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 0.30)
       tl.to('.h-line-3', { opacity: 1, y: 0, duration: 0.50, ease: 'power3.out' }, 0.45)
@@ -92,35 +89,12 @@ export default function Hero() {
       {/* ── Right side: deconstructed photo layers ── */}
       <div className="absolute inset-y-0 right-0 w-[62%] overflow-hidden">
 
-        {/* GLASS — lower center, reveals bottom→up */}
-        <div className="cl-glass absolute inset-0"
-          style={{ clipPath: 'polygon(15% 36%, 78% 36%, 78% 100%, 15% 100%)' }}>
-          <Image {...IMG} />
-        </div>
-
-        {/* ICE CUBES — upper left area, reveals top→down (falling) */}
-        <div className="cl-ice absolute inset-0"
-          style={{ clipPath: 'polygon(0% 0%, 68% 0%, 68% 62%, 0% 62%)' }}>
-          <Image {...IMG} />
-        </div>
-
-        {/* SHAKER — upper right, reveals right→left (enters from right) */}
-        <div className="cl-shaker absolute inset-0"
-          style={{ clipPath: 'polygon(45% 0%, 100% 0%, 100% 58%, 45% 58%)' }}>
-          <Image {...IMG} />
-        </div>
-
-        {/* POUR STREAM — center arc, reveals top→bottom */}
-        <div className="cl-stream absolute inset-0"
-          style={{ clipPath: 'polygon(28% 18%, 62% 18%, 62% 68%, 28% 68%)' }}>
-          <Image {...IMG} />
-        </div>
-
-        {/* OLIVE — right rim, slides from right */}
-        <div className="cl-olive absolute inset-0"
-          style={{ clipPath: 'polygon(46% 36%, 80% 36%, 80% 62%, 46% 62%)' }}>
-          <Image {...IMG} />
-        </div>
+        {/* All layers start hidden — GSAP controls clip-path & opacity */}
+        <div className="cl-glass  absolute inset-0" style={{ opacity: 0 }}><Image {...IMG} /></div>
+        <div className="cl-ice    absolute inset-0" style={{ opacity: 0 }}><Image {...IMG} /></div>
+        <div className="cl-shaker absolute inset-0" style={{ opacity: 0 }}><Image {...IMG} /></div>
+        <div className="cl-stream absolute inset-0" style={{ opacity: 0 }}><Image {...IMG} /></div>
+        <div className="cl-olive  absolute inset-0" style={{ opacity: 0 }}><Image {...IMG} /></div>
 
         {/* Gradient: left edge blends into black */}
         <div className="absolute inset-0 pointer-events-none" style={{
