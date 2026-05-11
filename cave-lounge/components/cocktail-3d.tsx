@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useMemo, Suspense } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useMemo, Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
 import {
   Environment,
   MeshTransmissionMaterial,
@@ -237,18 +237,6 @@ function Floor() {
   )
 }
 
-/* ══════════════════════════════════════════════════════════
-   CAMERA RIG — very subtle cinematic drift
-══════════════════════════════════════════════════════════ */
-function CameraRig() {
-  useFrame(({ camera, clock }) => {
-    const t = clock.getElapsedTime()
-    camera.position.x += (0.5 + Math.sin(t * 0.08) * 0.06 - camera.position.x) * 0.012
-    camera.position.y += (1.0 + Math.sin(t * 0.06) * 0.04 - camera.position.y) * 0.012
-    camera.lookAt(0.4, 0.3, 0)
-  })
-  return null
-}
 
 /* ══════════════════════════════════════════════════════════
    SCENE
@@ -323,8 +311,6 @@ function Scene() {
       {/* ── Floor reflection ── */}
       <Floor />
 
-      {/* ── Camera ── */}
-      <CameraRig />
     </>
   )
 }
