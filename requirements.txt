@@ -1,7 +1,11 @@
 streamlit>=1.30.0
 streamlit-calendar>=1.4.0
-xhtml2pdf>=0.2.17
 pandas>=2.0.0
 numpy>=1.24.0
 requests>=2.28.0
 python-dateutil>=2.8.0
+
+# Geração de PDF — opcional, só local. O app cai graciosamente para HTML-only se
+# não estiver instalado. Não incluir no deploy do Streamlit Cloud (pyHanko/pycairo
+# precisam de libs de sistema). Para activar localmente: pip install xhtml2pdf
+# xhtml2pdf>=0.2.17

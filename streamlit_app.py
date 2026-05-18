@@ -12,6 +12,14 @@ try:
 except Exception:
     _st_calendar = None
 
+# xhtml2pdf é opcional — se faltar, o app cai para HTML-only no gerador de propostas
+try:
+    from xhtml2pdf import pisa as _pisa
+    _PDF_AVAILABLE = True
+except Exception:
+    _pisa = None
+    _PDF_AVAILABLE = False
+
 st.set_page_config(page_title="Lead Machine", layout="wide", page_icon="🚀")
 
 # =============================================================
@@ -1169,13 +1177,17 @@ p.lead {{ font-size: 10.5pt; color: #4d4d56; margin-bottom: 12pt; }}
 
 def build_proposal_pdf(data):
     """Converte a proposta em bytes PDF usando xhtml2pdf (pure Python).
-    Retorna `bytes` prontos a ser servidos via st.download_button."""
+    Retorna `bytes` prontos a ser servidos via st.download_button.
+    Levanta RuntimeError se xhtml2pdf não estiver instalado."""
+    if not _PDF_AVAILABLE:
+        raise RuntimeError(
+            "Geração de PDF não disponível neste ambiente. "
+            "Instale com: pip install xhtml2pdf"
+        )
     import io
-    from xhtml2pdf import pisa
-
     html_str = build_proposal_html(data)
     buf = io.BytesIO()
-    result = pisa.CreatePDF(html_str, dest=buf, encoding="utf-8")
+    result = _pisa.CreatePDF(html_str, dest=buf, encoding="utf-8")
     if result.err:
         raise RuntimeError(f"xhtml2pdf falhou com {result.err} erros.")
     return buf.getvalue()
@@ -2572,36 +2584,49 @@ with tab_proposal:
         # Action buttons row
         act_cols = st.columns([1.5, 1, 1.5])
 
-        # PDF button (primary)
-        with act_cols[0]:
-            if "prop_last_pdf" not in st.session_state:
-                if st.button("🛠️ Gerar PDF", type="primary", use_container_width=True):
-                    try:
-                        with st.spinner("A gerar PDF..."):
-                            st.session_state["prop_last_pdf"] = build_proposal_pdf(proposal_data)
-                        st.rerun()
-                    except Exception as ex:
-                        st.error(f"Erro a gerar PDF: {ex}")
-            else:
+        # PDF button (só se a lib estiver disponível) — caso contrário, HTML é primário
+        if _PDF_AVAILABLE:
+            with act_cols[0]:
+                if "prop_last_pdf" not in st.session_state:
+                    if st.button("🛠️ Gerar PDF", type="primary", use_container_width=True):
+                        try:
+                            with st.spinner("A gerar PDF..."):
+                                st.session_state["prop_last_pdf"] = build_proposal_pdf(proposal_data)
+                            st.rerun()
+                        except Exception as ex:
+                            st.error(f"Erro a gerar PDF: {ex}")
+                else:
+                    st.download_button(
+                        "📥 Descarregar PDF",
+                        data=st.session_state["prop_last_pdf"],
+                        file_name=f"proposta_{safe_name}_{date_suffix}.pdf",
+                        mime="application/pdf",
+                        type="primary",
+                        use_container_width=True,
+                    )
+            with act_cols[1]:
                 st.download_button(
-                    "📥 Descarregar PDF",
-                    data=st.session_state["prop_last_pdf"],
-                    file_name=f"proposta_{safe_name}_{date_suffix}.pdf",
-                    mime="application/pdf",
+                    "💾 HTML",
+                    data=html_str.encode("utf-8"),
+                    file_name=f"proposta_{safe_name}_{date_suffix}.html",
+                    mime="text/html",
+                    use_container_width=True,
+                    help="Versão HTML — para edição manual ou backup",
+                )
+        else:
+            # Sem xhtml2pdf (ex: deploy no Streamlit Cloud) — HTML como primário
+            with act_cols[0]:
+                st.download_button(
+                    "📥 Descarregar HTML",
+                    data=html_str.encode("utf-8"),
+                    file_name=f"proposta_{safe_name}_{date_suffix}.html",
+                    mime="text/html",
                     type="primary",
                     use_container_width=True,
+                    help="Abre no browser e usa Ctrl+P → Guardar como PDF para enviar ao cliente",
                 )
-
-        # HTML button (secondary)
-        with act_cols[1]:
-            st.download_button(
-                "💾 HTML",
-                data=html_str.encode("utf-8"),
-                file_name=f"proposta_{safe_name}_{date_suffix}.html",
-                mime="text/html",
-                use_container_width=True,
-                help="Versão HTML — para edição manual ou backup",
-            )
+            with act_cols[1]:
+                st.caption("ℹ️ Para PDF nativo, corre o app localmente com xhtml2pdf instalado")
 
         act_cols[2].caption(f"{len(selected_features)} funcionalidades · {len(selected_addons)} add-ons · desde {base_price}€")
 
