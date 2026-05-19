@@ -2,8 +2,16 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown, MapPin } from 'lucide-react'
+import type { SiteContent } from '@/lib/content'
 
-export default function Hero() {
+export default function Hero({ content = {} }: { content?: SiteContent }) {
+  const eyebrow = content['hero.eyebrow']  ?? '🇧🇷 Restaurante Brasileiro · Porto'
+  const title1  = content['hero.title1']   ?? 'Porto dos'
+  const title2  = content['hero.title2']   ?? 'Ribeiros'
+  const tagline = content['hero.tagline']  ?? 'Comida Brasileira Autêntica'
+  const rating  = content['hero.rating']   ?? '4.7 · 287 opiniões Google'
+  const address = content['hero.address']  ?? 'Rua da Constituição 982, Porto'
+  const whatsapp= content['hero.whatsapp'] ?? '351963349411'
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y       = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
@@ -73,12 +81,12 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="font-sans text-[10px] tracking-[0.45em] uppercase text-[#00a651] mb-6"
         >
-          🇧🇷 Restaurante Brasileiro · Porto
+          {eyebrow}
         </motion.p>
 
         {/* Title */}
         <div className="overflow-hidden mb-2">
-          {['Porto dos', 'Ribeiros'].map((line, li) => (
+          {[title1, title2].map((line, li) => (
             <div key={li} className="overflow-hidden">
               <motion.div
                 initial={{ y: '110%' }}
@@ -89,7 +97,7 @@ export default function Hero() {
               >
                 {li === 1 ? (
                   <span>
-                    <span className="text-[#00a651]">R</span>ibeiros
+                    <span className="text-[#00a651]">{line[0]}</span>{line.slice(1)}
                   </span>
                 ) : line}
               </motion.div>
@@ -104,7 +112,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.95 }}
           className="font-sans text-white/40 text-base md:text-lg tracking-[0.2em] uppercase mb-3"
         >
-          Comida Brasileira Autêntica
+          {tagline}
         </motion.p>
 
         {/* Rating */}
@@ -115,7 +123,7 @@ export default function Hero() {
           className="flex items-center justify-center gap-2 mb-10"
         >
           <span className="text-[#FFD700] text-sm tracking-wider">★★★★★</span>
-          <span className="font-sans text-white/50 text-sm">4.7 · 287 opiniões Google</span>
+          <span className="font-sans text-white/50 text-sm">{rating}</span>
         </motion.div>
 
         {/* Buttons */}

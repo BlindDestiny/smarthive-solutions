@@ -4,7 +4,15 @@
       "PowerShell(Get-ChildItem \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\" -File | Where-Object { $_.FullName -notmatch \"venv\" } | Select-Object Name, Length, LastWriteTime | Sort-Object LastWriteTime -Descending)",
       "PowerShell(& \"c:\\\\Home\\\\websites\\\\01_PROSPE��O\\\\script\\\\venv\\\\Scripts\\\\python.exe\" -c \"import pkg_resources; [print\\(d.project_name, d.version\\) for d in pkg_resources.working_set]\" 2>&1)",
       "PowerShell($scored = Get-Item \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\leads_scored.csv\"; Write-Host \"leads_scored.csv: $\\([math]::Round\\($scored.Length/1KB, 1\\)\\) KB\"; $prog = Get-Content \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\progress_website_score.json\" | ConvertFrom-Json; Write-Host \"Processed so far: $\\($prog.processed_ids.Count\\) leads\")",
-      "PowerShell($prog = Get-Content \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\progress_website_score.json\" | ConvertFrom-Json; Write-Host \"Scorer: $\\($prog.processed_ids.Count\\) / 9542 websites scored\"; $size = \\(Get-Item \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\leads_scored.csv\"\\).Length / 1MB; Write-Host \"leads_scored.csv: $\\([math]::Round\\($size, 1\\)\\) MB\")"
+      "PowerShell($prog = Get-Content \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\progress_website_score.json\" | ConvertFrom-Json; Write-Host \"Scorer: $\\($prog.processed_ids.Count\\) / 9542 websites scored\"; $size = \\(Get-Item \"c:\\\\Home\\\\websites\\\\01_PROSPEÇÃO\\\\script\\\\leads_scored.csv\"\\).Length / 1MB; Write-Host \"leads_scored.csv: $\\([math]::Round\\($size, 1\\)\\) MB\")",
+      "Read(//c/Home/smarthive-solutions/cleaning-website/**)",
+      "Bash(npx next *)",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('leads_ui.py'\\).read\\(\\)\\); print\\('Sintaxe OK'\\)\")",
+      "Read(//c/Users/MiguelLourenço/Downloads/**)",
+      "Bash(dir \"C:\\\\Users\\\\MiguelLourenço\\\\Downloads\\\\1*\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\MiguelLourenço\\\\Downloads\" | Where-Object { $_.BaseName -match \"^1$|^2$\" } | Select-Object Name, FullName)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\MiguelLourenço\\\\Downloads\" | Where-Object { $_.Name -match \"^1\\\\.\" -or $_.Name -match \"^2\\\\.\" } | Select-Object Name, FullName)"
     ]
   }
 }

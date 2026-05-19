@@ -2,11 +2,20 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Phone, MessageCircle, Clock, MapPin, Check, Wifi } from 'lucide-react'
+import type { SiteContent } from '@/lib/content'
 
-export default function Reservation() {
+export default function Reservation({ content = {} }: { content?: SiteContent }) {
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name:'', phone:'', date:'', time:'13:00', pax:'2', notes:'' })
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
+
+  const phone     = content['contact.phone']          ?? '963 349 411'
+  const address   = content['contact.address']        ?? 'Rua da Constituição 982, Porto'
+  const addressZip= content['contact.address_zip']    ?? '4200-196 Porto'
+  const hoursWeek = content['contact.hours_weekday']  ?? 'Dom–Qui: 07h–22h'
+  const hoursWknd = content['contact.hours_weekend']  ?? 'Sex–Sáb: 07h–24h'
+  const amenities = content['contact.amenities']      ?? 'Wi-Fi grátis · Esplanada · Vegetariano'
+  const whatsappMsg= content['contact.whatsapp_msg']  ?? 'Olá! Gostaria de fazer uma reserva.'
 
   const inputClass = "w-full bg-transparent border-b border-white/15 focus:border-[#00a651] text-white placeholder-white/20 font-sans text-sm py-3 outline-none transition-colors duration-300"
   const labelClass = "block font-sans text-[10px] tracking-[0.3em] uppercase text-white/30 mb-2"
@@ -42,10 +51,10 @@ export default function Reservation() {
               className="space-y-5 mb-10"
             >
               {[
-                { icon: Clock,         label: 'Horário',   val: 'Dom–Qui: 07h–22h  |  Sex–Sáb: 07h–24h', sub: 'Não fechamos à tarde' },
-                { icon: MapPin,        label: 'Morada',    val: 'Rua da Constituição 982, Porto',           sub: '4200-196 Porto' },
-                { icon: Phone,         label: 'Telefone',  val: '963 349 411',                              sub: 'Chamada ou WhatsApp' },
-                { icon: Wifi,          label: 'Comodidades', val: 'Wi-Fi grátis · Esplanada · Vegetariano', sub: '' },
+                { icon: Clock,  label: 'Horário',    val: `${hoursWeek}  |  ${hoursWknd}`, sub: 'Não fechamos à tarde' },
+                { icon: MapPin, label: 'Morada',     val: address,     sub: addressZip },
+                { icon: Phone,  label: 'Telefone',   val: phone,       sub: 'Chamada ou WhatsApp' },
+                { icon: Wifi,   label: 'Comodidades',val: amenities,   sub: '' },
               ].map(item => (
                 <div key={item.label} className="flex items-start gap-4">
                   <div className="w-9 h-9 bg-[#00a651]/15 flex items-center justify-center flex-shrink-0 mt-0.5">

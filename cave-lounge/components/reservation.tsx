@@ -2,11 +2,24 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MapPin, Clock, Check, ArrowRight } from 'lucide-react'
+import type { SiteContent } from '@/lib/content'
 
-export default function Reservation() {
+export default function Reservation({ content = {} }: { content?: SiteContent }) {
   const [form, setForm] = useState({ name:'', email:'', phone:'', date:'', time:'', guests:'', occasion:'' })
   const [sent, setSent]   = useState(false)
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
+
+  const phone   = content['contact.phone']   ?? '+351 912 345 678'
+  const email   = content['contact.email']   ?? 'hello@cavelounge.pt'
+  const address = content['contact.address'] ?? 'Rua do Alecrim 45, Lisboa'
+  const hours   = content['contact.hours']   ?? 'Thu–Sat 9pm–5am · Sun 7–11pm'
+  const info    = content['reservation.info']?? 'Tables fill fast on weekends. Secure yours and we\'ll confirm within 2 hours.'
+  const promises = [
+    content['reservation.promise1'] ?? 'Confirmation within 2 hours',
+    content['reservation.promise2'] ?? 'Free cancellation 24h before',
+    content['reservation.promise3'] ?? 'Private cave for groups 8+',
+    content['reservation.promise4'] ?? 'Special occasions curated',
+  ]
 
   const inputCls = "input-cave w-full px-5 py-4 text-sm tracking-wide"
 
@@ -34,16 +47,15 @@ export default function Reservation() {
           {/* Info */}
           <div>
             <p className="font-sans font-light text-white/30 leading-loose mb-12 text-sm tracking-wide max-w-sm">
-              Tables fill fast on weekends. Secure yours and we'll confirm within 2 hours.
-              Private cave bookings available for groups of 8 or more.
+              {info}
             </p>
 
             <div className="space-y-3 mb-12">
               {[
-                { Icon: Phone,  label: 'Phone',    val: '+351 912 345 678',           href: 'tel:+351912345678' },
-                { Icon: Mail,   label: 'Email',    val: 'hello@cavelounge.pt',         href: 'mailto:hello@cavelounge.pt' },
-                { Icon: MapPin, label: 'Location', val: 'Rua do Alecrim 45, Lisboa',  href: '#' },
-                { Icon: Clock,  label: 'Hours',    val: 'Thu–Sat 9pm–5am · Sun 7–11pm', href: '#' },
+                { Icon: Phone,  label: 'Phone',    val: phone,   href: `tel:${phone.replace(/\s/g,'')}` },
+                { Icon: Mail,   label: 'Email',    val: email,   href: `mailto:${email}` },
+                { Icon: MapPin, label: 'Location', val: address, href: '#' },
+                { Icon: Clock,  label: 'Hours',    val: hours,   href: '#' },
               ].map(c => (
                 <a key={c.label} href={c.href}
                   className="flex items-center gap-4 glass py-4 px-5 hover:border-[rgba(232,72,0,0.2)] transition-all duration-300 group">
@@ -58,7 +70,7 @@ export default function Reservation() {
 
             <div className="glass p-6 space-y-3">
               <div className="font-display text-[9px] tracking-[0.35em] text-white/30 uppercase mb-4">Our Promise</div>
-              {['Confirmation within 2 hours', 'Free cancellation 24h before', 'Private cave for groups 8+', 'Special occasions curated'].map(g => (
+              {promises.map(g => (
                 <div key={g} className="flex items-center gap-3">
                   <Check className="w-3 h-3 text-[#e84800] flex-shrink-0" />
                   <span className="font-sans font-light text-white/35 text-sm">{g}</span>

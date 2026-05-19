@@ -1,8 +1,14 @@
 'use client'
 import { Instagram, Facebook, Twitter } from 'lucide-react'
 import Image from 'next/image'
+import type { SiteContent } from '@/lib/content'
 
-export default function Footer() {
+export default function Footer({ content = {} }: { content?: SiteContent }) {
+  const desc    = content['footer.description'] ?? 'Underground bar & lounge. Where the night has no ceiling and every drink tells a story. Bairro Alto, Lisboa.'
+  const thuHrs  = content['footer.hours_thu']   ?? '9pm–2am'
+  const friHrs  = content['footer.hours_fri']   ?? '10pm–4am'
+  const satHrs  = content['footer.hours_sat']   ?? '10pm–5am'
+  const sunHrs  = content['footer.hours_sun']   ?? '7pm–11pm'
   return (
     <footer className="bg-[#030303] border-t border-white/[0.04]">
       <div className="max-w-6xl mx-auto px-8 lg:px-16 pt-20 pb-10">
@@ -18,8 +24,7 @@ export default function Footer() {
               </span>
             </a>
             <p className="font-sans font-light text-white/40 text-sm leading-relaxed max-w-xs mb-8 tracking-wide">
-              Underground bar & lounge. Where the night has no ceiling and every drink tells a story.
-              Bairro Alto, Lisboa.
+              {desc}
             </p>
             <div className="flex gap-3">
               {[Instagram, Facebook, Twitter].map((Icon, i) => (
@@ -48,10 +53,10 @@ export default function Footer() {
           <div>
             <div className="font-display text-[9px] tracking-[0.35em] uppercase text-white/25 mb-6">Hours</div>
             <ul className="space-y-2.5 font-sans font-light text-sm text-white/40 tracking-wide">
-              <li className="flex justify-between"><span>Thursday</span><span>9pm–2am</span></li>
-              <li className="flex justify-between"><span>Friday</span><span>10pm–4am</span></li>
-              <li className="flex justify-between text-[#e84800]/60"><span>Saturday</span><span>10pm–5am</span></li>
-              <li className="flex justify-between"><span>Sunday</span><span>7pm–11pm</span></li>
+              <li className="flex justify-between"><span>Thursday</span><span>{thuHrs}</span></li>
+              <li className="flex justify-between"><span>Friday</span><span>{friHrs}</span></li>
+              <li className="flex justify-between text-[#e84800]/60"><span>Saturday</span><span>{satHrs}</span></li>
+              <li className="flex justify-between"><span>Sunday</span><span>{sunHrs}</span></li>
               <li className="flex justify-between text-white/15 text-xs mt-3"><span>Mon–Wed</span><span>Closed</span></li>
             </ul>
           </div>

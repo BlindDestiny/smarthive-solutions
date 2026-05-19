@@ -1,8 +1,16 @@
 'use client'
 import { motion } from 'framer-motion'
 import { Instagram, Phone, MapPin, Clock } from 'lucide-react'
+import type { SiteContent } from '@/lib/content'
 
-export default function Footer() {
+export default function Footer({ content = {} }: { content?: SiteContent }) {
+  const tagline     = content['footer.tagline']      ?? 'Comida Brasileira Autêntica'
+  const description = content['footer.description']  ?? 'Sabores autênticos do Brasil no coração do Porto. Uma família que serve família.'
+  const instagram   = content['footer.instagram']    ?? '@portodosribeiros'
+  const phone       = content['contact.phone']       ?? '963 349 411'
+  const address     = content['contact.address']     ?? 'Rua da Constituição 982'
+  const hoursWeek   = content['contact.hours_weekday'] ?? 'Dom–Qui: 07h–22h'
+  const hoursWknd   = content['contact.hours_weekend'] ?? 'Sex–Sáb: 07h–00h'
   return (
     <footer className="bg-[#030803] border-t border-white/[0.05]">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
@@ -12,7 +20,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-4">
               <div className="font-serif text-2xl font-bold text-white">Porto dos Ribeiros</div>
-              <div className="font-sans text-[11px] tracking-[0.35em] uppercase text-[#00a651] mt-1">Comida Brasileira Autêntica</div>
+              <div className="font-sans text-[11px] tracking-[0.35em] uppercase text-[#00a651] mt-1">{tagline}</div>
             </div>
             {/* Brazilian flag */}
             <div className="flex h-1 w-20 mb-5 overflow-hidden">
@@ -21,12 +29,12 @@ export default function Footer() {
               <div className="flex-1 bg-[#002776]" />
             </div>
             <p className="font-sans text-white/30 text-sm leading-relaxed max-w-xs mb-6">
-              Sabores autênticos do Brasil no coração do Porto. Uma família que serve família.
+              {description}
             </p>
             <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-white/30 hover:text-[#00a651] transition-colors duration-300 font-sans text-sm">
               <Instagram className="w-4 h-4" />
-              @portodosribeiros
+              {instagram}
             </a>
           </div>
 

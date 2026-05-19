@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3005)",
+      "Bash(curl -s http://localhost:3005)",
+      "WebFetch(domain:cclinic.pt)",
+      "WebFetch(domain:www.solucoesaveiro.com)",
+      "Read(//c/Home/smarthive-solutions/cave-lounge/app/**)",
+      "Read(//c/Home/smarthive-solutions/cave-lounge/**)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri 'http://localhost:3010/' -UseBasicParsing -TimeoutSec 30; \"Status: $\\($r.StatusCode\\) | Length: $\\($r.RawContentLength\\) bytes\" } catch { \"ERROR: $_\" })",
+      "Bash(.\\\\\\\\venv\\\\\\\\Scripts\\\\\\\\python.exe -c \"import streamlit; print\\(streamlit.__version__\\)\")",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri 'http://localhost:8511/' -UseBasicParsing -TimeoutSec 30; \"Streamlit OK · $\\($r.StatusCode\\)\" } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell($r = Invoke-WebRequest -Uri 'https://api.github.com/repos/BlindDestiny/smarthive-solutions' -UseBasicParsing -TimeoutSec 20; $j = $r.Content | ConvertFrom-Json; \"Visibility: $\\($j.visibility\\)\"; \"URL: $\\($j.html_url\\)\")",
+      "Bash(rm 'c:/Home/smarthive-solutions/01_PROSPEÇÃO/script/_gen_proposta_rogerio.py' && ls -la 'c:/Home/smarthive-solutions/propostas/')",
+      "Read(//c/Home/smarthive-solutions/propostas/**)",
+      "WebFetch(domain:rogeriocustodio.pt)",
+      "Bash(ls /tmp/anthropic-skills/skills/ 2>&1)",
+      "Read(//tmp/anthropic-skills/**)",
+      "Bash(rm -rf /tmp/anthropic-skills)",
+      "Read(//c/Users/MiguelLourenço/.claude/skills/frontend-design/**)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} | size %{size_download} bytes | time %{time_total}s\\\\n\" http://localhost:3020/)",
+      "Bash(curl -sS http://localhost:3020/)",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId = 13424\")",
+      "PowerShell(Stop-Process -Id 13424 -Force -ErrorAction Stop)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3020 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess | ForEach-Object { try { Stop-Process -Id $_ -Force -ErrorAction Stop; \"killed $_\" } catch { \"no proc\" } })",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} | %{size_download} bytes\\\\n\" http://localhost:3020/)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} | %{size_download} bytes | %{time_total}s\\\\n\" http://localhost:3020/)",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code}\" http://localhost:3020/)",
+      "Bash(python -m py_compile leads_ui.py)",
+      "Bash(gh repo *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Home\\smarthive-solutions\\reis-pellicano-demo",
+      "c:\\Home\\smarthive-solutions\\a-bita-demo",
+      "c:\\Home\\smarthive-solutions\\rogerio-custodio-demo"
+    ]
+  }
+}
