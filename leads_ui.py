@@ -502,22 +502,42 @@ def log_activity(place_id, act_type, content="", old_status="", new_status="", c
 def upsert_crm(place_id, status, contact_date, follow_up_date, notes,
                channel, deal_value=0, lost_reason="", next_action="",
                old_status="new", new_note=""):
-    crm  = load_crm()
+    """Upsert a CRM row preserving call-state columns (answered, attempts, etc.)
+    that may have been written by update_call_state before/after this call."""
+    crm   = load_crm()
+    pid   = str(place_id)
     today = datetime.now().strftime("%Y-%m-%d")
-    row  = {
-        "place_id":      str(place_id),
-        "status":        status,
-        "contact_date":  contact_date or (today if old_status == "new" and status != "new" else ""),
-        "follow_up_date": follow_up_date,
-        "notes":         notes,
-        "channel":       channel,
-        "deal_value":    float(deal_value or 0),
-        "lost_reason":   lost_reason,
-        "next_action":   next_action,
-    }
-    crm = crm[crm["place_id"] != str(place_id)].reset_index(drop=True)
-    crm = pd.concat([crm, pd.DataFrame([row])], ignore_index=True)
+
+    existing = crm[crm["place_id"] == pid]
+    if len(existing):
+        base = existing.iloc[0].to_dict()
+    else:
+        base = {
+            "place_id": pid, "status": "new", "contact_date": "",
+            "follow_up_date": "", "notes": "", "channel": channel or "whatsapp",
+            "deal_value": 0, "lost_reason": "", "next_action": "",
+            "answered": "—", "is_owner": "—", "who_answered": "",
+            "no_website_reason": "—", "best_call_time": "—",
+            "voicemail_left": False, "attempts": 0, "last_call_at": "",
+        }
+
+    # Only overwrite the fields this function manages — leave call-state alone.
+    base["status"]         = status
+    base["contact_date"]   = contact_date or (
+        today if old_status == "new" and status != "new"
+        else base.get("contact_date", "")
+    )
+    base["follow_up_date"] = follow_up_date
+    base["notes"]          = notes
+    base["channel"]        = channel
+    base["deal_value"]     = float(deal_value or 0)
+    base["lost_reason"]    = lost_reason
+    base["next_action"]    = next_action
+
+    crm = crm[crm["place_id"] != pid].reset_index(drop=True)
+    crm = pd.concat([crm, pd.DataFrame([base])], ignore_index=True)
     save_crm(crm)
+
     if old_status != status:
         log_activity(place_id, "mudança_status", f"{STATUS_EMOJI.get(old_status,'')} {old_status} → {STATUS_EMOJI.get(status,'')} {status}", old_status, status, channel)
     if new_note:
@@ -1231,6 +1251,22 @@ OUTCOMES = [
     ("voicemail",    "💬 Voicemail",       "secondary"),
     ("wrong_number", "❌ Número errado",   "secondary"),
 ]
+
+
+def _outcome_from_answered(answered, status, lost_reason):
+    """Map the saved call-state back to the most recent outcome key.
+    Used to pre-highlight the relevant button when the dialog reopens."""
+    a = str(answered or "").strip()
+    if a == "Não atendeu":   return "no_answer"
+    if a == "Voicemail":     return "voicemail"
+    if a == "Número errado": return "wrong_number"
+    if a == "Sim":
+        if status in ("meeting", "interested"):
+            return "interested"
+        if status == "closed_lost" and lost_reason and lost_reason != "Número errado":
+            return "not_int"
+        return "callback"
+    return None
 CALLBACK_DELAYS = [
     ("hoje +2h",   timedelta(hours=2)),
     ("amanhã",     timedelta(days=1)),
@@ -1251,10 +1287,14 @@ def lead_dialog(place_id, lead, cur_crm):
         if pd.isna(v): return default
         return v
 
-    cur_status = cur_val("status", "new")
-    cur_notes  = cur_val("notes", "")
-    cur_att    = int(cur_val("attempts", 0) or 0)
-    cur_who    = cur_val("who_answered", "")
+    cur_status   = cur_val("status", "new")
+    cur_notes    = cur_val("notes", "")
+    cur_att      = int(cur_val("attempts", 0) or 0)
+    cur_who      = cur_val("who_answered", "")
+    cur_answered = cur_val("answered", "—")
+    cur_lost     = cur_val("lost_reason", "")
+    last_outcome = _outcome_from_answered(cur_answered, cur_status, cur_lost)
+    last_label   = next((lbl for k, lbl, _ in OUTCOMES if k == last_outcome), None)
 
     name  = lead.get("name", "—")
     city  = lead.get("city", "—")
@@ -1270,7 +1310,17 @@ def lead_dialog(place_id, lead, cur_crm):
     # ── Header compacto ──
     badge = f"{STATUS_EMOJI.get(cur_status,'')} {cur_status.replace('_',' ').title()}"
     st.markdown(f"### {name}")
-    st.caption(f"{badge}  ·  📍 {city}  ·  ⭐ {rate} ({revs:,})  ·  🎯 prio {prio}  ·  📞 tentativas: **{cur_att}**  ·  {kw}")
+    caption_bits = [
+        badge,
+        f"📍 {city}",
+        f"⭐ {rate} ({revs:,})",
+        f"🎯 prio {prio}",
+        f"📞 tentativas: **{cur_att}**",
+    ]
+    if last_label and cur_att > 0:
+        caption_bits.append(f"última: **{last_label}**")
+    caption_bits.append(kw)
+    st.caption("  ·  ".join(caption_bits))
 
     # Contact strip (uma linha só)
     bits = []
@@ -1294,10 +1344,13 @@ def lead_dialog(place_id, lead, cur_crm):
     st.markdown("##### Como correu a chamada?")
     out_key = f"outcome_{pid}"
     current_outcome = st.session_state.get(out_key)
+    # Fallback to last saved outcome so the button stays highlighted on reopen.
+    # Display-only: doesn't trigger conditional fields below (those still read session_state).
+    display_outcome = current_outcome or last_outcome
 
     ob_cols = st.columns(6, gap="small")
     for i, (oc, label, _) in enumerate(OUTCOMES):
-        is_active = current_outcome == oc
+        is_active = display_outcome == oc
         btype = "primary" if is_active else "secondary"
         if ob_cols[i].button(label, key=f"out_{oc}_{pid}", type=btype, use_container_width=True):
             st.session_state[out_key] = oc
@@ -1817,6 +1870,20 @@ with tab_leads:
     d5.metric("➡️ Próximas reuniões", len(m_upcoming))
 
     st.divider()
+
+    # ── Search by name ──
+    search_term = st.text_input(
+        "🔍 Pesquisar por nome",
+        value=st.session_state.get("leads_name_search", ""),
+        placeholder="Ex: Rogério Custódio, Cave Lounge…",
+        key="leads_name_search",
+        label_visibility="collapsed",
+    ).strip()
+    if search_term and "name" in filtered.columns:
+        name_mask = filtered["name"].astype(str).str.contains(
+            search_term, case=False, na=False, regex=False
+        )
+        filtered = filtered[name_mask].reset_index(drop=True)
 
     # ── Pipeline metrics ──
     c1,c2,c3,c4,c5 = st.columns(5)
