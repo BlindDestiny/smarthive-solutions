@@ -18,10 +18,10 @@ export function StatsBar({ stats }: StatsBarProps) {
   ] as const
 
   const colorMap = {
-    sky:     "bg-sky-50 text-sky-600",
-    emerald: "bg-emerald-50 text-emerald-600",
-    amber:   "bg-amber-50 text-amber-600",
-    violet:  "bg-violet-50 text-violet-600",
+    sky:     "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400",
+    emerald: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400",
+    amber:   "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400",
+    violet:  "bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400",
   }
 
   return (
@@ -29,16 +29,16 @@ export function StatsBar({ stats }: StatsBarProps) {
       {items.map((item) => {
         const Icon = item.icon
         return (
-          <div key={item.label} className="bg-white border border-gray-200 rounded-xl p-4">
+          <div key={item.label} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[11px] font-medium uppercase tracking-widest text-gray-500">
+              <p className="text-[11px] font-medium uppercase tracking-widest text-gray-500 dark:text-gray-400">
                 {item.label}
               </p>
               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${colorMap[item.color]}`}>
                 <Icon className="w-3.5 h-3.5" />
               </div>
             </div>
-            <p className="text-2xl font-semibold text-gray-900 tabular-nums">
+            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 tabular-nums">
               {item.value.toLocaleString("pt-PT")}
             </p>
           </div>

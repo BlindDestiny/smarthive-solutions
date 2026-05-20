@@ -16,9 +16,9 @@ export default async function IngestPage() {
   return (
     <div className="p-6 md:p-8 max-w-[1600px] mx-auto">
       <header className="mb-6">
-        <p className="text-xs font-medium uppercase tracking-widest text-sky-600 mb-1">Lead Machine</p>
-        <h1 className="text-3xl font-semibold text-gray-900">Ingest Google Places</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-xs font-medium uppercase tracking-widest text-sky-600 dark:text-sky-400 mb-1">Lead Machine</p>
+        <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">Ingest Google Places</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Scrape novos leads do Google Maps · {existingLeadCount.toLocaleString("pt-PT")} leads atualmente no DB.
           Combos já corridos (mesma lat, lon, keyword) são automaticamente saltados.
         </p>

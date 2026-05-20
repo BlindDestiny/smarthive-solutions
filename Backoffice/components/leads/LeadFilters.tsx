@@ -51,21 +51,21 @@ export function LeadFilters({ cities, initialSearch }: LeadFiltersProps) {
     .some((k) => searchParams.get(k))
 
   const select =
-    "h-9 px-2.5 pr-8 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 " +
+    "h-9 px-2.5 pr-8 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-gray-300 " +
     "appearance-none bg-no-repeat focus:outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 mb-4">
       {/* Search bar */}
       <form onSubmit={submitSearch} className="flex items-center gap-3 mb-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Pesquisar lead por nome..."
-            className="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
+            className="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
           />
         </div>
         <button
@@ -79,7 +79,7 @@ export function LeadFilters({ cities, initialSearch }: LeadFiltersProps) {
           <button
             type="button"
             onClick={clearAll}
-            className="h-10 px-3 text-xs font-medium text-gray-600 hover:text-gray-900 inline-flex items-center gap-1.5"
+            className="h-10 px-3 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-gray-100 inline-flex items-center gap-1.5"
           >
             <X className="w-3.5 h-3.5" /> Limpar tudo
           </button>
@@ -88,7 +88,7 @@ export function LeadFilters({ cities, initialSearch }: LeadFiltersProps) {
 
       {/* Filter selects */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-gray-500 mr-1">
+        <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-400 mr-1">
           <FilterIcon className="w-3 h-3" /> Filtros
         </div>
 
@@ -167,7 +167,7 @@ export function LeadFilters({ cities, initialSearch }: LeadFiltersProps) {
         </select>
 
         {pending && (
-          <span className="text-xs text-gray-400">a atualizar…</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">a atualizar…</span>
         )}
       </div>
     </div>

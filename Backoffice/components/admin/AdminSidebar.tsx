@@ -26,7 +26,7 @@ export default function AdminSidebar() {
         </div>
         <div>
           <p className="text-white font-semibold text-sm leading-none">SmartHive</p>
-          <p className="text-gray-400 text-xs mt-0.5">Admin</p>
+          <p className="text-gray-400 dark:text-gray-500 text-xs mt-0.5">Admin</p>
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export default function AdminSidebar() {
                 "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                 active
                   ? "bg-sky-500/10 text-sky-400"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800"
+                  : "text-gray-400 dark:text-gray-500 hover:text-white hover:bg-gray-800"
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -56,7 +56,7 @@ export default function AdminSidebar() {
       <div className="px-3 py-4 border-t border-gray-800">
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 w-full transition-colors"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-400 dark:text-gray-500 hover:text-white hover:bg-gray-800 w-full transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sair

@@ -76,12 +76,12 @@ function SortHeader({
   return (
     <Link
       href={href}
-      className={`group inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-widest text-gray-500 hover:text-gray-900 ${
+      className={`group inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-gray-100 ${
         align === "right" ? "justify-end" : ""
       }`}
     >
       {label}
-      <ArrowIcon className={`w-3 h-3 ${dir ? "text-sky-500" : "text-gray-300 group-hover:text-gray-400"}`} />
+      <ArrowIcon className={`w-3 h-3 ${dir ? "text-sky-500" : "text-gray-300 dark:text-gray-600 group-hover:text-gray-400 dark:text-gray-500"}`} />
     </Link>
   )
 }
@@ -93,10 +93,10 @@ export function LeadsTable(props: LeadsTableProps) {
   const to = Math.min(total, (page + 1) * pageSize)
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
             <tr>
               <th className="px-4 py-3 text-left">
                 <SortHeader label="Lead" target="name" current={current} base={baseParams} />
@@ -113,21 +113,21 @@ export function LeadsTable(props: LeadsTableProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-12 text-center text-sm text-gray-500">
+                <td colSpan={7} className="px-4 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
                   Sem leads para estes filtros.
                 </td>
               </tr>
             ) : (
               rows.map((lead) => (
-                <tr key={lead.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={lead.id} className="hover:bg-gray-50 dark:bg-gray-950 transition-colors">
                   <td className="px-4 py-3">
                     <Link href={`/admin/leads/${lead.id}`} className="block">
-                      <div className="font-medium text-gray-900 hover:text-sky-600">{lead.name}</div>
+                      <div className="font-medium text-gray-900 dark:text-gray-100 hover:text-sky-600 dark:text-sky-400">{lead.name}</div>
                       {lead.crmState?.attempts ? (
-                        <div className="text-[11px] text-gray-500 mt-0.5">
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                           📞 {lead.crmState.attempts} tentativa{lead.crmState.attempts > 1 ? "s" : ""}
                           {lead.crmState.lastCallAt && (
                             <> · última {new Date(lead.crmState.lastCallAt).toLocaleDateString("pt-PT")}</>
@@ -137,22 +137,22 @@ export function LeadsTable(props: LeadsTableProps) {
                     </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                       {VERTICAL_LABEL[lead.businessType]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{lead.city ?? "—"}</td>
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{lead.city ?? "—"}</td>
                   <td className="px-4 py-3 text-right">
                     {lead.rating != null ? (
-                      <span className="inline-flex items-center gap-1 text-gray-700 tabular-nums">
+                      <span className="inline-flex items-center gap-1 text-gray-700 dark:text-gray-300 tabular-nums">
                         <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                         {lead.rating.toFixed(1)}
-                        <span className="text-gray-400 text-xs">({lead.reviews.toLocaleString("pt-PT")})</span>
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">({lead.reviews.toLocaleString("pt-PT")})</span>
                       </span>
-                    ) : <span className="text-gray-400">—</span>}
+                    ) : <span className="text-gray-400 dark:text-gray-500">—</span>}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="inline-flex items-center gap-2 text-gray-400">
+                    <div className="inline-flex items-center gap-2 text-gray-400 dark:text-gray-500">
                       <Globe className={`w-3.5 h-3.5 ${lead.website ? "text-emerald-500" : ""}`} aria-label={lead.website ? "tem website" : "sem website"} />
                       <Mail  className={`w-3.5 h-3.5 ${lead.email   ? "text-amber-500"   : ""}`} aria-label={lead.email   ? "tem email"   : "sem email"} />
                       <Phone className={`w-3.5 h-3.5 ${lead.phone   ? "text-violet-500" : ""}`} aria-label={lead.phone   ? "tem telefone" : "sem telefone"} />
@@ -164,12 +164,12 @@ export function LeadsTable(props: LeadsTableProps) {
                         {STATUS_LABEL[lead.crmState.status]}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-500">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                         Novo
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right tabular-nums text-gray-700">
+                  <td className="px-4 py-3 text-right tabular-nums text-gray-700 dark:text-gray-300">
                     {lead.priority || "—"}
                   </td>
                 </tr>
@@ -180,8 +180,8 @@ export function LeadsTable(props: LeadsTableProps) {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50">
-        <p className="text-xs text-gray-500 tabular-nums">
+      <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+        <p className="text-xs text-gray-500 dark:text-gray-400 tabular-nums">
           {from.toLocaleString("pt-PT")}–{to.toLocaleString("pt-PT")} de {total.toLocaleString("pt-PT")}
         </p>
         <div className="flex items-center gap-1">
@@ -189,19 +189,19 @@ export function LeadsTable(props: LeadsTableProps) {
             href={page > 0 ? pageHref(baseParams, page - 1) : "#"}
             aria-disabled={page === 0}
             className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded ${
-              page === 0 ? "text-gray-300 pointer-events-none" : "text-gray-700 hover:bg-gray-100"
+              page === 0 ? "text-gray-300 dark:text-gray-600 pointer-events-none" : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-gray-800"
             }`}
           >
             <ChevronLeft className="w-3.5 h-3.5" /> Anterior
           </Link>
-          <span className="text-xs text-gray-600 px-2 tabular-nums">
+          <span className="text-xs text-gray-600 dark:text-gray-400 px-2 tabular-nums">
             Pág. {page + 1} / {pageCount}
           </span>
           <Link
             href={page < pageCount - 1 ? pageHref(baseParams, page + 1) : "#"}
             aria-disabled={page >= pageCount - 1}
             className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded ${
-              page >= pageCount - 1 ? "text-gray-300 pointer-events-none" : "text-gray-700 hover:bg-gray-100"
+              page >= pageCount - 1 ? "text-gray-300 dark:text-gray-600 pointer-events-none" : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-gray-800"
             }`}
           >
             Próximo <ChevronRight className="w-3.5 h-3.5" />
