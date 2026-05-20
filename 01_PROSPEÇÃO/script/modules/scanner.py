@@ -1,14 +1,32 @@
+"""
+LEGACY scanner — superseded by ../scraper.py (which has resume support,
+mainland-PT grid, env-based API key, and posts directly to the CRM
+Backoffice instead of writing CSVs).
+
+Kept temporarily for reference. Prefer:
+    python scraper.py --preset quick
+"""
+import os
 import requests
 import time
 import pandas as pd
 import numpy as np
 from datetime import datetime
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # =========================
 # CONFIGURAÇÃO
 # =========================
 
-API_KEY = "AIzaSyBTL4TKMOVTe1h7b2C7ddAh7upXSg4S8hA"  # ⚠️ não deixes isto exposto publicamente
+# ⚠️ A chave NUNCA deve estar hardcoded. Define em .env:  GOOGLE_PLACES_API_KEY=AIza...
+API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
+if not API_KEY:
+    raise RuntimeError("GOOGLE_PLACES_API_KEY missing — set it in 01_PROSPEÇÃO/script/.env")
 
 RADIUS = 5000
 SLEEP_BETWEEN_REQUESTS = 1.2

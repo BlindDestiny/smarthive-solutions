@@ -72,6 +72,7 @@ model User {
   leadMeetings   LeadMeeting[]
   leadProposals  LeadProposal[]
   leadEmails     LeadEmailLog[]
+  scrapeJobs     ScrapeJob[]
 }
 
 model Website {
@@ -392,6 +393,44 @@ model LeadProposal {
 
   @@index([leadId])
   @@index([status])
+}
+
+enum ScrapeJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model ScrapeJob {
+  id            String          @id @default(cuid())
+  userId        String?
+  user          User?           @relation(fields: [userId], references: [id])
+  status        ScrapeJobStatus @default(PENDING)
+  // Plan
+  preset        String          // "quick" | "standard" | "full" | "custom"
+  keywords      Json            // string[] of keywords to scan
+  cellsPlanned  Int             @default(0)
+  combosPlanned Int             @default(0)    // total (cell × keyword) combos
+  combosSkipped Int             @default(0)    // skipped because already-done
+  // Progress
+  callsMade     Int             @default(0)
+  leadsNew      Int             @default(0)    // unique place_ids never seen
+  leadsTotal    Int             @default(0)    // including dupes returned
+  lastCell      String?         // "lat,lon" of last completed cell
+  lastKeyword   String?
+  // Cost
+  costUsd       Float           @default(0)    // calls * 0.032
+  // Lifecycle
+  startedAt     DateTime?
+  endedAt       DateTime?
+  error         String?
+  pid           Int?            // OS pid of the python subprocess (for cancel)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([status, createdAt])
 }
 
 model LeadEmailLog {

@@ -3,16 +3,17 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  Table2, KanbanSquare, CalendarDays, Send, BarChart3,
+  Table2, KanbanSquare, CalendarDays, Send, BarChart3, Download,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const ITEMS = [
-  { href: "/admin/leads",          label: "Tabela",   icon: Table2,        exact: true  },
-  { href: "/admin/leads/pipeline", label: "Pipeline", icon: KanbanSquare,  exact: false },
-  { href: "/admin/leads/calendar", label: "Calendário", icon: CalendarDays, exact: false },
-  { href: "/admin/leads/outreach", label: "Outreach", icon: Send,          exact: false },
-  { href: "/admin/leads/reports",  label: "Reports",  icon: BarChart3,     exact: false },
+  { href: "/admin/leads",          label: "Tabela",     icon: Table2,        exact: true  },
+  { href: "/admin/leads/pipeline", label: "Pipeline",   icon: KanbanSquare,  exact: false },
+  { href: "/admin/leads/calendar", label: "Calendário", icon: CalendarDays,  exact: false },
+  { href: "/admin/leads/outreach", label: "Outreach",   icon: Send,          exact: false },
+  { href: "/admin/leads/reports",  label: "Reports",    icon: BarChart3,     exact: false },
+  { href: "/admin/leads/ingest",   label: "Ingest",     icon: Download,      exact: false },
 ]
 
 export function LeadsSubNav() {
