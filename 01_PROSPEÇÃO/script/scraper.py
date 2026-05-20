@@ -257,9 +257,15 @@ def is_in_mainland_pt(lat: float, lon: float) -> bool:
 # ─────────────────────────────────────────────────────────────────
 
 @dataclass
+class Cell:
+    lat: float
+    lon: float
+    source: str   # "Lisboa" | "Hex · Algarve" | etc.
+
+@dataclass
 class ScanPlan:
     label: str
-    cells: list[tuple[float, float]]          # (lat, lon)
+    cells: list[Cell]
     keywords: list[str]
     radius: int                                # meters
     def total_combos(self) -> int:
@@ -267,12 +273,28 @@ class ScanPlan:
     def estimated_cost_usd(self, avg_pages_per_combo: float = 1.0) -> float:
         return self.total_combos() * avg_pages_per_combo * COST_PER_CALL
 
-def expand_cities(cities: list[tuple[str, float, float]]) -> list[tuple[float, float]]:
-    out = []
-    for _, base_lat, base_lon in cities:
-        for dx, dy in CITY_OFFSETS:
-            out.append((round(base_lat + dx, 4), round(base_lon + dy, 4)))
+def expand_cities(cities: list[tuple[str, float, float]]) -> list[Cell]:
+    out: list[Cell] = []
+    for name, base_lat, base_lon in cities:
+        for i, (dx, dy) in enumerate(CITY_OFFSETS):
+            source = name if i == 0 else f"{name} +{i}"
+            out.append(Cell(round(base_lat + dx, 4), round(base_lon + dy, 4), source))
     return out
+
+def hex_region_label(lat: float) -> str:
+    """Approximate PT region by latitude — just for friendlier UI labels."""
+    if lat < 37.5:  return "Algarve"
+    if lat < 38.7:  return "Alentejo Litoral"
+    if lat < 39.2:  return "Alentejo / Lisboa Sul"
+    if lat < 40.0:  return "Lisboa / Vale Tejo"
+    if lat < 40.8:  return "Centro"
+    if lat < 41.3:  return "Beira Litoral"
+    if lat < 41.7:  return "Porto / Douro"
+    return "Minho / Trás-os-Montes"
+
+def hex_cells_with_labels() -> list[Cell]:
+    return [Cell(lat, lon, f"Hex · {hex_region_label(lat)}")
+            for lat, lon in generate_pt_hex_grid()]
 
 def build_plan(preset: str, keywords_override: list[str] | None = None) -> ScanPlan:
     if preset == "quick":
@@ -291,10 +313,10 @@ def build_plan(preset: str, keywords_override: list[str] | None = None) -> ScanP
         )
     if preset == "full":
         return ScanPlan(
-            label="Full · hex grid mainland PT · 50 keywords",
-            cells=generate_pt_hex_grid(),
+            label="Full · hex grid mainland PT · 144 keywords",
+            cells=hex_cells_with_labels(),
             keywords=keywords_override or KEYWORDS_FULL,
-            radius=15000,  # larger radius for coarser hex grid
+            radius=15000,
         )
     raise ValueError(f"Unknown preset: {preset}")
 
@@ -443,8 +465,8 @@ def run(preset: str, job_id: str | None = None, dry_run: bool = False, budget_eu
 
     done = fetch_done_combos()
     pending = [
-        (lat, lon, kw) for lat, lon in plan.cells for kw in plan.keywords
-        if (lat, lon, kw) not in done
+        (cell, kw) for cell in plan.cells for kw in plan.keywords
+        if (cell.lat, cell.lon, kw) not in done
     ]
     skipped = plan.total_combos() - len(pending)
     print(f"  Skipping {skipped:,} already-done combos ({skipped/plan.total_combos()*100:.1f}%)")
@@ -465,10 +487,12 @@ def run(preset: str, job_id: str | None = None, dry_run: bool = False, budget_eu
     total_leads_new = 0
     total_leads_seen = 0
     batch: list[dict] = []
+    recent: list[dict] = []   # last 5 events for the live log
     BATCH_SIZE = 100
+    RECENT_MAX = 5
     start = time.time()
 
-    for idx, (lat, lon, kw) in enumerate(pending):
+    for idx, (cell, kw) in enumerate(pending):
         # Cancellation check every 25 combos
         if idx % 25 == 0 and reporter.is_cancelled():
             print(f"✗ Cancelled by user at combo {idx}/{len(pending)}")
@@ -494,35 +518,51 @@ def run(preset: str, job_id: str | None = None, dry_run: bool = False, budget_eu
             )
             return
 
-        places, calls = nearby_search(lat, lon, kw, plan.radius)
+        places, calls = nearby_search(cell.lat, cell.lon, kw, plan.radius)
         total_calls += calls
 
+        batch_before = len(batch)
         for p in places:
-            payload = lead_payload(p, lat, lon, kw)
+            payload = lead_payload(p, cell.lat, cell.lon, kw)
             if payload:
                 batch.append(payload)
                 total_leads_seen += 1
+        batch_added = len(batch) - batch_before
 
         # Flush batch
+        flushed = 0
         if len(batch) >= BATCH_SIZE:
-            up = post_ingest(batch)
-            total_leads_new += up
+            flushed = post_ingest(batch)
+            total_leads_new += flushed
             batch.clear()
 
-        # Periodic progress + log
-        if idx % 10 == 0:
-            elapsed = time.time() - start
-            rate = (idx + 1) / max(elapsed, 1)
-            eta_s = (len(pending) - idx) / max(rate, 0.1)
-            print(f"  [{idx+1:,}/{len(pending):,}] {lat},{lon} '{kw[:20]}' → {len(places)} places · {total_calls} calls · {total_leads_new} new · ETA {eta_s/60:.1f}m")
-            reporter.post(
-                callsMade=total_calls,
-                leadsNew=total_leads_new,
-                leadsTotal=total_leads_seen,
-                lastCell=f"{lat},{lon}",
-                lastKeyword=kw,
-                costUsd=round(total_calls * COST_PER_CALL, 4),
-            )
+        # Append to recent activity (keep last 5)
+        recent.insert(0, {
+            "source":  cell.source,
+            "keyword": kw,
+            "found":   batch_added,
+            "ts":      time.time(),
+        })
+        recent = recent[:RECENT_MAX]
+
+        # Live progress — every combo
+        elapsed = time.time() - start
+        rate = (idx + 1) / max(elapsed, 1)
+        eta_s = (len(pending) - idx) / max(rate, 0.1)
+
+        if idx % 5 == 0:
+            print(f"  [{idx+1:,}/{len(pending):,}] {cell.source} · '{kw[:30]}' → {batch_added} places · {total_calls} calls · {total_leads_new} new · ETA {eta_s/60:.1f}m")
+
+        reporter.post(
+            callsMade=total_calls,
+            leadsNew=total_leads_new,
+            leadsTotal=total_leads_seen,
+            lastCell=f"{cell.lat:.4f},{cell.lon:.4f}",
+            lastKeyword=kw,
+            lastSource=cell.source,
+            costUsd=round(total_calls * COST_PER_CALL, 4),
+            recentActivity=recent,
+        )
 
         time.sleep(SLEEP_S)
 

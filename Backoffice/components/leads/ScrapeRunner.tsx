@@ -8,25 +8,27 @@ import {
 import type { ScrapeJobStatus } from "@prisma/client"
 
 interface ScrapeJob {
-  id:            string
-  status:        ScrapeJobStatus
-  preset:        string
-  keywords:      string[]
-  cellsPlanned:  number
-  combosPlanned: number
-  combosSkipped: number
-  callsMade:     number
-  leadsNew:      number
-  leadsTotal:    number
-  lastCell:      string | null
-  lastKeyword:   string | null
-  costUsd:       number
-  startedAt:     string | null
-  endedAt:       string | null
-  createdAt:     string
-  updatedAt:     string
-  error:         string | null
-  user?:         { name: string | null; email: string } | null
+  id:             string
+  status:         ScrapeJobStatus
+  preset:         string
+  keywords:       string[]
+  cellsPlanned:   number
+  combosPlanned:  number
+  combosSkipped:  number
+  callsMade:      number
+  leadsNew:       number
+  leadsTotal:     number
+  lastCell:       string | null
+  lastKeyword:    string | null
+  lastSource:     string | null
+  costUsd:        number
+  recentActivity: { source: string; keyword: string; found: number; ts: number }[] | null
+  startedAt:      string | null
+  endedAt:        string | null
+  createdAt:      string
+  updatedAt:      string
+  error:          string | null
+  user?:          { name: string | null; email: string } | null
 }
 
 const PRESETS = [
@@ -92,7 +94,7 @@ export function ScrapeRunner({ initialJobs }: { initialJobs: ScrapeJob[] }) {
   const est = estimateCost(sel.cells, sel.kws)
   const activeJob = jobs.find((j) => j.status === "RUNNING" || j.status === "PENDING") ?? null
 
-  // Poll for updates every 2s when a job is active
+  // Poll for updates every 1s when a job is active
   useEffect(() => {
     if (!activeJob) return
     const id = setInterval(() => {
@@ -104,7 +106,7 @@ export function ScrapeRunner({ initialJobs }: { initialJobs: ScrapeJob[] }) {
           })))
         }
       }).catch(() => {})
-    }, 2000)
+    }, 1000)
     return () => clearInterval(id)
   }, [activeJob?.id])
 
@@ -291,34 +293,50 @@ function ActiveJobCard({ job, onCancel }: { job: ScrapeJob; onCancel: (id: strin
   const planned = Math.max(1, job.combosPlanned - job.combosSkipped)
   const done    = Math.min(planned, job.callsMade)
   const pct     = (done / planned) * 100
+  const costEur = job.costUsd * EUR_PER_USD
+  const budgetPct = (costEur / BUDGET_CAP_EUR) * 100
+  const recent = job.recentActivity ?? []
+  const sourceLabel = job.lastSource ?? job.lastCell ?? "—"
 
   return (
     <div className="bg-gradient-to-br from-sky-50 to-white border border-sky-200 rounded-xl p-6">
-      <div className="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1.5">
             <Loader2 className="w-4 h-4 text-sky-500 animate-spin" />
             <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium ${STATUS_STYLE[job.status].color}`}>
               {STATUS_STYLE[job.status].label}
             </span>
             <span className="text-xs text-gray-500">job {job.id.slice(-6)} · preset {job.preset}</span>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            {job.lastCell ? `A processar ${job.lastCell} · "${job.lastKeyword}"` : "A preparar plano de scrape…"}
+          <h3 className="text-xl font-semibold text-gray-900 truncate">
+            {job.lastSource ? (
+              <>📍 <span className="text-sky-700">{sourceLabel}</span> · <span className="font-mono italic text-gray-600">&ldquo;{job.lastKeyword}&rdquo;</span></>
+            ) : (
+              "A preparar plano de scrape…"
+            )}
           </h3>
         </div>
         <button
           onClick={() => onCancel(job.id)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white border border-gray-200 text-red-600 hover:bg-red-50 hover:border-red-200"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white border border-gray-200 text-red-600 hover:bg-red-50 hover:border-red-200 shrink-0"
         >
           <Square className="w-3 h-3" /> Cancelar
         </button>
       </div>
 
-      {/* Progress bar */}
-      <div className="mb-4">
+      {/* Big stats row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+        <BigStat icon={Activity}  label="Calls"        value={job.callsMade.toLocaleString("pt-PT")} />
+        <BigStat icon={Database}  label="Leads novas"  value={job.leadsNew.toLocaleString("pt-PT")} accent="emerald" />
+        <BigStat icon={DollarSign} label="Custo"       value={`${costEur.toFixed(2)}€`} sub={`$${job.costUsd.toFixed(2)}`} />
+        <BigStat icon={Clock}     label="Decorrido"    value={formatDuration(job.startedAt, job.endedAt)} />
+      </div>
+
+      {/* Progress bar — combos */}
+      <div className="mb-3">
         <div className="flex items-center justify-between text-xs text-gray-600 mb-1.5 tabular-nums">
-          <span>{done.toLocaleString("pt-PT")} / {planned.toLocaleString("pt-PT")} combos</span>
+          <span><strong>Progresso:</strong> {done.toLocaleString("pt-PT")} / {planned.toLocaleString("pt-PT")} combos</span>
           <span>{pct.toFixed(1)}%</span>
         </div>
         <div className="h-2 bg-sky-100 rounded-full overflow-hidden">
@@ -329,18 +347,51 @@ function ActiveJobCard({ job, onCancel }: { job: ScrapeJob; onCancel: (id: strin
         </div>
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Stat icon={Activity}  label="Calls"        value={job.callsMade.toLocaleString("pt-PT")} />
-        <Stat icon={Database}  label="Leads novas"  value={job.leadsNew.toLocaleString("pt-PT")} />
-        <Stat icon={DollarSign} label="Custo USD"   value={`$${job.costUsd.toFixed(2)}`} />
-        <Stat icon={Clock}     label="Decorrido"    value={formatDuration(job.startedAt, job.endedAt)} />
+      {/* Progress bar — budget */}
+      <div className="mb-5">
+        <div className="flex items-center justify-between text-xs text-gray-600 mb-1.5 tabular-nums">
+          <span><strong>Budget:</strong> {costEur.toFixed(2)}€ / {BUDGET_CAP_EUR}€</span>
+          <span className={budgetPct > 90 ? "text-amber-700 font-semibold" : ""}>{budgetPct.toFixed(1)}%</span>
+        </div>
+        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${
+              budgetPct > 90 ? "bg-amber-500" : budgetPct > 70 ? "bg-amber-400" : "bg-emerald-500"
+            }`}
+            style={{ width: `${Math.min(100, budgetPct)}%` }}
+          />
+        </div>
       </div>
 
+      {/* Live activity log */}
+      {recent.length > 0 && (
+        <div className="mb-3">
+          <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-medium">
+            Atividade recente (últimas {recent.length})
+          </p>
+          <ul className="space-y-1 font-mono text-[11px]">
+            {recent.map((r, i) => {
+              const ago = Math.max(0, Math.floor((Date.now() / 1000 - r.ts)))
+              return (
+                <li key={`${r.ts}-${i}`} className={`flex items-baseline gap-2 ${i === 0 ? "text-gray-900" : "text-gray-500"}`}>
+                  <span className="text-gray-400 tabular-nums w-10 shrink-0">{ago}s</span>
+                  <span className="text-sky-700 font-semibold truncate max-w-[180px]">{r.source}</span>
+                  <span className="text-gray-400">·</span>
+                  <span className="text-gray-700 italic truncate flex-1">&ldquo;{r.keyword}&rdquo;</span>
+                  <span className={`tabular-nums shrink-0 ${r.found > 0 ? "text-emerald-700 font-semibold" : "text-gray-400"}`}>
+                    {r.found > 0 ? `+${r.found}` : "—"} places
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+
       {job.combosSkipped > 0 && (
-        <p className="mt-3 text-[11px] text-gray-500">
-          ✓ {job.combosSkipped.toLocaleString("pt-PT")} combos saltados (já estavam no DB) ·
-          poupados ~${(job.combosSkipped * COST_PER_CALL_USD).toFixed(2)}
+        <p className="mt-3 text-[11px] text-gray-500 border-t border-gray-100 pt-3">
+          ✓ {job.combosSkipped.toLocaleString("pt-PT")} combos saltados (já no DB) ·
+          poupados ~${(job.combosSkipped * COST_PER_CALL_USD).toFixed(2)} (~{(job.combosSkipped * COST_PER_CALL_USD * EUR_PER_USD).toFixed(2)}€)
         </p>
       )}
 
@@ -353,14 +404,23 @@ function ActiveJobCard({ job, onCancel }: { job: ScrapeJob; onCancel: (id: strin
   )
 }
 
-function Stat({ icon: Icon, label, value }: { icon: typeof Activity; label: string; value: string }) {
+function BigStat({
+  icon: Icon, label, value, sub, accent,
+}: {
+  icon: typeof Activity; label: string; value: string; sub?: string; accent?: "emerald"
+}) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-3">
       <div className="flex items-center gap-1.5 mb-1">
         <Icon className="w-3 h-3 text-gray-400" />
         <p className="text-[10px] uppercase tracking-widest text-gray-500">{label}</p>
       </div>
-      <p className="text-base font-semibold text-gray-900 tabular-nums">{value}</p>
+      <p className={`text-2xl font-semibold tabular-nums leading-none ${
+        accent === "emerald" ? "text-emerald-600" : "text-gray-900"
+      }`}>
+        {value}
+      </p>
+      {sub && <p className="text-[11px] text-gray-400 tabular-nums mt-1">{sub}</p>}
     </div>
   )
 }

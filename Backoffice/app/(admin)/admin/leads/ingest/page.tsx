@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma"
 import { ScrapeRunner } from "@/components/leads/ScrapeRunner"
 
+type ScrapeRunnerRecent = { source: string; keyword: string; found: number; ts: number }
+
 export const dynamic = "force-dynamic"
 
 export default async function IngestPage() {
@@ -25,11 +27,12 @@ export default async function IngestPage() {
       <ScrapeRunner
         initialJobs={initialJobs.map((j) => ({
           ...j,
-          createdAt: j.createdAt.toISOString(),
-          startedAt: j.startedAt?.toISOString() ?? null,
-          endedAt:   j.endedAt?.toISOString() ?? null,
-          updatedAt: j.updatedAt.toISOString(),
-          keywords:  j.keywords as string[],
+          createdAt:      j.createdAt.toISOString(),
+          startedAt:      j.startedAt?.toISOString() ?? null,
+          endedAt:        j.endedAt?.toISOString() ?? null,
+          updatedAt:      j.updatedAt.toISOString(),
+          keywords:       (j.keywords as string[]) ?? [],
+          recentActivity: (j.recentActivity as ScrapeRunnerRecent[] | null) ?? null,
         }))}
       />
     </div>

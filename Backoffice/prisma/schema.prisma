@@ -420,6 +420,8 @@ model ScrapeJob {
   leadsTotal    Int             @default(0)    // including dupes returned
   lastCell      String?         // "lat,lon" of last completed cell
   lastKeyword   String?
+  lastSource    String?         // city name or "hex grid" of last combo
+  recentActivity Json?          // last 5 events for the live log
   // Cost
   costUsd       Float           @default(0)    // calls * 0.032
   // Lifecycle

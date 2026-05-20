@@ -12,18 +12,25 @@ import { ScrapeJobStatus } from "@prisma/client"
 export const dynamic = "force-dynamic"
 
 const Body = z.object({
-  jobId:         z.string().min(1),
-  status:        z.nativeEnum(ScrapeJobStatus).optional(),
-  cellsPlanned:  z.number().int().optional(),
-  combosPlanned: z.number().int().optional(),
-  combosSkipped: z.number().int().optional(),
-  callsMade:     z.number().int().optional(),
-  leadsNew:      z.number().int().optional(),
-  leadsTotal:    z.number().int().optional(),
-  lastCell:      z.string().nullable().optional(),
-  lastKeyword:   z.string().nullable().optional(),
-  costUsd:       z.number().optional(),
-  error:         z.string().nullable().optional(),
+  jobId:          z.string().min(1),
+  status:         z.nativeEnum(ScrapeJobStatus).optional(),
+  cellsPlanned:   z.number().int().optional(),
+  combosPlanned:  z.number().int().optional(),
+  combosSkipped:  z.number().int().optional(),
+  callsMade:      z.number().int().optional(),
+  leadsNew:       z.number().int().optional(),
+  leadsTotal:     z.number().int().optional(),
+  lastCell:       z.string().nullable().optional(),
+  lastKeyword:    z.string().nullable().optional(),
+  lastSource:     z.string().nullable().optional(),
+  costUsd:        z.number().optional(),
+  recentActivity: z.array(z.object({
+    source:  z.string(),
+    keyword: z.string(),
+    found:   z.number().int(),
+    ts:      z.number(),
+  })).optional(),
+  error:          z.string().nullable().optional(),
 })
 
 export async function POST(req: NextRequest) {
