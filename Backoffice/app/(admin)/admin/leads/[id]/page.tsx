@@ -8,6 +8,9 @@ import { getLeadDetail } from "@/lib/leads/queries"
 import { PitchPanel } from "@/components/leads/PitchPanel"
 import { OutcomeButtons } from "@/components/leads/OutcomeButtons"
 import { ActivityTimeline } from "@/components/leads/ActivityTimeline"
+import { ScheduleMeetingButton } from "@/components/leads/ScheduleMeetingDialog"
+import { SendEmailButton } from "@/components/leads/SendEmailDialog"
+import { ProposalBuilderButton } from "@/components/leads/ProposalBuilderButton"
 import { STATUS_LABEL, STATUS_COLOR, ANSWERED_LABEL, type CallOutcome } from "@/lib/leads/types"
 import { VERTICAL_LABEL } from "@/lib/pitch"
 import type { LeadCallAnswer, LeadStatus } from "@prisma/client"
@@ -102,53 +105,65 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </div>
 
           {/* Contact actions */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {lead.phone && (
-              <a
-                href={`tel:${lead.phone}`}
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-sky-500 hover:bg-sky-600 text-white"
-              >
-                <Phone className="w-3.5 h-3.5" /> {lead.phone}
-              </a>
-            )}
-            {waLink && (
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white"
-              >
-                <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
-              </a>
-            )}
-            {lead.email && (
-              <a
-                href={`mailto:${lead.email}`}
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-amber-500 hover:bg-amber-600 text-white"
-              >
-                <Mail className="w-3.5 h-3.5" /> {lead.email}
-              </a>
-            )}
-            {lead.website && (
-              <a
-                href={lead.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
-              >
-                <Globe className="w-3.5 h-3.5" /> Website <ExternalLink className="w-3 h-3 text-gray-400" />
-              </a>
-            )}
-            {lead.googleUrl && (
-              <a
-                href={lead.googleUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
-              >
-                Google Maps <ExternalLink className="w-3 h-3 text-gray-400" />
-              </a>
-            )}
+          <div className="flex flex-col gap-2 items-end">
+            {/* Row 1 — direct contact */}
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              {lead.phone && (
+                <a
+                  href={`tel:${lead.phone}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-sky-500 hover:bg-sky-600 text-white"
+                >
+                  <Phone className="w-3.5 h-3.5" /> {lead.phone}
+                </a>
+              )}
+              {waLink && (
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
+                </a>
+              )}
+              {lead.website && (
+                <a
+                  href={lead.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                >
+                  <Globe className="w-3.5 h-3.5" /> Website <ExternalLink className="w-3 h-3 text-gray-400" />
+                </a>
+              )}
+              {lead.googleUrl && (
+                <a
+                  href={lead.googleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                >
+                  Google Maps <ExternalLink className="w-3 h-3 text-gray-400" />
+                </a>
+              )}
+            </div>
+            {/* Row 2 — CRM workflow actions */}
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              <SendEmailButton
+                lead={{
+                  id: lead.id,
+                  name: lead.name,
+                  email: lead.email,
+                  city: lead.city,
+                  reviews: lead.reviews,
+                  rating: lead.rating,
+                  businessType: lead.businessType,
+                  whoAnswered: crm?.whoAnswered ?? null,
+                }}
+              />
+              <ScheduleMeetingButton leadId={lead.id} />
+              <ProposalBuilderButton leadId={lead.id} />
+            </div>
           </div>
         </div>
       </header>

@@ -1,53 +1,42 @@
-import { KanbanSquare } from "lucide-react"
-import { ALL_STATUSES, STATUS_LABEL, STATUS_COLOR } from "@/lib/leads/types"
-import { prisma } from "@/lib/prisma"
+import { listKanban } from "@/lib/leads/kanban-queries"
+import { KanbanBoard } from "@/components/leads/KanbanBoard"
 
 export const dynamic = "force-dynamic"
 
 export default async function PipelinePage() {
-  const counts = await prisma.leadCrmState.groupBy({
-    by: ["status"],
-    _count: { _all: true },
-  })
-  const countMap = Object.fromEntries(counts.map((c) => [c.status, c._count._all]))
+  const columns = await listKanban()
+  const grandTotal = columns.reduce((s, c) => s + c.total, 0)
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto">
-      <header className="mb-6">
+    <div className="p-6 md:p-8 max-w-[1800px] mx-auto">
+      <header className="mb-5">
         <p className="text-xs font-medium uppercase tracking-widest text-sky-600 mb-1">Lead Machine</p>
         <h1 className="text-3xl font-semibold text-gray-900">Pipeline</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Kanban com drag-drop por status (em construção)
+          {grandTotal.toLocaleString("pt-PT")} leads em pipeline · arrasta entre colunas para
+          mudar o status (até 50 cards por coluna)
         </p>
       </header>
 
-      {/* Read-only kanban preview */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
-        {ALL_STATUSES.map((status) => (
-          <div key={status} className="bg-white border border-gray-200 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium ${STATUS_COLOR[status]}`}>
-                {STATUS_LABEL[status]}
-              </span>
-            </div>
-            <p className="text-3xl font-semibold text-gray-900 tabular-nums">
-              {(countMap[status] ?? 0).toLocaleString("pt-PT")}
-            </p>
-            <p className="text-[11px] text-gray-500 mt-1">leads</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Phase placeholder */}
-      <div className="bg-white border border-gray-200 border-dashed rounded-xl p-8 text-center">
-        <KanbanSquare className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-        <h2 className="text-lg font-semibold text-gray-900">Kanban interactivo em fase 7</h2>
-        <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
-          Vai permitir arrastar leads entre colunas, ver aging de cada card,
-          e win/loss reporting por período. Já temos os counts em real-time
-          em cima como preview.
-        </p>
-      </div>
+      <KanbanBoard
+        initial={columns.map((c) => ({
+          status: c.status,
+          total: c.total,
+          rows: c.rows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            city: r.city,
+            reviews: r.reviews,
+            rating: r.rating,
+            priority: r.priority,
+            phone: r.phone,
+            email: r.email,
+            website: r.website,
+            businessType: r.businessType,
+            attempts: r.crmState?.attempts ?? 0,
+          })),
+        }))}
+      />
     </div>
   )
 }
