@@ -35,26 +35,27 @@ const PRESETS = [
     label: "Quick",
     cells: 210,       // 30 cidades × 7 offsets
     kws:   25,
-    desc:  "Top 30 cidades · 25 verticais cuidadas. Boa primeira passagem.",
+    desc:  "Top 30 cidades · 25 verticais focadas. Boa primeira passagem.",
   },
   {
     id:    "standard",
     label: "Standard",
     cells: 700,       // 100 cidades × 7 offsets
     kws:   35,
-    desc:  "Top 100 localidades + cidades médias · 35 verticais.",
+    desc:  "Top 100 localidades · 35 verticais. Cobertura de cidades médias.",
   },
   {
     id:    "full",
     label: "Full continente",
     cells: 400,       // hex grid mainland
-    kws:   50,
-    desc:  "Hex grid mainland PT (raio 15km) · 50 verticais. Cobertura máxima.",
+    kws:   144,
+    desc:  "Hex grid mainland PT (raio 15km) · 144 verticais (catálogo completo). Cobertura máxima.",
   },
 ] as const
 
 const COST_PER_CALL_USD = 0.032
 const EUR_PER_USD       = 0.93
+const BUDGET_CAP_EUR    = 260
 
 function estimateCost(cells: number, kws: number, avgPages = 1.5) {
   const calls = cells * kws * avgPages
@@ -191,6 +192,13 @@ export function ScrapeRunner({ initialJobs }: { initialJobs: ScrapeJob[] }) {
             <span className="text-gray-400">@ $0.032/call (Places legacy)</span>
             <br />
             Combos já existentes no DB são <strong>saltados automaticamente</strong> — custo real costuma ser bastante menor.
+            <br />
+            <span className={est.eur > BUDGET_CAP_EUR ? "text-amber-700" : "text-emerald-700"}>
+              🛡️ Cap rígido de <strong>{BUDGET_CAP_EUR}€</strong> (créditos free Google) — scrape pára sozinho ao chegar lá.
+              {est.eur > BUDGET_CAP_EUR && (
+                <> · Vais ficar a meio (precisarias de ~{est.eur.toFixed(0)}€ para acabar este preset).</>
+              )}
+            </span>
           </div>
           <button
             onClick={startScrape}

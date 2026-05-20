@@ -51,38 +51,67 @@ COST_PER_CALL  = 0.032   # USD, Google Nearby Search legacy pricing
 EUR_PER_USD    = 0.93
 SLEEP_S        = 1.2
 PAGE_SLEEP_S   = 2.0     # next_page_token needs ~2s to activate
+DEFAULT_BUDGET_EUR = 260.0  # Google Cloud free credits cap by default
 
 # ─────────────────────────────────────────────────────────────────
 # KEYWORDS — comprehensive PT business taxonomy
 # ─────────────────────────────────────────────────────────────────
 
 KEYWORDS_FULL = [
-    # Comida & bebida
+    # ── Restauração & comida (24) ─────────────────────────────
     "restaurante", "café", "bar", "pastelaria", "pizzaria", "padaria",
     "snack-bar", "churrasqueira", "marisqueira", "tasca", "hamburgueria",
-    # Beleza
+    "gelataria", "doceria", "confeitaria", "cervejaria", "esplanada",
+    "wine bar", "sushi", "kebab", "comida vegana", "comida vegetariana",
+    "takeaway", "brasserie", "cocktail bar",
+    # ── Comércio alimentar (7) ────────────────────────────────
+    "talho", "peixaria", "frutaria", "mercearia", "garrafeira",
+    "queijaria", "supermercado",
+    # ── Beleza & bem-estar (10) ───────────────────────────────
     "cabeleireiro", "barbearia", "estética", "spa", "manicure",
-    # Saúde
-    "clínica dentária", "clínica veterinária", "fisioterapia",
-    "psicólogo", "farmácia",
-    # Profissionais
-    "advogado", "contabilista", "notário", "imobiliária", "seguros",
-    # Serviços de casa
+    "podologia", "depilação", "massagens", "solário", "centro estético",
+    # ── Saúde (15) ────────────────────────────────────────────
+    "clínica dentária", "clínica médica", "clínica veterinária",
+    "fisioterapia", "osteopatia", "psicólogo", "nutricionista",
+    "farmácia", "parafarmácia", "ótica", "centro auditivo",
+    "ginecologia", "pediatria", "terapeuta", "acupuntura",
+    # ── Profissionais B2B (10) ────────────────────────────────
+    "advogado", "contabilista", "notário", "solicitador",
+    "arquiteto", "engenheiro civil", "imobiliária", "agência de viagens",
+    "seguros", "consultoria",
+    # ── Serviços de casa (15) ─────────────────────────────────
     "canalizador", "eletricista", "carpintaria", "marcenaria",
-    "pintor", "serralharia", "limpeza",
-    # Mudanças & transportes
-    "mudanças", "transporte de mercadorias",
-    # Auto
-    "oficina auto", "stand de carros", "lavagem auto", "rent-a-car",
-    # Comércio
-    "loja de roupa", "loja de móveis", "ourivesaria", "sapataria",
-    "ótica", "talho", "florista", "petshop",
-    # Fitness
-    "ginásio", "pilates", "yoga", "crossfit",
-    # Construção & obras
+    "pintor", "serralharia", "limpeza", "jardineiro", "paisagista",
+    "climatização", "ar condicionado", "alarmes", "automação",
+    "vidraçaria", "desentupimentos",
+    # ── Mudanças & logística (3) ──────────────────────────────
+    "mudanças", "transporte de mercadorias", "estafetas",
+    # ── Construção & obras (5) ────────────────────────────────
     "construção civil", "remodelações", "reabilitação",
-    # Eventos
-    "fotógrafo", "catering", "dj",
+    "empreiteiro", "pavimentos",
+    # ── Auto (8) ──────────────────────────────────────────────
+    "oficina auto", "stand de carros", "mecânico", "lavagem auto",
+    "pneus", "pintura auto", "rent-a-car", "inspeções auto",
+    # ── Comércio especializado (15) ───────────────────────────
+    "loja de roupa", "loja de móveis", "ourivesaria", "sapataria",
+    "joalharia", "florista", "petshop", "eletrodomésticos",
+    "loja de informática", "telemóveis", "livraria", "papelaria",
+    "brinquedos", "bricolage", "ferragens",
+    # ── Fitness & desporto (7) ────────────────────────────────
+    "ginásio", "pilates", "yoga", "crossfit", "studio de dança",
+    "escola de surf", "padel",
+    # ── Hospitalidade (5) ─────────────────────────────────────
+    "hotel", "hostel", "alojamento local", "guesthouse", "pousada",
+    # ── Educação & formação (7) ───────────────────────────────
+    "creche", "infantário", "colégio", "escola de música",
+    "autoescola", "explicações", "formação profissional",
+    # ── Eventos & criativo (8) ────────────────────────────────
+    "fotógrafo", "fotógrafo de casamentos", "videografia", "drone",
+    "catering", "dj", "agência publicidade", "design gráfico",
+    # ── Animais (3) ───────────────────────────────────────────
+    "veterinário", "groomer", "hotel canino",
+    # ── Funerários & outros (2) ───────────────────────────────
+    "agência funerária", "copyshop",
 ]
 
 KEYWORDS_QUICK = [
@@ -397,18 +426,20 @@ def lead_payload(place: dict, search_lat: float, search_lon: float, keyword: str
 # MAIN
 # ─────────────────────────────────────────────────────────────────
 
-def run(preset: str, job_id: str | None = None, dry_run: bool = False):
+def run(preset: str, job_id: str | None = None, dry_run: bool = False, budget_eur: float = DEFAULT_BUDGET_EUR):
     if not API_KEY:
         print("✗ GOOGLE_PLACES_API_KEY missing from .env")
         sys.exit(1)
 
     plan = build_plan(preset)
     reporter = ProgressReporter(job_id)
+    budget_usd = budget_eur / EUR_PER_USD
 
     print(f"▶ {plan.label}")
     print(f"  Cells: {len(plan.cells):,}  ·  Keywords: {len(plan.keywords)}  ·  Combos: {plan.total_combos():,}")
     print(f"  Estimated max cost: ${plan.estimated_cost_usd(avg_pages_per_combo=2.0):.0f} (~{plan.estimated_cost_usd(2.0)*EUR_PER_USD:.0f}€)")
     print(f"  (1 page avg: ${plan.estimated_cost_usd():.0f})")
+    print(f"  Budget cap: {budget_eur:.0f}€ (≈ ${budget_usd:.2f}) — will stop when reached")
 
     done = fetch_done_combos()
     pending = [
@@ -441,7 +472,26 @@ def run(preset: str, job_id: str | None = None, dry_run: bool = False):
         # Cancellation check every 25 combos
         if idx % 25 == 0 and reporter.is_cancelled():
             print(f"✗ Cancelled by user at combo {idx}/{len(pending)}")
-            reporter.post(status="CANCELLED", endedAt=None)
+            reporter.post(status="CANCELLED")
+            return
+
+        # Budget cap — stop before next call if we'd exceed
+        current_cost_usd = total_calls * COST_PER_CALL
+        if current_cost_usd >= budget_usd:
+            print(f"⚠ Budget cap reached: ${current_cost_usd:.2f} ≥ ${budget_usd:.2f} ({budget_eur:.0f}€)")
+            print(f"  Stopping cleanly at combo {idx}/{len(pending)}")
+            if batch:
+                up = post_ingest(batch)
+                total_leads_new += up
+                batch.clear()
+            reporter.post(
+                status="COMPLETED",
+                callsMade=total_calls,
+                leadsNew=total_leads_new,
+                leadsTotal=total_leads_seen,
+                costUsd=round(total_calls * COST_PER_CALL, 4),
+                error=f"Budget cap {budget_eur:.0f}€ atingido — paragem limpa",
+            )
             return
 
         places, calls = nearby_search(lat, lon, kw, plan.radius)
@@ -500,9 +550,11 @@ def main():
     p = argparse.ArgumentParser(description="Google Places scraper v2 — mainland PT")
     p.add_argument("--preset", default="quick", choices=["quick", "standard", "full"])
     p.add_argument("--job-id", default=None, help="Backoffice ScrapeJob id for progress posting")
+    p.add_argument("--budget-eur", type=float, default=float(os.environ.get("BUDGET_CAP_EUR", DEFAULT_BUDGET_EUR)),
+                   help=f"Hard cap in EUR (default {DEFAULT_BUDGET_EUR:.0f}€ — Google free credits)")
     p.add_argument("--dry-run", action="store_true", help="Print plan + skip-set; don't call Google")
     args = p.parse_args()
-    run(args.preset, args.job_id, args.dry_run)
+    run(args.preset, args.job_id, args.dry_run, args.budget_eur)
 
 if __name__ == "__main__":
     main()
