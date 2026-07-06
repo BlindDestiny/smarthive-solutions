@@ -5,8 +5,10 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const securityHeaders = [
   {
+    // No `preload` — that's an irreversible commitment to HTTPS-only across the
+    // whole domain and belongs only on a fully-provisioned, stable site.
     key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
+    value: "max-age=31536000; includeSubDomains",
   },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
