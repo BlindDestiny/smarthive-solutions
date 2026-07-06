@@ -4,6 +4,9 @@
 
 [build]
   command = "npm run build"
+  # Must differ from the base directory (byte-brain). The Next.js runtime
+  # publishes from .next (relative to base = byte-brain/.next).
+  publish = ".next"
 
 [build.environment]
   # Next.js 16 requires Node 20.9+. Pin it so builds are reproducible.
