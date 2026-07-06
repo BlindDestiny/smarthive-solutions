@@ -1,0 +1,381 @@
+{
+  "meta": {
+    "title": "Byte & Brain — Digital Growth Systems for SMEs",
+    "description": "We don't just build websites. We build digital growth systems that combine performance, SEO, AI and automation to drive predictable results.",
+    "ogAlt": "Byte & Brain — Digital Growth Systems"
+  },
+  "nav": {
+    "services": "Services",
+    "process": "How we work",
+    "cases": "Case studies",
+    "tech": "Technology",
+    "blog": "Blog",
+    "contact": "Contact",
+    "cta": "Free audit",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "badge": "Digital Growth Systems",
+    "title": "More than websites.",
+    "titleAccent": "We build growth systems.",
+    "subtitle": "We help SMEs grow predictably through technology — high-performance websites, SEO, Artificial Intelligence and automation, in one system.",
+    "ctaPrimary": "Request a free audit",
+    "ctaSecondary": "See how we work",
+    "trustedBy": "The technology the biggest companies use. Within reach of your business.",
+    "stats": [
+      { "value": "> 95", "label": "Lighthouse Performance" },
+      { "value": "3×", "label": "More organic traffic" },
+      { "value": "24/7", "label": "Automation working for you" }
+    ]
+  },
+  "problem": {
+    "eyebrow": "The problem",
+    "title": "A beautiful website doesn't grow a business.",
+    "subtitle": "Most companies invest in a site that merely exists. It doesn't attract, doesn't convert, doesn't work. The result is digital presence without return.",
+    "items": [
+      {
+        "title": "Invisible on Google",
+        "desc": "Without semantic structure and technical SEO, your site never shows up when customers search."
+      },
+      {
+        "title": "Visits that don't convert",
+        "desc": "Traffic without a conversion strategy is money leaking away. Visitors come and go without becoming leads."
+      },
+      {
+        "title": "Too much manual work",
+        "desc": "Answering, qualifying and following up leads by hand eats the time that should be spent on the business."
+      },
+      {
+        "title": "No data to decide",
+        "desc": "Without reliable analytics, marketing decisions are guesswork — not strategy."
+      }
+    ]
+  },
+  "solution": {
+    "eyebrow": "The solution",
+    "title": "A system, not a service.",
+    "subtitle": "We bring together the pieces that usually live apart — site, SEO, AI, automation and data — into one system, designed to generate growth month after month.",
+    "points": [
+      {
+        "title": "High-performance foundation",
+        "desc": "A fast, accessible and technically flawless website — the base everything else grows on."
+      },
+      {
+        "title": "Found on Google and AI",
+        "desc": "We optimize for traditional search engines and the new AI engines — ChatGPT, Gemini, Claude and Perplexity."
+      },
+      {
+        "title": "Conversion by design",
+        "desc": "Every page has a purpose: turning visitors into leads with smart CTAs and real social proof."
+      },
+      {
+        "title": "Automation and AI under the hood",
+        "desc": "Flows that qualify, answer and follow up leads automatically — your business working while you sleep."
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Everything you need to grow online.",
+    "subtitle": "Each service works on its own. Together, they become a growth system.",
+    "learnMore": "Learn more",
+    "items": [
+      {
+        "name": "Website Development",
+        "tag": "Foundation",
+        "desc": "Ultra-fast, accessible Next.js sites built to convert. Server-side rendering, edge and green Core Web Vitals."
+      },
+      {
+        "name": "SEO",
+        "tag": "Visibility",
+        "desc": "Technical and content SEO with perfect semantic structure, to rank sustainably on Google."
+      },
+      {
+        "name": "AI SEO",
+        "tag": "New",
+        "desc": "Optimization for AI engines. Your business cited and recommended by ChatGPT, Gemini, Claude and Perplexity."
+      },
+      {
+        "name": "Local SEO",
+        "tag": "Proximity",
+        "desc": "Show up first when people search near you. Google Business, maps and LocalBusiness Schema."
+      },
+      {
+        "name": "Automation",
+        "tag": "Efficiency",
+        "desc": "Automating leads, replies, follow-ups and operations. Less manual work, more results."
+      },
+      {
+        "name": "Artificial Intelligence",
+        "tag": "Intelligence",
+        "desc": "Assistants, lead qualification and AI integrations tailored to your business."
+      },
+      {
+        "name": "Analytics",
+        "tag": "Data",
+        "desc": "Reliable measurement of everything that matters, with dashboards that turn data into decisions."
+      },
+      {
+        "name": "Maintenance",
+        "tag": "Reliability",
+        "desc": "Monitoring, updates and continuous improvement. Your system always fast and secure."
+      },
+      {
+        "name": "Consulting",
+        "tag": "Strategy",
+        "desc": "Digital strategy from the ground up: where to grow, how to grow and what system to build."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "How we work",
+    "title": "From diagnosis to growth in four phases.",
+    "subtitle": "A clear, transparent and results-driven method — no surprises.",
+    "steps": [
+      {
+        "n": "01",
+        "title": "Diagnosis",
+        "desc": "We audit your digital presence, market and competitors. We identify where you're losing growth."
+      },
+      {
+        "n": "02",
+        "title": "Strategy",
+        "desc": "We design the system to fit: which pieces, in what order, with what measurable goals."
+      },
+      {
+        "n": "03",
+        "title": "Build",
+        "desc": "We implement with clean code and leading technology. Fast, scalable and built to last for years."
+      },
+      {
+        "n": "04",
+        "title": "Growth",
+        "desc": "We measure, optimize and scale. The system keeps improving and growth compounds."
+      }
+    ]
+  },
+  "cases": {
+    "eyebrow": "Case studies",
+    "title": "Real results, not promises.",
+    "subtitle": "A few examples of what a well-built growth system can do.",
+    "cta": "View full case",
+    "items": [
+      {
+        "client": "Dental clinic",
+        "sector": "Healthcare",
+        "metric": "+180%",
+        "metricLabel": "online bookings in 6 months",
+        "desc": "A new site, Local SEO and booking automation transformed the clinic's calendar."
+      },
+      {
+        "client": "Construction company",
+        "sector": "Construction",
+        "metric": "3×",
+        "metricLabel": "qualified leads per month",
+        "desc": "Technical SEO and optimized service pages put the company at the top of local search."
+      },
+      {
+        "client": "Law firm",
+        "sector": "B2B services",
+        "metric": "Top 3",
+        "metricLabel": "on Google for key terms",
+        "desc": "Semantic structure and authority content built ranking and credibility."
+      }
+    ]
+  },
+  "tech": {
+    "eyebrow": "Technology",
+    "title": "Built with the very best.",
+    "subtitle": "The same tools that power world-scale products — serving your business.",
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "React Server Components",
+      "Framer Motion",
+      "Edge Rendering",
+      "MDX",
+      "Vercel"
+    ]
+  },
+  "faq": {
+    "eyebrow": "Frequently asked questions",
+    "title": "What you need to know.",
+    "subtitle": "Straight answers to the questions we hear most.",
+    "items": [
+      {
+        "q": "What is a Digital Growth System?",
+        "a": "It's a system that combines a high-performance website, SEO, AI, automation and analytics to drive predictable growth. Instead of loose pieces, everything works together to attract, convert and retain customers."
+      },
+      {
+        "q": "How is this different from a traditional marketing agency?",
+        "a": "An agency usually delivers isolated services. Byte & Brain is a technology company: we build integrated systems, with our own engineering, focused on measurable results rather than one-off deliverables."
+      },
+      {
+        "q": "What is AI SEO and why does it matter?",
+        "a": "AI SEO is optimization for AI engines like ChatGPT, Gemini, Claude and Perplexity. More and more people ask AI assistants questions instead of searching Google. AI SEO ensures your business is cited and recommended in those answers."
+      },
+      {
+        "q": "How long until I see results?",
+        "a": "The technical foundation and first conversions can appear in weeks. Organic SEO compounds over 3 to 6 months — and keeps growing. A well-built system generates traffic and authority for years."
+      },
+      {
+        "q": "Do you work with my industry?",
+        "a": "Yes. We work with SMEs in construction, clinics, law, accounting, real estate, tourism, industry, e-commerce and B2B services. The system adapts to your context and market."
+      },
+      {
+        "q": "How do we start?",
+        "a": "With a free audit. We analyze your digital presence and show you, concretely, where the growth opportunity is — no commitment."
+      }
+    ]
+  },
+  "servicePage": {
+    "breadcrumbHome": "Home",
+    "breadcrumbServices": "Services",
+    "overviewTitle": "Overview",
+    "benefitsTitle": "The value for your business",
+    "deliverablesTitle": "What we do",
+    "deliverablesSubtitle": "Everything included in this service.",
+    "faqTitle": "Frequently asked questions",
+    "relatedTitle": "Other services",
+    "relatedSubtitle": "Each piece works on its own. Together, they become a system.",
+    "allServices": "View all services",
+    "backToServices": "All services"
+  },
+  "servicesIndex": {
+    "eyebrow": "Services",
+    "title": "Growth systems, piece by piece.",
+    "subtitle": "Nine services that work on their own — and together form a complete digital growth system.",
+    "metaTitle": "Services — Digital Growth Systems",
+    "metaDescription": "Web development, SEO, AI SEO, automation, artificial intelligence, analytics and more. Explore Byte & Brain's services for SMEs."
+  },
+  "cta": {
+    "title": "Ready to build your growth system?",
+    "subtitle": "Start with a free audit. No commitment, just clarity on the next step.",
+    "primary": "Request a free audit",
+    "secondary": "Talk to us",
+    "note": "Reply within 24 hours · No commitment"
+  },
+  "about": {
+    "metaTitle": "About Byte & Brain — A Technology Company",
+    "metaDescription": "Byte & Brain is a technology company from Setúbal, founded in 2025, building Digital Growth Systems for SMEs. Learn our mission and who we are.",
+    "eyebrow": "About us",
+    "title": "A technology company. Not an agency.",
+    "subtitle": "We build digital growth systems for SMEs — combining engineering, SEO, AI and automation into one system, focused on measurable results.",
+    "storyTitle": "Why we exist",
+    "story": [
+      "Most SMEs are served by agencies that deliver loose pieces — a site here, some ads there — with no system tying it all together to drive real growth. The result is digital presence without return.",
+      "Byte & Brain was founded in 2025, in Setúbal, to change that: to bring the technology that powers the world's biggest products to small and medium businesses — accessibly, transparently and results-first."
+    ],
+    "missionTitle": "Our mission",
+    "mission": "To create systems that drive predictable growth for SMEs, combining high-performance websites, SEO, AI SEO, automation and artificial intelligence. We don't sell websites — we build growth engines.",
+    "founderTitle": "Who's behind it",
+    "founderRole": "Founder",
+    "founderBio": "Miguel Lourenço founded Byte & Brain on a simple conviction: SMEs deserve the same technology and engineering rigor as large companies. He works directly with every client, from diagnosis to building the system.",
+    "valuesTitle": "What guides us",
+    "values": [
+      { "title": "Results, not deliverables", "desc": "We measure success by the growth we drive, not by the list of completed tasks." },
+      { "title": "Real engineering", "desc": "Clean, fast, scalable code. Technology is our craft, not an add-on." },
+      { "title": "Full transparency", "desc": "No jargon, no black boxes. We explain what we do and why, with data." },
+      { "title": "Long-term partnership", "desc": "We build assets that grow for years, not campaigns that end in a month." }
+    ],
+    "stats": [
+      { "value": "2025", "label": "Founded in Setúbal" },
+      { "value": "PT · EN · ES", "label": "Ready to scale" },
+      { "value": "1 system", "label": "Technology, SEO, AI and automation" }
+    ],
+    "ctaTitle": "Let's build your growth system?",
+    "ctaText": "Start with a free audit — no commitment."
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Knowledge hub",
+    "subtitle": "Practical ideas on digital growth, SEO, AI and automation for SMEs.",
+    "metaTitle": "Blog — Digital Growth, SEO and AI",
+    "metaDescription": "Practical articles on SEO, AI SEO, automation, web development and digital growth for SMEs.",
+    "all": "All",
+    "readingTime": "min read",
+    "by": "by",
+    "backToBlog": "Back to blog",
+    "empty": "Articles coming soon.",
+    "categories": {
+      "seo": "SEO",
+      "ai": "AI",
+      "automation": "Automation",
+      "digital-growth": "Digital Growth",
+      "web-development": "Web Development",
+      "business": "Business"
+    }
+  },
+  "legal": {
+    "updated": "Last updated",
+    "privacy": {
+      "metaTitle": "Privacy Policy",
+      "metaDescription": "How Byte & Brain collects, uses and protects your personal data, in compliance with GDPR.",
+      "title": "Privacy Policy",
+      "intro": "Your privacy matters to us. This policy explains what data we collect, how we use it and your rights under GDPR.",
+      "sections": [
+        { "h": "Data we collect", "p": "We only collect data you voluntarily provide through forms (name, email, company and message) and anonymous technical browsing data." },
+        { "h": "How we use your data", "p": "We use your data to respond to contact requests, deliver our services and improve the site. We never sell it." },
+        { "h": "Cookies and analytics", "p": "We may use privacy-respecting cookies and analytics tools to understand site usage. You can manage cookies in your browser." },
+        { "h": "Sharing with third parties", "p": "We only share data with providers essential to delivering the service (e.g. hosting or email), always with adequate safeguards." },
+        { "h": "Your rights (GDPR)", "p": "You have the right to access, correct, delete or restrict the processing of your data. To exercise these rights, contact us by email." },
+        { "h": "Security", "p": "We apply technical and organizational best practices to protect your data against unauthorized access, loss or alteration." },
+        { "h": "Contact", "p": "For any question about this policy or your data, contact us via the email in the footer." }
+      ]
+    },
+    "terms": {
+      "metaTitle": "Terms & Conditions",
+      "metaDescription": "The terms and conditions for using the Byte & Brain website and services.",
+      "title": "Terms & Conditions",
+      "intro": "By using this website and our services, you agree to the terms described below.",
+      "sections": [
+        { "h": "Acceptance of terms", "p": "Using this site implies full acceptance of these terms. If you disagree, you should not use the site." },
+        { "h": "Services", "p": "Byte & Brain provides technology, SEO, automation and digital growth services. The scope of each project is defined by a specific proposal." },
+        { "h": "Intellectual property", "p": "All content on this site (text, design, code and brand) is the property of Byte & Brain, unless stated otherwise." },
+        { "h": "Client responsibilities", "p": "The client is responsible for providing accurate information and the access needed to deliver the contracted services." },
+        { "h": "Limitation of liability", "p": "Our services are delivered with the utmost care, but we do not guarantee specific ranking results, which depend on external factors." },
+        { "h": "Changes", "p": "We may update these terms at any time. The version in force is always the one published on this page." },
+        { "h": "Governing law", "p": "These terms are governed by Portuguese law, with the courts of Setúbal being competent." }
+      ]
+    },
+    "disclaimer": "This document is a general template. We recommend legal review before definitive use."
+  },
+  "contactForm": {
+    "emailLabel": "Email",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "you@company.com",
+    "company": "Company",
+    "companyPlaceholder": "Company name",
+    "message": "Message",
+    "messagePlaceholder": "Tell us about your project…",
+    "submit": "Send request",
+    "sending": "Sending…",
+    "successTitle": "Request sent!",
+    "successBody": "Thank you. We'll be in touch within 24 hours.",
+    "error": "Something went wrong. Please try again or email us directly."
+  },
+  "footer": {
+    "tagline": "Digital growth systems for SMEs. Technology, SEO, AI and automation in one system.",
+    "slogan": "Digital Growth Systems for SMEs",
+    "rights": "All rights reserved.",
+    "columns": {
+      "services": "Services",
+      "company": "Company",
+      "resources": "Resources"
+    },
+    "links": {
+      "about": "About us",
+      "process": "How we work",
+      "cases": "Case studies",
+      "contact": "Contact",
+      "blog": "Blog",
+      "faq": "FAQ",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
+  }
+}

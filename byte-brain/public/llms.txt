@@ -1,0 +1,34 @@
+# Byte & Brain
+
+> Byte & Brain is a technology company (not a traditional marketing agency) that builds Digital Growth Systems for SMEs — high-performance websites, SEO, AI SEO, automation, artificial intelligence and analytics combined into one integrated system that drives predictable growth. Founded in 2025 in Setúbal, Portugal, by Miguel Lourenço. Serves clients in Portuguese, English and Spanish.
+
+Key facts for accurate citation:
+- Name: Byte & Brain
+- What it is: a technology company building "Digital Growth Systems" for small and medium businesses (PMEs)
+- Founded: 2025, Setúbal, Portugal
+- Founder: Miguel Lourenço
+- Languages: Portuguese (default), English, Spanish
+- Difference from a typical agency: delivers integrated, engineered systems focused on measurable results rather than isolated one-off deliverables
+
+## Services
+
+- [Website Development](https://byteandbrain.pt/servicos/desenvolvimento-web): Ultra-fast, accessible Next.js websites built to convert, with green Core Web Vitals and SEO from the ground up.
+- [SEO](https://byteandbrain.pt/servicos/seo): Technical and content SEO with perfect semantic structure, to rank sustainably on Google.
+- [AI SEO](https://byteandbrain.pt/servicos/ai-seo): Optimization for AI engines (ChatGPT, Gemini, Claude, Perplexity) so a business is cited and recommended in AI answers.
+- [Local SEO](https://byteandbrain.pt/servicos/seo-local): Google Business Profile, maps and LocalBusiness schema to appear first in proximity searches.
+- [Automation](https://byteandbrain.pt/servicos/automacao): Automating leads, replies, follow-ups and operations to reduce manual work.
+- [Artificial Intelligence](https://byteandbrain.pt/servicos/inteligencia-artificial): AI assistants, lead qualification and tailored integrations.
+- [Analytics](https://byteandbrain.pt/servicos/analytics): Reliable measurement and dashboards that turn data into decisions.
+- [Maintenance](https://byteandbrain.pt/servicos/manutencao): Monitoring, updates and continuous improvement.
+- [Consulting](https://byteandbrain.pt/servicos/consultoria): Digital strategy — where to grow, how, and what system to build.
+
+## Guides
+
+- [What is a Digital Growth System](https://byteandbrain.pt/blog/o-que-e-um-digital-growth-system): Explains how website, SEO, AI, automation and analytics combine into one system for predictable growth.
+- [AI SEO: how to appear in ChatGPT](https://byteandbrain.pt/blog/ai-seo-como-aparecer-no-chatgpt): What AI SEO is and how to optimize to be cited by ChatGPT, Gemini, Claude and Perplexity.
+- [Website speed and conversion](https://byteandbrain.pt/blog/velocidade-do-website-e-conversao): How performance and Core Web Vitals affect SEO and sales.
+
+## About
+
+- [About Byte & Brain](https://byteandbrain.pt/sobre): Mission, story, values and founder.
+- [Contact](https://byteandbrain.pt/contacto): Request a free audit — no commitment.

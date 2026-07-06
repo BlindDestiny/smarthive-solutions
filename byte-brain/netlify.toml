@@ -1,0 +1,16 @@
+# Netlify config for the Byte & Brain site (Next.js 16 + next-intl).
+# If you connect the whole "smarthive-solutions" repo, set the site's
+# Base directory to "byte-brain" in the Netlify UI so this file is used.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  # Next.js 16 requires Node 20.9+. Pin it so builds are reproducible.
+  NODE_VERSION = "20"
+
+# Official adapter — turns Next.js (App Router, RSC, middleware/proxy, next/image,
+# ISR) into Netlify Functions + Edge Functions. Netlify auto-installs it, but
+# declaring it keeps the build explicit.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
