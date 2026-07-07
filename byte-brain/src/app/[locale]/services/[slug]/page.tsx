@@ -62,7 +62,6 @@ export async function generateMetadata({
       url,
       siteName: site.name,
       locale,
-      images: [{ url: site.ogImage, width: 1200, height: 630 }],
     },
   };
 }

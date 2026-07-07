@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { PostMeta, BlogCategory } from "@/lib/blog";
 import { Reveal } from "@/components/motion/reveal";
@@ -12,6 +12,8 @@ type Props = {
   allLabel: string;
   categoryLabels: Record<string, string>;
   readingLabel: string;
+  searchPlaceholder: string;
+  noResults: string;
   locale: string;
 };
 
@@ -20,9 +22,12 @@ export function BlogList({
   allLabel,
   categoryLabels,
   readingLabel,
+  searchPlaceholder,
+  noResults,
   locale,
 }: Props) {
   const [active, setActive] = useState<BlogCategory | "all">("all");
+  const [query, setQuery] = useState("");
 
   // Only show category chips that actually have posts.
   const categories = useMemo(() => {
@@ -32,22 +37,50 @@ export function BlogList({
     );
   }, [posts, categoryLabels]);
 
-  const filtered =
-    active === "all" ? posts : posts.filter((p) => p.category === active);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return posts.filter((p) => {
+      const matchesCategory = active === "all" || p.category === active;
+      const matchesQuery =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+  }, [posts, active, query]);
 
   return (
     <div>
-      {/* Category filter */}
-      <div className="flex flex-wrap gap-2">
-        <Chip active={active === "all"} onClick={() => setActive("all")}>
-          {allLabel}
-        </Chip>
-        {categories.map((c) => (
-          <Chip key={c} active={active === c} onClick={() => setActive(c)}>
-            {categoryLabels[c]}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Category filter */}
+        <div className="flex flex-wrap gap-2">
+          <Chip active={active === "all"} onClick={() => setActive("all")}>
+            {allLabel}
           </Chip>
-        ))}
+          {categories.map((c) => (
+            <Chip key={c} active={active === c} onClick={() => setActive(c)}>
+              {categoryLabels[c]}
+            </Chip>
+          ))}
+        </div>
+
+        {/* Search */}
+        <div className="relative sm:w-64">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={searchPlaceholder}
+            aria-label={searchPlaceholder}
+            className="h-10 w-full rounded-lg border border-border bg-card pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30"
+          />
+        </div>
       </div>
+
+      {filtered.length === 0 && (
+        <p className="mt-12 text-center text-muted-foreground">{noResults}</p>
+      )}
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((post, i) => (

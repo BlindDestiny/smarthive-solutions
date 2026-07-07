@@ -7,7 +7,7 @@
   "nav": {
     "services": "Servicios",
     "process": "Cómo trabajamos",
-    "cases": "Casos de éxito",
+    "cases": "Compromisos",
     "tech": "Tecnología",
     "blog": "Blog",
     "contact": "Contacto",
@@ -24,9 +24,18 @@
     "ctaSecondary": "Descubre cómo trabajamos",
     "trustedBy": "La tecnología que usan las grandes empresas. Al alcance de tu negocio.",
     "stats": [
-      { "value": "> 95", "label": "Rendimiento Lighthouse" },
-      { "value": "3×", "label": "Más tráfico orgánico" },
-      { "value": "24/7", "label": "Automatización trabajando para ti" }
+      {
+        "value": "> 95",
+        "label": "Rendimiento Lighthouse"
+      },
+      {
+        "value": "3×",
+        "label": "Más tráfico orgánico"
+      },
+      {
+        "value": "24/7",
+        "label": "Automatización trabajando para ti"
+      }
     ]
   },
   "problem": {
@@ -156,31 +165,25 @@
     ]
   },
   "cases": {
-    "eyebrow": "Casos de éxito",
-    "title": "Resultados reales, no promesas.",
-    "subtitle": "Algunos ejemplos de lo que puede lograr un sistema de crecimiento bien construido.",
-    "cta": "Ver caso completo",
+    "eyebrow": "Compromisos",
+    "title": "Lo que puedes esperar de nosotros.",
+    "subtitle": "Transparencia total desde el primer día. Estos son los compromisos que asumimos con cada cliente.",
     "items": [
       {
-        "client": "Clínica dental",
-        "sector": "Salud",
-        "metric": "+180%",
-        "metricLabel": "reservas online en 6 meses",
-        "desc": "Una nueva web, Local SEO y automatización de reservas transformaron la agenda de la clínica."
+        "title": "Auditoría gratuita, sin compromiso",
+        "desc": "Empezamos mostrando el valor y la oportunidad — antes de cualquier contrato."
       },
       {
-        "client": "Empresa de construcción",
-        "sector": "Construcción",
-        "metric": "3×",
-        "metricLabel": "leads cualificados al mes",
-        "desc": "El SEO técnico y unas páginas de servicio optimizadas situaron a la empresa en lo más alto de la búsqueda local."
+        "title": "Resultados medibles",
+        "desc": "Definimos objetivos claros y lo medimos todo. Siempre sabes cuál es el retorno."
       },
       {
-        "client": "Bufete de abogados",
-        "sector": "Servicios B2B",
-        "metric": "Top 3",
-        "metricLabel": "en Google para términos clave",
-        "desc": "La estructura semántica y el contenido de autoridad construyeron posicionamiento y credibilidad."
+        "title": "Sin lock-in — el sistema es tuyo",
+        "desc": "Te quedas con la web, los datos y todos los accesos. Nunca dependes de nadie."
+      },
+      {
+        "title": "Transparencia total",
+        "desc": "Comunicación clara y honesta, sin jerga ni cajas negras."
       }
     ]
   },
@@ -275,15 +278,36 @@
     "founderBio": "Miguel Lourenço fundó Byte & Brain sobre una convicción sencilla: las pymes merecen la misma tecnología y el mismo rigor de ingeniería que las grandes empresas. Trabaja directamente con cada cliente, desde el diagnóstico hasta la construcción del sistema.",
     "valuesTitle": "Lo que nos guía",
     "values": [
-      { "title": "Resultados, no entregables", "desc": "Medimos el éxito por el crecimiento que generamos, no por la lista de tareas completadas." },
-      { "title": "Ingeniería de verdad", "desc": "Código limpio, rápido y escalable. La tecnología es nuestro oficio, no un añadido." },
-      { "title": "Transparencia total", "desc": "Sin jerga ni cajas negras. Explicamos qué hacemos y por qué, con datos." },
-      { "title": "Alianza a largo plazo", "desc": "Construimos activos que crecen durante años, no campañas que terminan en un mes." }
+      {
+        "title": "Resultados, no entregables",
+        "desc": "Medimos el éxito por el crecimiento que generamos, no por la lista de tareas completadas."
+      },
+      {
+        "title": "Ingeniería de verdad",
+        "desc": "Código limpio, rápido y escalable. La tecnología es nuestro oficio, no un añadido."
+      },
+      {
+        "title": "Transparencia total",
+        "desc": "Sin jerga ni cajas negras. Explicamos qué hacemos y por qué, con datos."
+      },
+      {
+        "title": "Alianza a largo plazo",
+        "desc": "Construimos activos que crecen durante años, no campañas que terminan en un mes."
+      }
     ],
     "stats": [
-      { "value": "2025", "label": "Fundada en Setúbal" },
-      { "value": "PT · EN · ES", "label": "Lista para escalar" },
-      { "value": "1 sistema", "label": "Tecnología, SEO, IA y automatización" }
+      {
+        "value": "2025",
+        "label": "Fundada en Setúbal"
+      },
+      {
+        "value": "PT · EN · ES",
+        "label": "Lista para escalar"
+      },
+      {
+        "value": "1 sistema",
+        "label": "Tecnología, SEO, IA y automatización"
+      }
     ],
     "ctaTitle": "¿Construimos tu sistema de crecimiento?",
     "ctaText": "Empieza con una auditoría gratuita — sin compromiso."
@@ -306,7 +330,9 @@
       "digital-growth": "Crecimiento digital",
       "web-development": "Desarrollo web",
       "business": "Negocio"
-    }
+    },
+    "searchPlaceholder": "Buscar artículos…",
+    "noResults": "No se encontraron artículos."
   },
   "legal": {
     "updated": "Última actualización",
@@ -316,13 +342,34 @@
       "title": "Política de privacidad",
       "intro": "Tu privacidad nos importa. Esta política explica qué datos recopilamos, cómo los utilizamos y tus derechos según el RGPD.",
       "sections": [
-        { "h": "Datos que recopilamos", "p": "Solo recopilamos los datos que nos facilitas voluntariamente a través de los formularios (nombre, email, empresa y mensaje) y datos técnicos de navegación anónimos." },
-        { "h": "Cómo usamos tus datos", "p": "Utilizamos tus datos para responder a las solicitudes de contacto, prestar nuestros servicios y mejorar la web. Nunca los vendemos." },
-        { "h": "Cookies y analítica", "p": "Podemos usar cookies y herramientas de analítica respetuosas con la privacidad para entender el uso de la web. Puedes gestionar las cookies en tu navegador." },
-        { "h": "Compartir con terceros", "p": "Solo compartimos datos con proveedores esenciales para prestar el servicio (por ejemplo, alojamiento o email), siempre con las garantías adecuadas." },
-        { "h": "Tus derechos (RGPD)", "p": "Tienes derecho a acceder, corregir, eliminar o restringir el tratamiento de tus datos. Para ejercer estos derechos, contáctanos por email." },
-        { "h": "Seguridad", "p": "Aplicamos las mejores prácticas técnicas y organizativas para proteger tus datos frente a accesos no autorizados, pérdida o alteración." },
-        { "h": "Contacto", "p": "Para cualquier duda sobre esta política o tus datos, contáctanos a través del email que figura en el pie de página." }
+        {
+          "h": "Datos que recopilamos",
+          "p": "Solo recopilamos los datos que nos facilitas voluntariamente a través de los formularios (nombre, email, empresa y mensaje) y datos técnicos de navegación anónimos."
+        },
+        {
+          "h": "Cómo usamos tus datos",
+          "p": "Utilizamos tus datos para responder a las solicitudes de contacto, prestar nuestros servicios y mejorar la web. Nunca los vendemos."
+        },
+        {
+          "h": "Cookies y analítica",
+          "p": "Podemos usar cookies y herramientas de analítica respetuosas con la privacidad para entender el uso de la web. Puedes gestionar las cookies en tu navegador."
+        },
+        {
+          "h": "Compartir con terceros",
+          "p": "Solo compartimos datos con proveedores esenciales para prestar el servicio (por ejemplo, alojamiento o email), siempre con las garantías adecuadas."
+        },
+        {
+          "h": "Tus derechos (RGPD)",
+          "p": "Tienes derecho a acceder, corregir, eliminar o restringir el tratamiento de tus datos. Para ejercer estos derechos, contáctanos por email."
+        },
+        {
+          "h": "Seguridad",
+          "p": "Aplicamos las mejores prácticas técnicas y organizativas para proteger tus datos frente a accesos no autorizados, pérdida o alteración."
+        },
+        {
+          "h": "Contacto",
+          "p": "Para cualquier duda sobre esta política o tus datos, contáctanos a través del email que figura en el pie de página."
+        }
       ]
     },
     "terms": {
@@ -331,13 +378,34 @@
       "title": "Términos y condiciones",
       "intro": "Al usar esta web y nuestros servicios, aceptas los términos que se describen a continuación.",
       "sections": [
-        { "h": "Aceptación de los términos", "p": "El uso de esta web implica la aceptación plena de estos términos. Si no estás de acuerdo, no debes usar la web." },
-        { "h": "Servicios", "p": "Byte & Brain presta servicios de tecnología, SEO, automatización y crecimiento digital. El alcance de cada proyecto se define mediante una propuesta específica." },
-        { "h": "Propiedad intelectual", "p": "Todo el contenido de esta web (texto, diseño, código y marca) es propiedad de Byte & Brain, salvo que se indique lo contrario." },
-        { "h": "Responsabilidades del cliente", "p": "El cliente es responsable de facilitar información precisa y los accesos necesarios para prestar los servicios contratados." },
-        { "h": "Limitación de responsabilidad", "p": "Nuestros servicios se prestan con el máximo cuidado, pero no garantizamos resultados de posicionamiento concretos, que dependen de factores externos." },
-        { "h": "Cambios", "p": "Podemos actualizar estos términos en cualquier momento. La versión vigente es siempre la publicada en esta página." },
-        { "h": "Legislación aplicable", "p": "Estos términos se rigen por la legislación portuguesa, siendo competentes los tribunales de Setúbal." }
+        {
+          "h": "Aceptación de los términos",
+          "p": "El uso de esta web implica la aceptación plena de estos términos. Si no estás de acuerdo, no debes usar la web."
+        },
+        {
+          "h": "Servicios",
+          "p": "Byte & Brain presta servicios de tecnología, SEO, automatización y crecimiento digital. El alcance de cada proyecto se define mediante una propuesta específica."
+        },
+        {
+          "h": "Propiedad intelectual",
+          "p": "Todo el contenido de esta web (texto, diseño, código y marca) es propiedad de Byte & Brain, salvo que se indique lo contrario."
+        },
+        {
+          "h": "Responsabilidades del cliente",
+          "p": "El cliente es responsable de facilitar información precisa y los accesos necesarios para prestar los servicios contratados."
+        },
+        {
+          "h": "Limitación de responsabilidad",
+          "p": "Nuestros servicios se prestan con el máximo cuidado, pero no garantizamos resultados de posicionamiento concretos, que dependen de factores externos."
+        },
+        {
+          "h": "Cambios",
+          "p": "Podemos actualizar estos términos en cualquier momento. La versión vigente es siempre la publicada en esta página."
+        },
+        {
+          "h": "Legislación aplicable",
+          "p": "Estos términos se rigen por la legislación portuguesa, siendo competentes los tribunales de Setúbal."
+        }
       ]
     },
     "disclaimer": "Este documento es una plantilla general. Recomendamos una revisión legal antes de su uso definitivo."
@@ -356,7 +424,9 @@
     "sending": "Enviando…",
     "successTitle": "¡Solicitud enviada!",
     "successBody": "Gracias. Nos pondremos en contacto contigo en un plazo de 24 horas.",
-    "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente por email."
+    "error": "Algo salió mal. Inténtalo de nuevo o escríbenos directamente por email.",
+    "bookTitle": "¿Prefieres agendar directamente?",
+    "bookText": "Elige una hora que te venga bien para tu auditoría gratuita."
   },
   "footer": {
     "tagline": "Sistemas de crecimiento digital para pymes. Tecnología, SEO, IA y automatización en un solo sistema.",
@@ -370,7 +440,7 @@
     "links": {
       "about": "Sobre nosotros",
       "process": "Cómo trabajamos",
-      "cases": "Casos de éxito",
+      "cases": "Compromisos",
       "contact": "Contacto",
       "blog": "Blog",
       "faq": "FAQ",

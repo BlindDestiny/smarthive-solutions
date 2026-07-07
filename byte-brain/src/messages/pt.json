@@ -7,7 +7,7 @@
   "nav": {
     "services": "Serviços",
     "process": "Como trabalhamos",
-    "cases": "Casos de estudo",
+    "cases": "Compromissos",
     "tech": "Tecnologia",
     "blog": "Blog",
     "contact": "Contacto",
@@ -24,9 +24,18 @@
     "ctaSecondary": "Ver como trabalhamos",
     "trustedBy": "A tecnologia que usam as maiores. Ao alcance da sua PME.",
     "stats": [
-      { "value": "> 95", "label": "Lighthouse Performance" },
-      { "value": "3×", "label": "Mais tráfego orgânico" },
-      { "value": "24/7", "label": "Automação a trabalhar por si" }
+      {
+        "value": "> 95",
+        "label": "Lighthouse Performance"
+      },
+      {
+        "value": "3×",
+        "label": "Mais tráfego orgânico"
+      },
+      {
+        "value": "24/7",
+        "label": "Automação a trabalhar por si"
+      }
     ]
   },
   "problem": {
@@ -156,31 +165,25 @@
     ]
   },
   "cases": {
-    "eyebrow": "Casos de estudo",
-    "title": "Resultados reais, não promessas.",
-    "subtitle": "Alguns exemplos do que um sistema de crescimento bem construído consegue fazer.",
-    "cta": "Ver caso completo",
+    "eyebrow": "Compromissos",
+    "title": "O que pode esperar de nós.",
+    "subtitle": "Transparência total desde o primeiro dia. Estes são os compromissos que assumimos com cada cliente.",
     "items": [
       {
-        "client": "Clínica dentária",
-        "sector": "Saúde",
-        "metric": "+180%",
-        "metricLabel": "marcações online em 6 meses",
-        "desc": "Novo site, Local SEO e automação de marcações transformaram a agenda da clínica."
+        "title": "Auditoria gratuita, sem compromisso",
+        "desc": "Começamos por mostrar o valor e a oportunidade — antes de qualquer contrato."
       },
       {
-        "client": "Empresa de construção",
-        "sector": "Construção",
-        "metric": "3×",
-        "metricLabel": "leads qualificados por mês",
-        "desc": "SEO técnico e páginas de serviço otimizadas colocaram a empresa no topo das pesquisas locais."
+        "title": "Resultados mensuráveis",
+        "desc": "Definimos objetivos claros e medimos tudo. Sabe sempre qual é o retorno."
       },
       {
-        "client": "Escritório de advogados",
-        "sector": "Serviços B2B",
-        "metric": "Top 3",
-        "metricLabel": "no Google para termos-chave",
-        "desc": "Estrutura semântica e conteúdo de autoridade construíram ranking e credibilidade."
+        "title": "Sem lock-in — o sistema é seu",
+        "desc": "Fica com o site, os dados e todos os acessos. Nunca fica refém de ninguém."
+      },
+      {
+        "title": "Transparência total",
+        "desc": "Comunicação clara e honesta, sem jargão nem caixas negras."
       }
     ]
   },
@@ -275,15 +278,36 @@
     "founderBio": "Miguel Lourenço fundou a Byte & Brain com uma convicção simples: as PMEs merecem a mesma tecnologia e o mesmo rigor de engenharia que as grandes empresas. Trabalha diretamente com cada cliente, do diagnóstico à construção do sistema.",
     "valuesTitle": "O que nos guia",
     "values": [
-      { "title": "Resultados, não entregáveis", "desc": "Medimos o sucesso pelo crescimento que geramos, não pela lista de tarefas concluídas." },
-      { "title": "Engenharia a sério", "desc": "Código limpo, rápido e escalável. A tecnologia é o nosso ofício, não um extra." },
-      { "title": "Transparência total", "desc": "Sem jargão nem caixas negras. Explicamos o que fazemos e porquê, com dados." },
-      { "title": "Parceria de longo prazo", "desc": "Construímos ativos que crescem durante anos, não campanhas que acabam num mês." }
+      {
+        "title": "Resultados, não entregáveis",
+        "desc": "Medimos o sucesso pelo crescimento que geramos, não pela lista de tarefas concluídas."
+      },
+      {
+        "title": "Engenharia a sério",
+        "desc": "Código limpo, rápido e escalável. A tecnologia é o nosso ofício, não um extra."
+      },
+      {
+        "title": "Transparência total",
+        "desc": "Sem jargão nem caixas negras. Explicamos o que fazemos e porquê, com dados."
+      },
+      {
+        "title": "Parceria de longo prazo",
+        "desc": "Construímos ativos que crescem durante anos, não campanhas que acabam num mês."
+      }
     ],
     "stats": [
-      { "value": "2025", "label": "Fundada em Setúbal" },
-      { "value": "PT · EN · ES", "label": "Preparados para escalar" },
-      { "value": "1 sistema", "label": "Tecnologia, SEO, IA e automação" }
+      {
+        "value": "2025",
+        "label": "Fundada em Setúbal"
+      },
+      {
+        "value": "PT · EN · ES",
+        "label": "Preparados para escalar"
+      },
+      {
+        "value": "1 sistema",
+        "label": "Tecnologia, SEO, IA e automação"
+      }
     ],
     "ctaTitle": "Vamos construir o seu sistema de crescimento?",
     "ctaText": "Comece com uma auditoria gratuita — sem compromisso."
@@ -306,7 +330,9 @@
       "digital-growth": "Crescimento Digital",
       "web-development": "Desenvolvimento Web",
       "business": "Negócio"
-    }
+    },
+    "searchPlaceholder": "Pesquisar artigos…",
+    "noResults": "Nenhum artigo encontrado."
   },
   "legal": {
     "updated": "Última atualização",
@@ -316,13 +342,34 @@
       "title": "Política de Privacidade",
       "intro": "A sua privacidade é importante para nós. Esta política explica que dados recolhemos, como os usamos e quais os seus direitos ao abrigo do RGPD.",
       "sections": [
-        { "h": "Dados que recolhemos", "p": "Recolhemos apenas os dados que nos fornece voluntariamente através de formulários (nome, email, empresa e mensagem) e dados técnicos anónimos de navegação." },
-        { "h": "Como usamos os seus dados", "p": "Utilizamos os seus dados para responder a pedidos de contacto, prestar os nossos serviços e melhorar o site. Nunca os vendemos." },
-        { "h": "Cookies e analytics", "p": "Podemos usar cookies e ferramentas de analytics que respeitam a privacidade para compreender a utilização do site. Pode gerir os cookies no seu navegador." },
-        { "h": "Partilha com terceiros", "p": "Só partilhamos dados com fornecedores essenciais à prestação do serviço (por exemplo, alojamento ou email), sempre com garantias de proteção adequadas." },
-        { "h": "Os seus direitos (RGPD)", "p": "Tem o direito de aceder, corrigir, apagar ou limitar o tratamento dos seus dados. Para exercer estes direitos, contacte-nos por email." },
-        { "h": "Segurança", "p": "Aplicamos boas práticas técnicas e organizativas para proteger os seus dados contra acesso não autorizado, perda ou alteração." },
-        { "h": "Contacto", "p": "Para qualquer questão sobre esta política ou sobre os seus dados, contacte-nos através do email indicado no rodapé." }
+        {
+          "h": "Dados que recolhemos",
+          "p": "Recolhemos apenas os dados que nos fornece voluntariamente através de formulários (nome, email, empresa e mensagem) e dados técnicos anónimos de navegação."
+        },
+        {
+          "h": "Como usamos os seus dados",
+          "p": "Utilizamos os seus dados para responder a pedidos de contacto, prestar os nossos serviços e melhorar o site. Nunca os vendemos."
+        },
+        {
+          "h": "Cookies e analytics",
+          "p": "Podemos usar cookies e ferramentas de analytics que respeitam a privacidade para compreender a utilização do site. Pode gerir os cookies no seu navegador."
+        },
+        {
+          "h": "Partilha com terceiros",
+          "p": "Só partilhamos dados com fornecedores essenciais à prestação do serviço (por exemplo, alojamento ou email), sempre com garantias de proteção adequadas."
+        },
+        {
+          "h": "Os seus direitos (RGPD)",
+          "p": "Tem o direito de aceder, corrigir, apagar ou limitar o tratamento dos seus dados. Para exercer estes direitos, contacte-nos por email."
+        },
+        {
+          "h": "Segurança",
+          "p": "Aplicamos boas práticas técnicas e organizativas para proteger os seus dados contra acesso não autorizado, perda ou alteração."
+        },
+        {
+          "h": "Contacto",
+          "p": "Para qualquer questão sobre esta política ou sobre os seus dados, contacte-nos através do email indicado no rodapé."
+        }
       ]
     },
     "terms": {
@@ -331,13 +378,34 @@
       "title": "Termos e Condições",
       "intro": "Ao utilizar este website e os nossos serviços, concorda com os termos descritos abaixo.",
       "sections": [
-        { "h": "Aceitação dos termos", "p": "A utilização deste site implica a aceitação integral destes termos. Se não concordar, não deverá utilizar o site." },
-        { "h": "Serviços", "p": "A Byte & Brain presta serviços de tecnologia, SEO, automação e crescimento digital. O âmbito de cada projeto é definido por proposta específica." },
-        { "h": "Propriedade intelectual", "p": "Todo o conteúdo deste site (textos, design, código e marca) é propriedade da Byte & Brain, salvo indicação em contrário." },
-        { "h": "Responsabilidades do cliente", "p": "O cliente é responsável por fornecer informações corretas e pelos acessos necessários à prestação dos serviços contratados." },
-        { "h": "Limitação de responsabilidade", "p": "Os nossos serviços são prestados com o maior rigor, mas não garantimos resultados específicos de ranking, dependentes de fatores externos." },
-        { "h": "Alterações", "p": "Podemos atualizar estes termos a qualquer momento. A versão em vigor é sempre a publicada nesta página." },
-        { "h": "Lei aplicável", "p": "Estes termos regem-se pela lei portuguesa, sendo competentes os tribunais da comarca de Setúbal." }
+        {
+          "h": "Aceitação dos termos",
+          "p": "A utilização deste site implica a aceitação integral destes termos. Se não concordar, não deverá utilizar o site."
+        },
+        {
+          "h": "Serviços",
+          "p": "A Byte & Brain presta serviços de tecnologia, SEO, automação e crescimento digital. O âmbito de cada projeto é definido por proposta específica."
+        },
+        {
+          "h": "Propriedade intelectual",
+          "p": "Todo o conteúdo deste site (textos, design, código e marca) é propriedade da Byte & Brain, salvo indicação em contrário."
+        },
+        {
+          "h": "Responsabilidades do cliente",
+          "p": "O cliente é responsável por fornecer informações corretas e pelos acessos necessários à prestação dos serviços contratados."
+        },
+        {
+          "h": "Limitação de responsabilidade",
+          "p": "Os nossos serviços são prestados com o maior rigor, mas não garantimos resultados específicos de ranking, dependentes de fatores externos."
+        },
+        {
+          "h": "Alterações",
+          "p": "Podemos atualizar estes termos a qualquer momento. A versão em vigor é sempre a publicada nesta página."
+        },
+        {
+          "h": "Lei aplicável",
+          "p": "Estes termos regem-se pela lei portuguesa, sendo competentes os tribunais da comarca de Setúbal."
+        }
       ]
     },
     "disclaimer": "Este documento é um modelo geral. Recomendamos revisão por aconselhamento jurídico antes de utilização definitiva."
@@ -356,7 +424,9 @@
     "sending": "A enviar…",
     "successTitle": "Pedido enviado!",
     "successBody": "Obrigado. Entraremos em contacto dentro de 24 horas.",
-    "error": "Algo correu mal. Tente novamente ou envie-nos um email diretamente."
+    "error": "Algo correu mal. Tente novamente ou envie-nos um email diretamente.",
+    "bookTitle": "Prefere agendar diretamente?",
+    "bookText": "Escolha um horário que lhe convém para a sua auditoria gratuita."
   },
   "footer": {
     "tagline": "Sistemas de crescimento digital para PMEs. Tecnologia, SEO, IA e automação num só sistema.",
@@ -370,7 +440,7 @@
     "links": {
       "about": "Sobre nós",
       "process": "Como trabalhamos",
-      "cases": "Casos de estudo",
+      "cases": "Compromissos",
       "contact": "Contacto",
       "blog": "Blog",
       "faq": "Perguntas frequentes",

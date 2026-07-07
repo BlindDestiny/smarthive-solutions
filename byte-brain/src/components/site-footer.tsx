@@ -8,6 +8,7 @@ import {
   InstagramIcon,
   FacebookIcon,
 } from "@/components/brand/social-icons";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { site } from "@/lib/site";
 
 const linkCls =
@@ -62,6 +63,10 @@ export function SiteFooter() {
               >
                 <FacebookIcon />
               </a>
+            </div>
+
+            <div className="mt-8 border-t border-border pt-6">
+              <NewsletterForm />
             </div>
           </div>
 

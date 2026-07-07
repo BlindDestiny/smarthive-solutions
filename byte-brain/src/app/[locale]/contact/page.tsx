@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { localizedUrl, localizedAlternates } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 import { ContactForm } from "@/components/contact-form";
+import { CalendlyEmbed } from "@/components/calendly-embed";
 
 export async function generateMetadata({
   params,
@@ -31,6 +32,7 @@ export default async function ContactPage({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "cta" });
   const tf = await getTranslations({ locale, namespace: "contactForm" });
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
 
   return (
     <div className="relative overflow-hidden">
@@ -73,6 +75,18 @@ export default async function ContactPage({
 
           <ContactForm />
         </div>
+
+        {calendlyUrl && (
+          <div className="mx-auto mt-20 max-w-5xl border-t border-border pt-16">
+            <div className="mb-8 text-center">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                {tf("bookTitle")}
+              </h2>
+              <p className="mt-3 text-muted-foreground">{tf("bookText")}</p>
+            </div>
+            <CalendlyEmbed url={calendlyUrl} />
+          </div>
+        )}
       </div>
     </div>
   );

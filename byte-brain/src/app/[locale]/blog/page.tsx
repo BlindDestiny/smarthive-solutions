@@ -129,6 +129,8 @@ export default async function BlogIndexPage({
               allLabel={t("all")}
               categoryLabels={categoryLabels}
               readingLabel={t("readingTime")}
+              searchPlaceholder={t("searchPlaceholder")}
+              noResults={t("noResults")}
               locale={loc}
             />
           )}

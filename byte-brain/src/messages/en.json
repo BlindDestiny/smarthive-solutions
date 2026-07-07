@@ -7,7 +7,7 @@
   "nav": {
     "services": "Services",
     "process": "How we work",
-    "cases": "Case studies",
+    "cases": "Commitments",
     "tech": "Technology",
     "blog": "Blog",
     "contact": "Contact",
@@ -24,9 +24,18 @@
     "ctaSecondary": "See how we work",
     "trustedBy": "The technology the biggest companies use. Within reach of your business.",
     "stats": [
-      { "value": "> 95", "label": "Lighthouse Performance" },
-      { "value": "3×", "label": "More organic traffic" },
-      { "value": "24/7", "label": "Automation working for you" }
+      {
+        "value": "> 95",
+        "label": "Lighthouse Performance"
+      },
+      {
+        "value": "3×",
+        "label": "More organic traffic"
+      },
+      {
+        "value": "24/7",
+        "label": "Automation working for you"
+      }
     ]
   },
   "problem": {
@@ -156,31 +165,25 @@
     ]
   },
   "cases": {
-    "eyebrow": "Case studies",
-    "title": "Real results, not promises.",
-    "subtitle": "A few examples of what a well-built growth system can do.",
-    "cta": "View full case",
+    "eyebrow": "Commitments",
+    "title": "What you can expect from us.",
+    "subtitle": "Full transparency from day one. These are the commitments we make to every client.",
     "items": [
       {
-        "client": "Dental clinic",
-        "sector": "Healthcare",
-        "metric": "+180%",
-        "metricLabel": "online bookings in 6 months",
-        "desc": "A new site, Local SEO and booking automation transformed the clinic's calendar."
+        "title": "A free audit, no strings attached",
+        "desc": "We start by showing the value and the opportunity — before any contract."
       },
       {
-        "client": "Construction company",
-        "sector": "Construction",
-        "metric": "3×",
-        "metricLabel": "qualified leads per month",
-        "desc": "Technical SEO and optimized service pages put the company at the top of local search."
+        "title": "Measurable results",
+        "desc": "We set clear goals and measure everything. You always know the return."
       },
       {
-        "client": "Law firm",
-        "sector": "B2B services",
-        "metric": "Top 3",
-        "metricLabel": "on Google for key terms",
-        "desc": "Semantic structure and authority content built ranking and credibility."
+        "title": "No lock-in — the system is yours",
+        "desc": "You keep the site, the data and every access. You are never held hostage."
+      },
+      {
+        "title": "Full transparency",
+        "desc": "Clear, honest communication — no jargon, no black boxes."
       }
     ]
   },
@@ -275,15 +278,36 @@
     "founderBio": "Miguel Lourenço founded Byte & Brain on a simple conviction: SMEs deserve the same technology and engineering rigor as large companies. He works directly with every client, from diagnosis to building the system.",
     "valuesTitle": "What guides us",
     "values": [
-      { "title": "Results, not deliverables", "desc": "We measure success by the growth we drive, not by the list of completed tasks." },
-      { "title": "Real engineering", "desc": "Clean, fast, scalable code. Technology is our craft, not an add-on." },
-      { "title": "Full transparency", "desc": "No jargon, no black boxes. We explain what we do and why, with data." },
-      { "title": "Long-term partnership", "desc": "We build assets that grow for years, not campaigns that end in a month." }
+      {
+        "title": "Results, not deliverables",
+        "desc": "We measure success by the growth we drive, not by the list of completed tasks."
+      },
+      {
+        "title": "Real engineering",
+        "desc": "Clean, fast, scalable code. Technology is our craft, not an add-on."
+      },
+      {
+        "title": "Full transparency",
+        "desc": "No jargon, no black boxes. We explain what we do and why, with data."
+      },
+      {
+        "title": "Long-term partnership",
+        "desc": "We build assets that grow for years, not campaigns that end in a month."
+      }
     ],
     "stats": [
-      { "value": "2025", "label": "Founded in Setúbal" },
-      { "value": "PT · EN · ES", "label": "Ready to scale" },
-      { "value": "1 system", "label": "Technology, SEO, AI and automation" }
+      {
+        "value": "2025",
+        "label": "Founded in Setúbal"
+      },
+      {
+        "value": "PT · EN · ES",
+        "label": "Ready to scale"
+      },
+      {
+        "value": "1 system",
+        "label": "Technology, SEO, AI and automation"
+      }
     ],
     "ctaTitle": "Let's build your growth system?",
     "ctaText": "Start with a free audit — no commitment."
@@ -306,7 +330,9 @@
       "digital-growth": "Digital Growth",
       "web-development": "Web Development",
       "business": "Business"
-    }
+    },
+    "searchPlaceholder": "Search articles…",
+    "noResults": "No articles found."
   },
   "legal": {
     "updated": "Last updated",
@@ -316,13 +342,34 @@
       "title": "Privacy Policy",
       "intro": "Your privacy matters to us. This policy explains what data we collect, how we use it and your rights under GDPR.",
       "sections": [
-        { "h": "Data we collect", "p": "We only collect data you voluntarily provide through forms (name, email, company and message) and anonymous technical browsing data." },
-        { "h": "How we use your data", "p": "We use your data to respond to contact requests, deliver our services and improve the site. We never sell it." },
-        { "h": "Cookies and analytics", "p": "We may use privacy-respecting cookies and analytics tools to understand site usage. You can manage cookies in your browser." },
-        { "h": "Sharing with third parties", "p": "We only share data with providers essential to delivering the service (e.g. hosting or email), always with adequate safeguards." },
-        { "h": "Your rights (GDPR)", "p": "You have the right to access, correct, delete or restrict the processing of your data. To exercise these rights, contact us by email." },
-        { "h": "Security", "p": "We apply technical and organizational best practices to protect your data against unauthorized access, loss or alteration." },
-        { "h": "Contact", "p": "For any question about this policy or your data, contact us via the email in the footer." }
+        {
+          "h": "Data we collect",
+          "p": "We only collect data you voluntarily provide through forms (name, email, company and message) and anonymous technical browsing data."
+        },
+        {
+          "h": "How we use your data",
+          "p": "We use your data to respond to contact requests, deliver our services and improve the site. We never sell it."
+        },
+        {
+          "h": "Cookies and analytics",
+          "p": "We may use privacy-respecting cookies and analytics tools to understand site usage. You can manage cookies in your browser."
+        },
+        {
+          "h": "Sharing with third parties",
+          "p": "We only share data with providers essential to delivering the service (e.g. hosting or email), always with adequate safeguards."
+        },
+        {
+          "h": "Your rights (GDPR)",
+          "p": "You have the right to access, correct, delete or restrict the processing of your data. To exercise these rights, contact us by email."
+        },
+        {
+          "h": "Security",
+          "p": "We apply technical and organizational best practices to protect your data against unauthorized access, loss or alteration."
+        },
+        {
+          "h": "Contact",
+          "p": "For any question about this policy or your data, contact us via the email in the footer."
+        }
       ]
     },
     "terms": {
@@ -331,13 +378,34 @@
       "title": "Terms & Conditions",
       "intro": "By using this website and our services, you agree to the terms described below.",
       "sections": [
-        { "h": "Acceptance of terms", "p": "Using this site implies full acceptance of these terms. If you disagree, you should not use the site." },
-        { "h": "Services", "p": "Byte & Brain provides technology, SEO, automation and digital growth services. The scope of each project is defined by a specific proposal." },
-        { "h": "Intellectual property", "p": "All content on this site (text, design, code and brand) is the property of Byte & Brain, unless stated otherwise." },
-        { "h": "Client responsibilities", "p": "The client is responsible for providing accurate information and the access needed to deliver the contracted services." },
-        { "h": "Limitation of liability", "p": "Our services are delivered with the utmost care, but we do not guarantee specific ranking results, which depend on external factors." },
-        { "h": "Changes", "p": "We may update these terms at any time. The version in force is always the one published on this page." },
-        { "h": "Governing law", "p": "These terms are governed by Portuguese law, with the courts of Setúbal being competent." }
+        {
+          "h": "Acceptance of terms",
+          "p": "Using this site implies full acceptance of these terms. If you disagree, you should not use the site."
+        },
+        {
+          "h": "Services",
+          "p": "Byte & Brain provides technology, SEO, automation and digital growth services. The scope of each project is defined by a specific proposal."
+        },
+        {
+          "h": "Intellectual property",
+          "p": "All content on this site (text, design, code and brand) is the property of Byte & Brain, unless stated otherwise."
+        },
+        {
+          "h": "Client responsibilities",
+          "p": "The client is responsible for providing accurate information and the access needed to deliver the contracted services."
+        },
+        {
+          "h": "Limitation of liability",
+          "p": "Our services are delivered with the utmost care, but we do not guarantee specific ranking results, which depend on external factors."
+        },
+        {
+          "h": "Changes",
+          "p": "We may update these terms at any time. The version in force is always the one published on this page."
+        },
+        {
+          "h": "Governing law",
+          "p": "These terms are governed by Portuguese law, with the courts of Setúbal being competent."
+        }
       ]
     },
     "disclaimer": "This document is a general template. We recommend legal review before definitive use."
@@ -356,7 +424,9 @@
     "sending": "Sending…",
     "successTitle": "Request sent!",
     "successBody": "Thank you. We'll be in touch within 24 hours.",
-    "error": "Something went wrong. Please try again or email us directly."
+    "error": "Something went wrong. Please try again or email us directly.",
+    "bookTitle": "Prefer to book directly?",
+    "bookText": "Pick a time that works for your free audit."
   },
   "footer": {
     "tagline": "Digital growth systems for SMEs. Technology, SEO, AI and automation in one system.",
@@ -370,7 +440,7 @@
     "links": {
       "about": "About us",
       "process": "How we work",
-      "cases": "Case studies",
+      "cases": "Commitments",
       "contact": "Contact",
       "blog": "Blog",
       "faq": "FAQ",

@@ -41,7 +41,6 @@ export async function generateMetadata({
       locale,
       publishedTime: post.date,
       authors: [post.author],
-      images: [{ url: site.ogImage, width: 1200, height: 630 }],
     },
   };
 }
