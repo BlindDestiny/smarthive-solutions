@@ -53,7 +53,7 @@ export function WhatsAppButton() {
   const href = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(t.prefill)}`;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 print:hidden">
+    <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 print:hidden">
       {showBubble && (
         <div className="animate-fade-up flex max-w-[16rem] items-start gap-2 rounded-2xl rounded-br-sm border border-border bg-card px-4 py-3 shadow-elevated">
           <a

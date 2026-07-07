@@ -64,38 +64,36 @@ export function CookieConsent() {
     <div
       role="dialog"
       aria-label="Cookies"
-      className="animate-fade-up fixed bottom-4 left-4 z-[60] w-[min(24rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-5 shadow-elevated"
+      className="animate-fade-up fixed inset-x-3 bottom-4 z-[70] mx-auto max-w-2xl rounded-2xl border border-border bg-card p-5 shadow-elevated sm:p-6"
     >
-      <div className="flex items-start gap-3">
-        <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Cookie className="size-5" />
         </span>
-        <div className="min-w-0">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {t.text}{" "}
-            <Link
-              href="/privacy"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-            >
-              {t.privacy}
-            </Link>
-          </p>
-          <div className="mt-4 flex gap-2">
-            <button
-              type="button"
-              onClick={() => choose("accepted")}
-              className="inline-flex h-9 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110"
-            >
-              {t.accept}
-            </button>
-            <button
-              type="button"
-              onClick={() => choose("rejected")}
-              className="inline-flex h-9 items-center rounded-lg border border-border px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-background-muted hover:text-foreground"
-            >
-              {t.reject}
-            </button>
-          </div>
+        <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
+          {t.text}{" "}
+          <Link
+            href="/privacy"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            {t.privacy}
+          </Link>
+        </p>
+        <div className="flex shrink-0 gap-2">
+          <button
+            type="button"
+            onClick={() => choose("rejected")}
+            className="inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-border px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-background-muted hover:text-foreground sm:flex-none"
+          >
+            {t.reject}
+          </button>
+          <button
+            type="button"
+            onClick={() => choose("accepted")}
+            className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110 sm:flex-none"
+          >
+            {t.accept}
+          </button>
         </div>
       </div>
     </div>
